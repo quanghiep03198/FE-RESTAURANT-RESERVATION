@@ -1,22 +1,19 @@
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { routeTree } from './routeTree.gen'
+import { scan } from 'react-scan'
+import App from './app'
+import env from './common/utils/env'
 
-const router = createRouter({
-  routeTree,
-  defaultPreload: 'intent',
-  scrollRestoration: true,
-})
+const runtimeEnvironment = env<RuntimeEnvironment>('VITE_NODE_ENV')
 
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router
-  }
-}
+const isProduction = runtimeEnvironment === 'production'
+const isDevelopment = runtimeEnvironment === 'development'
+
+// React Scan Initialization
+scan({ enabled: true })
 
 const rootElement = document.getElementById('app')!
 
 if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
-  root.render(<RouterProvider router={router} />)
+	const root = ReactDOM.createRoot(rootElement)
+	root.render(<App />)
 }
