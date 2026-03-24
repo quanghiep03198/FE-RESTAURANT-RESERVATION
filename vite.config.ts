@@ -4,7 +4,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
-import viteReact from "@vitejs/plugin-react";
+import viteReact from "@vitejs/plugin-react-swc";
 import tailwindcss from "@tailwindcss/vite";
 
 const config = defineConfig({

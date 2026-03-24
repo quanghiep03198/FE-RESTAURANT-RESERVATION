@@ -7,7 +7,7 @@ export function getRouter() {
 		scrollRestoration: true,
 		defaultPreload: "intent",
 		defaultPreloadStaleTime: 0,
-	});
+	} as unknown as Parameters<typeof createTanStackRouter>[0]);
 
 	return router;
 }
