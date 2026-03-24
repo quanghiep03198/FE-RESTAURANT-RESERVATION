@@ -11,6 +11,8 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"noEmit": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"jsx": "react-jsx",
 		/* Linting */
 		"strict": false,
