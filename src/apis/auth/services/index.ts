@@ -17,11 +17,11 @@ export class AuthService {
 	}
 
 	public static getCredentials() {
-		return useAuthStore.getState().user
+		return useAuthStore.getState()?.user
 	}
 
 	public static getAccessToken() {
-		return useAuthStore.getState().accessToken
+		return useAuthStore.getState()?.accessToken
 	}
 
 	public static async logout() {

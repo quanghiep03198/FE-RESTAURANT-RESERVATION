@@ -11,6 +11,7 @@ export interface IUser extends IBaseEntity {
 	full_name: string
 	email: string
 	role: IUserRole
+	avatar: string
 }
 
 export type TLoginResponse = {
