@@ -1,6 +1,7 @@
 import { PROFILE_QUERY_KEY } from '@/apis/auth/hooks/use-profile'
+import AppSidebar from '@/components/partials/app-sidebar'
 import Loading from '@/components/shared/loading'
-import AuthGuard from '@/guards/auth-guard'
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_layout')({
@@ -16,8 +17,13 @@ export const Route = createFileRoute('/_layout')({
 
 function RouteComponent() {
 	return (
-		<AuthGuard>
-			<Outlet />
-		</AuthGuard>
+		// <AuthGuard>	</AuthGuard>
+		<SidebarProvider>
+			<AppSidebar />
+			<main>
+				<SidebarTrigger />
+				<Outlet />
+			</main>
+		</SidebarProvider>
 	)
 }

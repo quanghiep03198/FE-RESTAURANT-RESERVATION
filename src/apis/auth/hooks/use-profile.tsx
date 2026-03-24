@@ -1,10 +1,11 @@
+import generateAvatar from '@/libs/generate-avatar'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import { AxiosError, type AxiosRequestConfig } from 'axios'
 import { useEffect, useMemo, useRef } from 'react'
 import { AuthService } from '../services'
 import useAuth from './use-auth'
 
-export const PROFILE_QUERY_KEY = Symbol('PROFILE_QUERY_KEY')
+export const PROFILE_QUERY_KEY = 'PROFILE_QUERY_KEY'
 
 export const getUserProfileQuery = (enabled?: boolean, config?: AxiosRequestConfig) => {
 	const unexpectedErrorCodes = [AxiosError.ERR_NETWORK, AxiosError.ETIMEDOUT, AxiosError.ECONNABORTED]
@@ -16,7 +17,10 @@ export const getUserProfileQuery = (enabled?: boolean, config?: AxiosRequestConf
 		refetchOnReconnect: 'always',
 		networkMode: 'always',
 		enabled,
-		select: (response) => response.metadata,
+		select: (response) => ({
+			...response.metadata,
+			avatar: generateAvatar({ name: response.metadata?.full_name })
+		}),
 		retry: (failureCount, error) => {
 			if (unexpectedErrorCodes.includes(error.code)) return enabled
 			return failureCount <= 2 && enabled

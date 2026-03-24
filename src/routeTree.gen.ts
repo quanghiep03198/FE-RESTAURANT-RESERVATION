@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LayoutFloorPlanRouteImport } from './routes/_layout.floor-plan'
 
 const LayoutDashboardLazyRouteImport = createFileRoute('/_layout/dashboard')()
 
@@ -44,17 +45,24 @@ const LayoutDashboardLazyRoute = LayoutDashboardLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/_layout.dashboard.lazy').then((d) => d.Route),
 )
+const LayoutFloorPlanRoute = LayoutFloorPlanRouteImport.update({
+  id: '/floor-plan',
+  path: '/floor-plan',
+  getParentRoute: () => LayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
+  '/floor-plan': typeof LayoutFloorPlanRoute
   '/dashboard': typeof LayoutDashboardLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
+  '/floor-plan': typeof LayoutFloorPlanRoute
   '/dashboard': typeof LayoutDashboardLazyRoute
 }
 export interface FileRoutesById {
@@ -63,14 +71,22 @@ export interface FileRoutesById {
   '/_layout': typeof LayoutRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
+  '/_layout/floor-plan': typeof LayoutFloorPlanRoute
   '/_layout/dashboard': typeof LayoutDashboardLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/login' | '/dashboard'
+  fullPaths: '/' | '/about' | '/login' | '/floor-plan' | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/login' | '/dashboard'
-  id: '__root__' | '/' | '/_layout' | '/about' | '/login' | '/_layout/dashboard'
+  to: '/' | '/about' | '/login' | '/floor-plan' | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/_layout'
+    | '/about'
+    | '/login'
+    | '/_layout/floor-plan'
+    | '/_layout/dashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -117,14 +133,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutDashboardLazyRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/floor-plan': {
+      id: '/_layout/floor-plan'
+      path: '/floor-plan'
+      fullPath: '/floor-plan'
+      preLoaderRoute: typeof LayoutFloorPlanRouteImport
+      parentRoute: typeof LayoutRoute
+    }
   }
 }
 
 interface LayoutRouteChildren {
+  LayoutFloorPlanRoute: typeof LayoutFloorPlanRoute
   LayoutDashboardLazyRoute: typeof LayoutDashboardLazyRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutFloorPlanRoute: LayoutFloorPlanRoute,
   LayoutDashboardLazyRoute: LayoutDashboardLazyRoute,
 }
 

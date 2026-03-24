@@ -37,8 +37,7 @@ export class AxiosClient {
 			// withCredentials: true,
 			headers: {
 				[RequestHeaders.CONTENT_TYPE]: 'application/json',
-				[RequestHeaders.API_VERSION]: version,
-				...(accessToken && { [RequestHeaders.AUTHORIZATION]: accessToken })
+				[RequestHeaders.API_VERSION]: version
 			},
 			paramsSerializer: (params) => {
 				return qs.stringify(params, {
