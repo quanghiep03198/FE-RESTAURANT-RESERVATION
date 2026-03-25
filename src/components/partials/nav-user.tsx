@@ -14,7 +14,7 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '../ui/sidebar'
 
 const NavUser: React.FC = () => {
-	const { user } = useAuth()
+	const { user, logout } = useAuth()
 	const { isMobile } = useSidebar()
 
 	return (
@@ -33,8 +33,8 @@ const NavUser: React.FC = () => {
 							<AvatarFallback className='rounded-lg'>{user?.full_name}</AvatarFallback>
 						</Avatar>
 						<div className='grid flex-1 text-left text-sm leading-tight'>
-							<span className='truncate font-medium'>{user.full_name}</span>
-							<span className='truncate text-xs'>{user.email}</span>
+							<span className='truncate font-medium'>{user?.full_name}</span>
+							<span className='truncate text-xs'>{user?.email}</span>
 						</div>
 						<HugeiconsIcon icon={ChevronRight} />
 					</DropdownMenuTrigger>
@@ -52,7 +52,7 @@ const NavUser: React.FC = () => {
 									</Avatar>
 									<div className='grid flex-1 text-left text-sm leading-tight'>
 										<span className='truncate font-medium'>{user?.full_name}</span>
-										<span className='truncate text-xs'>{user.email}</span>
+										<span className='truncate text-xs'>{user?.email}</span>
 									</div>
 								</div>
 							</DropdownMenuLabel>
@@ -63,7 +63,7 @@ const NavUser: React.FC = () => {
 								<HugeiconsIcon icon={BadgeCheck} />
 								Account
 							</DropdownMenuItem>
-							<DropdownMenuItem>
+							<DropdownMenuItem onClick={() => logout()}>
 								<HugeiconsIcon icon={Logout02Icon} />
 								Log out
 							</DropdownMenuItem>
