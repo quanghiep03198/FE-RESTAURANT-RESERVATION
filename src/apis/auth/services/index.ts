@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/apis/auth/stores'
 import { axiosInstance } from '@/configs/axios.config'
+import { queryClient } from '@/providers/query-client-provider'
 import type { AxiosError, AxiosRequestConfig } from 'axios'
 import type { TLoginFormValues } from '../schemas/login.schema'
 import type { IUser, TLoginResponse } from '../types'
@@ -13,7 +14,7 @@ export class AuthService {
 	}
 
 	public static async profile(config: AxiosRequestConfig) {
-		return await axiosInstance.get<void, ResponseBody<IUser>>('/auth/me', config)
+		return await axiosInstance.get<void, ResponseBody<IUser>>('/auth/me')
 	}
 
 	public static getCredentials() {
@@ -25,10 +26,14 @@ export class AuthService {
 	}
 
 	public static async logout() {
-		return await axiosInstance.post<undefined, ResponseBody<null>>('/auth/logout')
+		useAuthStore.getState().resetCredentials() // * reset auth state
+		queryClient.removeQueries({ type: 'all', exact: false }) // * remove all triggered queries
+		queryClient.cancelQueries({ fetchStatus: 'fetching' }) // * cancel all running queries
+		queryClient.clear() // * clear cached queries
+		// return await axiosInstance.post<undefined, ResponseBody<null>>('/auth/logout')
 	}
 
 	public static async refreshToken(signal: AbortSignal) {
-		return await axiosInstance.get<void, ResponseBody<{ accessToken: string }>>('/auth/refresh-token', { signal })
+		return await axiosInstance.get<void, ResponseBody<{ accessToken: string }>>('/auth/refresh', { signal })
 	}
 }

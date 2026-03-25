@@ -45,7 +45,7 @@ export const useGetUserProfileQuery = () => {
 
 	const queryOptions = useMemo(() => {
 		return getUserProfileQuery(isAuthenticated, { signal: abortControllerRef.current.signal })
-	}, [isAuthenticated, abortControllerRef.current.signal.aborted])
+	}, [isAuthenticated, abortControllerRef.current?.signal?.aborted])
 
-	return useQuery(queryOptions)
+	return useQuery(getUserProfileQuery(isAuthenticated, { signal: abortControllerRef.current.signal }))
 }
