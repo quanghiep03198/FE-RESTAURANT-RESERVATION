@@ -1,4 +1,4 @@
-import { cn } from '@/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { Spinner } from '../ui/spinner'
 
 const Loading: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => {

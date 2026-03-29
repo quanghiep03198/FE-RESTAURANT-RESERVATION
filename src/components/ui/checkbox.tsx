@@ -2,7 +2,7 @@
 
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox'
 
-import { cn } from '@/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { Tick02Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 

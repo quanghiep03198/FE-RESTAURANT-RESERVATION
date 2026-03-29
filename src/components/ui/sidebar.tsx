@@ -3,6 +3,7 @@ import { useRender } from '@base-ui/react/use-render'
 import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
 
+import { cn } from '@/common/utils/cn'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -10,7 +11,6 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useIsMobile } from '@/hooks/use-mobile'
-import { cn } from '@/libs/utils'
 import { SidebarLeftIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 
@@ -240,7 +240,7 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
 				toggleSidebar()
 			}}
 			{...props}>
-			<HugeiconsIcon icon={SidebarLeftIcon} strokeWidth={2} />
+			<HugeiconsIcon icon={SidebarLeftIcon} strokeWidth={2} className='size-4' />
 			<span className='sr-only'>Toggle Sidebar</span>
 		</Button>
 	)
