@@ -1,4 +1,4 @@
-import generateAvatar from '@/libs/generate-avatar'
+import generateAvatar from '@/common/libs/generate-avatar'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import { AxiosError, type AxiosRequestConfig } from 'axios'
 import { useEffect, useMemo, useRef } from 'react'

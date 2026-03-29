@@ -1,8 +1,8 @@
-type UserRoleCode = 'OWNER' | 'MANAGER' | 'CASHIER' | 'WAITER' | 'KITCHEN'
+export type TUserRoleCode = 'OWNER' | 'MANAGER' | 'CASHIER' | 'WAITER' | 'KITCHEN'
 
 export interface IUserRole extends IBaseEntity {
 	name: string
-	code: UserRoleCode
+	code: TUserRoleCode
 	remark: string
 }
 

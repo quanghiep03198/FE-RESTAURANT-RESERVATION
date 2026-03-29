@@ -8,5 +8,5 @@ function App() {
 
 	if (!isAuthenticated) return <Navigate to='/login' />
 
-	return <Navigate to='/dashboard' />
+	return <Navigate to='/floor-plan' />
 }

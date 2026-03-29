@@ -8,16 +8,19 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LayoutUsersRouteImport } from './routes/_layout.users'
+import { Route as LayoutReservationsRouteImport } from './routes/_layout.reservations'
+import { Route as LayoutInvoicesRouteImport } from './routes/_layout.invoices'
 import { Route as LayoutFloorPlanRouteImport } from './routes/_layout.floor-plan'
-
-const LayoutDashboardLazyRouteImport = createFileRoute('/_layout/dashboard')()
+import { Route as LayoutDishesRouteImport } from './routes/_layout.dishes'
+import { Route as LayoutDishCategoriesRouteImport } from './routes/_layout.dish-categories'
+import { Route as LayoutCombosRouteImport } from './routes/_layout.combos'
+import { Route as LayoutAnalyticsRouteImport } from './routes/_layout.analytics'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -38,16 +41,44 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LayoutDashboardLazyRoute = LayoutDashboardLazyRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const LayoutUsersRoute = LayoutUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
   getParentRoute: () => LayoutRoute,
-} as any).lazy(() =>
-  import('./routes/_layout.dashboard.lazy').then((d) => d.Route),
-)
+} as any)
+const LayoutReservationsRoute = LayoutReservationsRouteImport.update({
+  id: '/reservations',
+  path: '/reservations',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutInvoicesRoute = LayoutInvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => LayoutRoute,
+} as any)
 const LayoutFloorPlanRoute = LayoutFloorPlanRouteImport.update({
   id: '/floor-plan',
   path: '/floor-plan',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutDishesRoute = LayoutDishesRouteImport.update({
+  id: '/dishes',
+  path: '/dishes',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutDishCategoriesRoute = LayoutDishCategoriesRouteImport.update({
+  id: '/dish-categories',
+  path: '/dish-categories',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutCombosRoute = LayoutCombosRouteImport.update({
+  id: '/combos',
+  path: '/combos',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutAnalyticsRoute = LayoutAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -55,15 +86,27 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
+  '/analytics': typeof LayoutAnalyticsRoute
+  '/combos': typeof LayoutCombosRoute
+  '/dish-categories': typeof LayoutDishCategoriesRoute
+  '/dishes': typeof LayoutDishesRoute
   '/floor-plan': typeof LayoutFloorPlanRoute
-  '/dashboard': typeof LayoutDashboardLazyRoute
+  '/invoices': typeof LayoutInvoicesRoute
+  '/reservations': typeof LayoutReservationsRoute
+  '/users': typeof LayoutUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
+  '/analytics': typeof LayoutAnalyticsRoute
+  '/combos': typeof LayoutCombosRoute
+  '/dish-categories': typeof LayoutDishCategoriesRoute
+  '/dishes': typeof LayoutDishesRoute
   '/floor-plan': typeof LayoutFloorPlanRoute
-  '/dashboard': typeof LayoutDashboardLazyRoute
+  '/invoices': typeof LayoutInvoicesRoute
+  '/reservations': typeof LayoutReservationsRoute
+  '/users': typeof LayoutUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,22 +114,56 @@ export interface FileRoutesById {
   '/_layout': typeof LayoutRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
+  '/_layout/analytics': typeof LayoutAnalyticsRoute
+  '/_layout/combos': typeof LayoutCombosRoute
+  '/_layout/dish-categories': typeof LayoutDishCategoriesRoute
+  '/_layout/dishes': typeof LayoutDishesRoute
   '/_layout/floor-plan': typeof LayoutFloorPlanRoute
-  '/_layout/dashboard': typeof LayoutDashboardLazyRoute
+  '/_layout/invoices': typeof LayoutInvoicesRoute
+  '/_layout/reservations': typeof LayoutReservationsRoute
+  '/_layout/users': typeof LayoutUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/login' | '/floor-plan' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/login'
+    | '/analytics'
+    | '/combos'
+    | '/dish-categories'
+    | '/dishes'
+    | '/floor-plan'
+    | '/invoices'
+    | '/reservations'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/login' | '/floor-plan' | '/dashboard'
+  to:
+    | '/'
+    | '/about'
+    | '/login'
+    | '/analytics'
+    | '/combos'
+    | '/dish-categories'
+    | '/dishes'
+    | '/floor-plan'
+    | '/invoices'
+    | '/reservations'
+    | '/users'
   id:
     | '__root__'
     | '/'
     | '/_layout'
     | '/about'
     | '/login'
+    | '/_layout/analytics'
+    | '/_layout/combos'
+    | '/_layout/dish-categories'
+    | '/_layout/dishes'
     | '/_layout/floor-plan'
-    | '/_layout/dashboard'
+    | '/_layout/invoices'
+    | '/_layout/reservations'
+    | '/_layout/users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -126,11 +203,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_layout/dashboard': {
-      id: '/_layout/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof LayoutDashboardLazyRouteImport
+    '/_layout/users': {
+      id: '/_layout/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof LayoutUsersRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/reservations': {
+      id: '/_layout/reservations'
+      path: '/reservations'
+      fullPath: '/reservations'
+      preLoaderRoute: typeof LayoutReservationsRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/invoices': {
+      id: '/_layout/invoices'
+      path: '/invoices'
+      fullPath: '/invoices'
+      preLoaderRoute: typeof LayoutInvoicesRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/floor-plan': {
@@ -140,17 +231,57 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutFloorPlanRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/dishes': {
+      id: '/_layout/dishes'
+      path: '/dishes'
+      fullPath: '/dishes'
+      preLoaderRoute: typeof LayoutDishesRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/dish-categories': {
+      id: '/_layout/dish-categories'
+      path: '/dish-categories'
+      fullPath: '/dish-categories'
+      preLoaderRoute: typeof LayoutDishCategoriesRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/combos': {
+      id: '/_layout/combos'
+      path: '/combos'
+      fullPath: '/combos'
+      preLoaderRoute: typeof LayoutCombosRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/analytics': {
+      id: '/_layout/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof LayoutAnalyticsRouteImport
+      parentRoute: typeof LayoutRoute
+    }
   }
 }
 
 interface LayoutRouteChildren {
+  LayoutAnalyticsRoute: typeof LayoutAnalyticsRoute
+  LayoutCombosRoute: typeof LayoutCombosRoute
+  LayoutDishCategoriesRoute: typeof LayoutDishCategoriesRoute
+  LayoutDishesRoute: typeof LayoutDishesRoute
   LayoutFloorPlanRoute: typeof LayoutFloorPlanRoute
-  LayoutDashboardLazyRoute: typeof LayoutDashboardLazyRoute
+  LayoutInvoicesRoute: typeof LayoutInvoicesRoute
+  LayoutReservationsRoute: typeof LayoutReservationsRoute
+  LayoutUsersRoute: typeof LayoutUsersRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutAnalyticsRoute: LayoutAnalyticsRoute,
+  LayoutCombosRoute: LayoutCombosRoute,
+  LayoutDishCategoriesRoute: LayoutDishCategoriesRoute,
+  LayoutDishesRoute: LayoutDishesRoute,
   LayoutFloorPlanRoute: LayoutFloorPlanRoute,
-  LayoutDashboardLazyRoute: LayoutDashboardLazyRoute,
+  LayoutInvoicesRoute: LayoutInvoicesRoute,
+  LayoutReservationsRoute: LayoutReservationsRoute,
+  LayoutUsersRoute: LayoutUsersRoute,
 }
 
 const LayoutRouteWithChildren =

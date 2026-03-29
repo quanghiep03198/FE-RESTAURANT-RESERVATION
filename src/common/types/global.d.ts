@@ -27,6 +27,18 @@ export declare global {
 		timestamp: Date
 	}
 
+	type Pagination<T = unknown> = {
+		data: Array<T>
+		hasNextPage: boolean
+		hasPrevPage: boolean
+		limit: number
+		page: number
+		totalDocs: number
+		totalPages: number
+		nextPage: number | null
+		prevPage: number | null
+	}
+
 	type FirstParameter<T> = T extends (first: infer FirstArgument, ...args: any[]) => any ? FirstArgument : never
 
 	type Parameter<T> = T extends (param: infer Argument) => any ? Argument : never

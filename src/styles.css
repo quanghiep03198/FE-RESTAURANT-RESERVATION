@@ -12,6 +12,9 @@
 }
 
 :root {
+	--screen-width: tan(atan2(var(--_w), 1px));
+	--screen-height: tan(atan2(var(--_h), 1px));
+
 	--radius: 0.65rem;
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
@@ -134,6 +137,18 @@ body,
 }
 
 @layer base {
+	@property --_w {
+		syntax: '<length>';
+		initial-value: 100vw;
+		inherits: false;
+	}
+
+	@property --_h {
+		syntax: '<length>';
+		initial-value: 100vh;
+		inherits: false;
+	}
+
 	* {
 		@apply border-border outline-ring/50;
 	}
