@@ -16,6 +16,9 @@ export declare global {
 
 	interface IBaseEntity {
 		id: number
+		is_active: boolean
+		created_at?: Date
+		updated_at?: Date
 	}
 
 	interface ResponseBody<T> {

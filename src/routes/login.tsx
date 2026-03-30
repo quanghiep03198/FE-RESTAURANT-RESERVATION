@@ -1,5 +1,5 @@
-import useAuth from '@/apis/auth/hooks/use-auth'
-import { LoginForm } from '@/components/_login/login-form'
+import useAuth from '@/apis/auth/hooks/use-auth-req'
+import { LoginForm } from '@/components/@login/login-form'
 import { Typography } from '@/components/ui/typography'
 import { createFileRoute, Navigate, redirect } from '@tanstack/react-router'
 
@@ -24,9 +24,9 @@ function RouteComponent() {
 		<div className='bg-muted flex min-h-screen items-center justify-center p-4'>
 			<div className='mx-auto w-full max-w-lg space-y-6'>
 				<div className='text-center'>
-					<img src='/logo.png' alt='logo' className='mx-auto max-w-44' />
+					<img src='/logo.png' alt='logo' className='mx-auto max-w-40' />
 					<Typography variant='h3' className='mb-1'>
-						Bếp Việt
+						Toque Blanche
 					</Typography>
 					<Typography color='muted'>Hệ thống quản lý đặt bàn</Typography>
 				</div>

@@ -86,12 +86,23 @@
 
 * {
 	box-sizing: border-box;
+	@apply scrollbar-thin;
 }
 
 html,
 body,
 #app {
 	min-height: 100%;
+}
+
+@plugin 'tailwind-scrollbar';
+
+@theme {
+	--breakpoint-sm: 320px;
+	--breakpoint-md: 600px;
+	--breakpoint-lg: 920px;
+	--breakpoint-xl: 1366px;
+	--breakpoint-xxl: 1600px;
 }
 
 @theme inline {

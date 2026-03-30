@@ -1,6 +1,4 @@
 import { cn } from '@/common/utils/cn'
-import { useUpdate } from 'ahooks'
-
 import { Tooltip } from '@/components/customs/tooltip'
 import { buttonVariants } from '@/components/ui/button'
 import {
@@ -14,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Columns, Undo } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { useUpdate } from 'ahooks'
 import { useTableContext } from '../context/table.context'
 
 export const TableViewOptions: React.FC = () => {

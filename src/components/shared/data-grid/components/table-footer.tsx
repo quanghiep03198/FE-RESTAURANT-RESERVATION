@@ -1,5 +1,5 @@
 import { cn } from '@/common/utils/cn'
-import { Div, Separator } from '@/components/ui'
+import { Separator } from '@/components/ui/separator'
 import { Fragment, memo } from 'react'
 import { useTableContext } from '../context/table.context'
 import { type TableFooterProps } from '../types'
@@ -11,9 +11,9 @@ function TableFooter({ hidden, slot: Slot, rtl }: TableFooterProps) {
 	return (
 		<Fragment>
 			<Separator />
-			<Div className={cn('flex items-center gap-x-1 bg-background', rtl ? 'justify-start' : 'justify-end')}>
+			<div className={cn('bg-background flex items-center gap-x-1', rtl ? 'justify-start' : 'justify-end')}>
 				<Slot table={table} />
-			</Div>
+			</div>
 		</Fragment>
 	)
 }

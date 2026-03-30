@@ -1,5 +1,5 @@
-import { TableCell, TableRow } from '../..'
-import Skeleton from '../../@custom/skeleton'
+import { Skeleton } from '@/components/ui/skeleton'
+import { TableCell, TableRow } from '@/components/ui/table'
 import { useTableContext } from '../context/table.context'
 import { getStickyOffsetPosition } from '../utils'
 

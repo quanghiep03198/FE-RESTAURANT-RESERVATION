@@ -53,7 +53,7 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
 		<ContextMenu>
 			<ContextMenuTrigger
 				className={cn(
-					'flex h-max w-full cursor-auto grid-cols-[14px_auto] items-center px-4 py-2 text-left text-sm capitalize select-none [&:has([role=button])]:w-full [&:has([role=button])]:justify-center [&:has([role=checkbox])]:w-full [&:has([role=checkbox])]:!justify-center',
+					'flex h-max w-full cursor-auto grid-cols-[14px_auto] items-center px-4 py-2 text-left text-xs capitalize select-none [&:has([role=button])]:w-full [&:has([role=button])]:justify-center [&:has([role=checkbox])]:w-full [&:has([role=checkbox])]:justify-center!',
 					{
 						'hover:text-foreground cursor-pointer gap-x-2': columnDef.enableSorting,
 						'cursor-col-resize': getIsResizing(),
@@ -77,10 +77,10 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
 					<HugeiconsIcon
 						icon={currentSortingState}
 						size={14}
-						className='h-[var(--icon-size)] max-w-[var(--icon-size)] min-w-[var(--icon-size)]'
+						className='h-(--icon-size) max-w-(--icon-size) min-w-(--icon-size)'
 					/>
 				)}
-				<Typography as='small' variant='small' className='line-clamp-1 text-left text-inherit'>
+				<Typography as='small' variant='small' className='line-clamp-1 text-left text-xs text-inherit'>
 					{flexRender(columnDef.header, header.getContext())}
 				</Typography>
 			</ContextMenuTrigger>

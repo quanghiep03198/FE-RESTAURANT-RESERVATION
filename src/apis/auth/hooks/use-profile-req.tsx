@@ -3,7 +3,7 @@ import { queryOptions, useQuery } from '@tanstack/react-query'
 import { AxiosError, type AxiosRequestConfig } from 'axios'
 import { useEffect, useMemo, useRef } from 'react'
 import { AuthService } from '../services'
-import useAuth from './use-auth'
+import useAuth from './use-auth-req'
 
 export const PROFILE_QUERY_KEY = 'PROFILE_QUERY_KEY'
 

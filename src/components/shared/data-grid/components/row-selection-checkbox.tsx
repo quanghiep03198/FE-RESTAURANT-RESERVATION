@@ -1,9 +1,9 @@
-import { CheckedState } from '@radix-ui/react-checkbox'
-import { CellContext, HeaderContext, RowSelectionState, TableState } from '@tanstack/react-table'
+import type { CellContext, HeaderContext, RowSelectionState, TableState } from '@tanstack/react-table'
 import { useUpdate } from 'ahooks'
 import { pick } from 'lodash-es'
 import React, { useEffect } from 'react'
-import { Checkbox } from '../../@core/checkbox'
+
+import { Checkbox, type CheckedState } from '@/components/ui/checkbox'
 import { useTableContext } from '../context/table.context'
 
 type IndeterminateCheckboxProps = HeaderContext<any, unknown> & React.ComponentProps<typeof Checkbox>
@@ -23,7 +23,8 @@ export const IndeterminateCheckbox: React.FC<IndeterminateCheckboxProps> = ({ ta
 	const handleCheckedChange = (checked: CheckedState) => {
 		table.toggleAllRowsSelected(Boolean(checked))
 		if (typeof checked === 'boolean') event$.emit(pick(table.getState(), ['rowSelection']))
-		if (typeof onCheckedChange === 'function') onCheckedChange(checked)
+		if (typeof onCheckedChange === 'function' && typeof checked === 'boolean')
+			onCheckedChange(checked, { reason: 'none' })
 	}
 
 	return (
@@ -54,9 +55,22 @@ export const RowSelectionCheckbox: React.FC<RowSelectionCheckboxProps> = ({ row,
 		if (typeof value.rowSelection === 'object') rerender()
 	})
 
-	const handleCheckedChange = (checked: CheckedState) => {
+	const handleCheckedChange = (checked: boolean) => {
 		row.toggleSelected(Boolean(checked))
-		if (typeof onCheckedChange === 'function') onCheckedChange(checked)
+		if (typeof onCheckedChange === 'function')
+			onCheckedChange(checked, {
+				reason: 'none',
+				event: undefined,
+				cancel: function (): void {
+					throw new Error('Function not implemented.')
+				},
+				allowPropagation: function (): void {
+					throw new Error('Function not implemented.')
+				},
+				isCanceled: false,
+				isPropagationAllowed: false,
+				trigger: undefined
+			})
 	}
 
 	return <Checkbox disabled={disabled} checked={row.getIsSelected()} onCheckedChange={handleCheckedChange} />

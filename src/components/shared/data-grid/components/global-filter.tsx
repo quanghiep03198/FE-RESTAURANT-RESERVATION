@@ -1,13 +1,12 @@
 import { cn } from '@/common/utils/cn'
-import { type Table } from '@tanstack/react-table'
-import { pick } from 'lodash-es'
-
 import { DebouncedInput } from '@/components/customs/debounced-input'
 import { Tooltip } from '@/components/customs/tooltip'
 import { buttonVariants } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { SearchIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { type Table } from '@tanstack/react-table'
+import { pick } from 'lodash-es'
 import { useTableContext } from '../context/table.context'
 
 type GlobalFilterPopoverProps = {

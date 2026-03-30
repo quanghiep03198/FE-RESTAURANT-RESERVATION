@@ -1,6 +1,5 @@
-import { type Row } from '@tanstack/react-table'
-
 import { Typography } from '@/components/ui/typography'
+import { type Row } from '@tanstack/react-table'
 import { memo } from 'react'
 import { useTableContext } from '../context/table.context'
 

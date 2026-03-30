@@ -1,4 +1,4 @@
-import useAuth from '@/apis/auth/hooks/use-auth'
+import useAuth from '@/apis/auth/hooks/use-auth-req'
 import {
 	Sidebar,
 	SidebarContent,
@@ -48,7 +48,7 @@ const AppSidebar: React.FC = () => {
 					<img src='/logo.png' className='max-w-16 object-contain' />
 					<div>
 						<Typography variant='h4' className='leading-none'>
-							Bếp Việt
+							Toque Blanche
 						</Typography>
 						<Typography variant='small' color='muted' className='text-xs'>
 							Hệ thống quản lý Đặt bàn

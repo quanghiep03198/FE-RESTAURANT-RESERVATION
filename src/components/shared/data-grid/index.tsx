@@ -17,16 +17,16 @@ import {
 	type SortingState
 } from '@tanstack/react-table'
 import { useDeepCompareEffect, useEventEmitter, useResetState } from 'ahooks'
-import { memo, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import isEqual from 'react-fast-compare'
 import tw from 'tailwind-styled-components'
-import { create, StoreApi } from 'zustand'
+import { create, type StoreApi } from 'zustand'
 import { MemoizedTableRowCount, TableRowCount } from './components/row-count'
 import DataTable from './components/table'
 import DataTablePagination from './components/table-pagination'
 import TableToolbar from './components/table-toolbar'
 import { ROW_ACTIONS_COLUMN_ID, ROW_EXPANSION_COLUMN_ID, ROW_SELECTION_COLUMN_ID } from './constants'
-import { TableContext, TableContextStore } from './context/table.context'
+import { TableContextProvider, type TableContextStore } from './context/table.context'
 import { type DataTableProps } from './types'
 import { fuzzyFilter } from './utils/fuzzy-filter.util'
 import { fuzzySort } from './utils/fuzzy-sort.util'
@@ -38,7 +38,7 @@ import { dateRangeFilter } from './utils/in-date-range-filter.util'
  * @param {DataTableProps<object>} props - DataTableProps
  * @returns {JSX.Element} A React component that renders a data grid with various features and customization options.
  */
-const DataGrid: React.FC<DataTableProps> = ({
+export const DataGrid: React.FC<DataTableProps> = ({
 	data,
 	caption,
 	columns,
@@ -69,7 +69,7 @@ const DataGrid: React.FC<DataTableProps> = ({
 	columnFilters,
 	globalFilter,
 	virtualizerOptions,
-	border = 'all',
+	border = 'bottom-only',
 	onGlobalFilterChange,
 	onColumnFiltersChange,
 	renderSubComponent,
@@ -264,10 +264,12 @@ const DataGrid: React.FC<DataTableProps> = ({
 			}
 		}))
 
+	console.log('store.current', store.current)
+
 	const { isResizingColumn } = table.getState().columnSizingInfo
 
 	return (
-		<TableContext.Provider value={store.current}>
+		<TableContextProvider value={store.current}>
 			<DataTableWrapper data-border={border}>
 				<TableToolbar {...{ ...toolbarProps, table }} />
 				<DataTable
@@ -305,17 +307,15 @@ const DataGrid: React.FC<DataTableProps> = ({
 					/>
 				</FooterGroup>
 			</DataTableWrapper>
-		</TableContext.Provider>
+		</TableContextProvider>
 	)
 }
 
 const DataTableWrapper = tw.div`
 	group/data-grid-wrapper space-y-2 max-w-full w-full overflow-x-hidden
-	[&[data-border=bottom-only]_tr[data-role=data-grid-row]_td]:!border-x-0 
-	[&[data-border=bottom-only]_tr[data-role=data-grid-row]_td]:!shadow-none
-	[&[data-border=bottom-only]_tr[data-role=data-grid-row]_th]:!border-x-0
-	[&[data-border=bottom-only]_tr[data-role=data-grid-row]_th]:!shadow-none
+	[&[data-border=bottom-only]_tr[data-role=data-grid-row]_td]:border-x-0!
+	[&[data-border=bottom-only]_tr[data-role=data-grid-row]_td]:shadow-none!
+	[&[data-border=bottom-only]_tr[data-role=data-grid-row]_th]:border-x-0!
+	[&[data-border=bottom-only]_tr[data-role=data-grid-row]_th]:shadow-none!
 `
 const FooterGroup = tw.div`flex items-center justify-between`
-
-export default memo(DataGrid)

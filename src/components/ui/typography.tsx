@@ -20,7 +20,7 @@ export const typographyVariants = cva('font-sans', {
 			p: 'leading-7',
 			code: 'leading-7 font-mono',
 			blockquote: 'mt-6 border-l-2 pl-6 italic',
-			small: 'text-sm leading-snug'
+			small: 'text-xs leading-snug'
 		},
 		color: {
 			default: 'text-[inherit]',

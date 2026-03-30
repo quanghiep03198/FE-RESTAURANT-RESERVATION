@@ -1,9 +1,9 @@
 import { cn } from '@/common/utils/cn'
-import { Collapsible, CollapsibleContent, Div } from '@/components/ui'
+import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
+import { TableCell, TableRow } from '@/components/ui/table'
 import { flexRender, type Row } from '@tanstack/react-table'
 import { useMemoizedFn } from 'ahooks'
 import { Fragment, memo } from 'react'
-import { TableCell, TableRow } from '../../@core/table'
 import { useTableContext } from '../context/table.context'
 import { getStickyOffsetPosition } from '../utils/table.util'
 import { type TableBodyProps } from './table-body'
@@ -30,7 +30,7 @@ const VirtualTableRow: React.FC<VirtualTableRowProps> = ({ row, isScrolling, ind
 				data-role='data-grid-row'
 				aria-selected={isSelected}
 				aria-expanded={isExpanded}
-				className={cn('group h-[var(--row-height,40px)]', isScrolling && 'will-change-scroll')}>
+				className={cn('group h-(--row-height,40px)', isScrolling && 'will-change-scroll')}>
 				{row.getVisibleCells().map((cell) => {
 					return (
 						<TableCell
@@ -43,9 +43,11 @@ const VirtualTableRow: React.FC<VirtualTableRowProps> = ({ row, isScrolling, ind
 								...computeStickyOffsetPosition(cell.column)
 							}}
 							{...cell.column.columnDef?.meta?.tableCellProps}>
-							<Div align={cell.column.columnDef.meta?.align} className='line-clamp-1'>
+							<div
+								{...({ align: cell.column.columnDef.meta?.align } as React.ComponentProps<'div'>)}
+								className='line-clamp-1'>
 								{flexRender(cell.column.columnDef.cell, cell.getContext())}
-							</Div>
+							</div>
 						</TableCell>
 					)
 				})}
@@ -58,8 +60,8 @@ const VirtualTableRow: React.FC<VirtualTableRowProps> = ({ row, isScrolling, ind
 						aria-expanded={isExpanded}
 						className='border-none p-0 aria-expanded:border-b aria-expanded:shadow-[inset_0_0px_4px_#17171725]'>
 						<Collapsible open={isExpanded}>
-							<CollapsibleContent className='group/detail sticky left-0 w-[100cqw] overflow-auto bg-secondary/50 [scrollbar-gutter:stable]'>
-								<Div className='p-3'>{renderSubComponent({ table, row })}</Div>
+							<CollapsibleContent className='group/detail bg-secondary/50 sticky left-0 w-[100cqw] overflow-auto [scrollbar-gutter:stable]'>
+								<div className='p-3'>{renderSubComponent({ table, row })}</div>
 							</CollapsibleContent>
 						</Collapsible>
 					</TableCell>

@@ -1,5 +1,7 @@
-import { Combobox, ComboboxProps, DropdownSelect, DropdownSelectProps, Input, type InputProps } from '@/components/ui'
-import { CellContext } from '@tanstack/react-table'
+import { DropdownSelect, type DropdownSelectProps } from '@/components/customs/dropdown-select'
+import { Combobox } from '@/components/ui/combobox'
+import { Input, type InputProps } from '@/components/ui/input'
+import type { CellContext } from '@tanstack/react-table'
 import React, { Fragment, useEffect, useState } from 'react'
 import { DEFAULT_ESTIMATE_SIZE } from '../constants'
 
@@ -50,7 +52,7 @@ const CellEditor: React.FC<CellEditorProps> = ({
 				<Input
 					role='textbox'
 					placeholder={cellEditorProps.placeholder ?? 'Type ...'}
-					className='focus-within:ring-offset-transparen h-full rounded-none p-0 px-4 py-0 outline-none ring-0 focus-within:ring-0'
+					className='focus-within:ring-offset-transparen h-full rounded-none p-0 px-4 py-0 ring-0 outline-none focus-within:ring-0'
 					onChange={(e) => {
 						setValue(e.target.value)
 						table.options.meta?.updateRow(row.index, column.id, value)

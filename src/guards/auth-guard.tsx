@@ -1,5 +1,5 @@
-import useAuth from '@/apis/auth/hooks/use-auth'
-import { useGetUserProfileQuery } from '@/apis/auth/hooks/use-profile'
+import useAuth from '@/apis/auth/hooks/use-auth-req'
+import { useGetUserProfileQuery } from '@/apis/auth/hooks/use-profile-req'
 import { AuthService } from '@/apis/auth/services'
 import { Spinner } from '@/components/ui/spinner'
 import { Typography } from '@/components/ui/typography'

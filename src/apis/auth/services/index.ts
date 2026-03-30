@@ -1,9 +1,10 @@
 import { useAuthStore } from '@/apis/auth/stores'
+import type { IUser } from '@/apis/user/types'
 import { axiosInstance } from '@/configs/axios.config'
 import { queryClient } from '@/providers/query-client-provider'
 import type { AxiosError, AxiosRequestConfig } from 'axios'
 import type { TLoginFormValues } from '../schemas/login.schema'
-import type { IUser, TLoginResponse } from '../types'
+import type { TLoginResponse } from '../types'
 
 export class AuthService {
 	public static async login(payload: TLoginFormValues) {

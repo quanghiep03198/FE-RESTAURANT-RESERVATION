@@ -1,4 +1,4 @@
-import useAuth from '@/apis/auth/hooks/use-auth'
+import useAuth from '@/apis/auth/hooks/use-auth-req'
 import { loginSchema, type TLoginFormValues } from '@/apis/auth/schemas/login.schema'
 import { AuthService } from '@/apis/auth/services'
 import { Button } from '@/components/ui/button'

@@ -1,4 +1,4 @@
-import useAuth from '@/apis/auth/hooks/use-auth'
+import useAuth from '@/apis/auth/hooks/use-auth-req'
 import NotFoundPage from '@/components/exceptions/not-found'
 import type { QueryClient } from '@tanstack/react-query'
 import { RouterProvider as BrowserRouterProvider, createRouter, type RouterProps } from '@tanstack/react-router'

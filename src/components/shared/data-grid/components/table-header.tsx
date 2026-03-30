@@ -1,6 +1,7 @@
 import { cn } from '@/common/utils/cn'
-import { Div, TableHead, TableHeader, TableRow } from '@/components/ui'
-import { RowData, type HeaderGroup } from '@tanstack/react-table'
+
+import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { type HeaderGroup, type RowData } from '@tanstack/react-table'
 import { useMemoizedFn, useUpdate } from 'ahooks'
 import { Fragment, memo } from 'react'
 import { useTableContext } from '../context/table.context'
@@ -23,7 +24,7 @@ const DataTableHeader: React.FC = () => {
 	})
 
 	return (
-		<TableHeader className='sticky top-0 z-20 bg-background'>
+		<TableHeader className='bg-background sticky top-0 z-20'>
 			{table.getHeaderGroups().map((headerGroup) => {
 				return (
 					<Fragment key={headerGroup.id}>
@@ -45,7 +46,7 @@ const TableHeaderRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({ heade
 	const computeStickyOffsetPosition = useMemoizedFn(getStickyOffsetPosition)
 
 	return (
-		<TableRow data-role='data-grid-row' className='h-[var(--header-row-height,40px)] divide-x [&_th]:border-x-0'>
+		<TableRow data-role='data-grid-row' className='h-(--header-row-height,40px) divide-x [&_th]:border-x-0'>
 			{headerGroup.headers.map((header) => {
 				const rowSpan = header.column.columnDef.meta?.rowSpan
 				if (!header.isPlaceholder && rowSpan !== undefined && header.id === header.column.id) {
@@ -58,7 +59,7 @@ const TableHeaderRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({ heade
 						key={header.id}
 						colSpan={header.colSpan}
 						rowSpan={rowSpan}
-						className={cn('group relative z-50 border-x-0 bg-table-head p-0')}
+						className={cn('group bg-table-head relative z-50 border-x-0 p-0')}
 						align={header.column.columnDef.meta?.align}
 						ref={(node) => columnSizingHandler(node, table, header.column)}
 						style={{
@@ -83,8 +84,10 @@ const TableHeaderFilterRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({
 	const { filterOpen } = useTableContext('filterOpen')
 	const computeStickyOffsetPosition = useMemoizedFn(getStickyOffsetPosition)
 
+	console.log('filterOpen', filterOpen)
+
 	return (
-		<TableRow data-role='data-grid-row' className='max-h-[var(--header-row-height,40px)]'>
+		<TableRow data-role='data-grid-row' className='max-h-(--header-row-height,36px)'>
 			{headerGroup.headers.map((header) => {
 				if (header.column.columns.length === 0)
 					return (
@@ -100,15 +103,13 @@ const TableHeaderFilterRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({
 								width: `var(--header-${header?.id}-size)`,
 								maxHeight: 'var(--header-row-height)'
 							}}>
-							<Div
+							<div
 								data-state={filterOpen ? 'open' : 'closed'}
-								className={
-									'overflow-hidden transition-height duration-200 transition-allow-discrete data-[state=closed]:h-0 data-[state=open]:h-[var(--header-row-height)]'
-								}>
-								<Div className='h-[var(--header-row-height)]'>
+								className='overflow-hidden transition-all transition-discrete duration-200 data-[state=closed]:h-0! data-[state=open]:h-(--header-row-height)'>
+								<div className='h-(--header-row-height)'>
 									<TableColumnFilter column={header.column} />
-								</Div>
-							</Div>
+								</div>
+							</div>
 						</TableHead>
 					)
 			})}

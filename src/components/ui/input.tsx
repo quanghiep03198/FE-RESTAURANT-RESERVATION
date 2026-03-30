@@ -3,7 +3,9 @@ import * as React from 'react'
 
 import { cn } from '@/common/utils/cn'
 
-function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
+export type InputProps = React.ComponentProps<typeof InputPrimitive>
+
+function Input({ className, type, ...props }: InputProps) {
 	return (
 		<InputPrimitive
 			type={type}

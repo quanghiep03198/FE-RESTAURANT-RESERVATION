@@ -1,18 +1,16 @@
-import { type PaginationState, type Table } from '@tanstack/react-table'
-import { type AxiosRequestConfig } from 'axios'
-import React, { memo, useEffect } from 'react'
-import isEqual from 'react-fast-compare'
-
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-
 import { Tooltip } from '@/components/customs/tooltip'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Typography } from '@/components/ui/typography'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { type PaginationState, type Table } from '@tanstack/react-table'
+import { type AxiosRequestConfig } from 'axios'
+import React, { memo, useEffect } from 'react'
+import isEqual from 'react-fast-compare'
 import { type PaginationBaseProps } from '../types'
 
 export type DataTablePaginationProps = {

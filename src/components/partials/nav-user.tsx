@@ -1,4 +1,4 @@
-import useAuth from '@/apis/auth/hooks/use-auth'
+import useAuth from '@/apis/auth/hooks/use-auth-req'
 import { BadgeCheck, ChevronRight, Logout02Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
