@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
 			devtools(),
 			tsconfigPaths({ projects: ['./tsconfig.json'] }),
 			tailwindcss(),
-			tanstackRouter({ target: 'react' }),
+			tanstackRouter({ target: 'react', autoCodeSplitting: true }),
 			viteReact()
 		],
 		build: {

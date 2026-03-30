@@ -7,7 +7,7 @@ import AuthGuard from '@/guards/auth-guard'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import tw from 'tailwind-styled-components'
 
-export const Route = createFileRoute('/_layout')({
+export const Route = createFileRoute('/_private-layout')({
 	component: RouteComponent,
 	pendingComponent: Loading,
 	beforeLoad: ({ context: { isAuthenticated } }) => {

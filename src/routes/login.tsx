@@ -1,5 +1,6 @@
 import useAuth from '@/apis/auth/hooks/use-auth'
 import { LoginForm } from '@/components/_login/login-form'
+import { Typography } from '@/components/ui/typography'
 import { createFileRoute, Navigate, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/login')({
@@ -21,7 +22,16 @@ function RouteComponent() {
 
 	return (
 		<div className='bg-muted flex min-h-screen items-center justify-center p-4'>
-			<LoginForm />
+			<div className='mx-auto w-full max-w-lg space-y-6'>
+				<div className='text-center'>
+					<img src='/logo.png' alt='logo' className='mx-auto max-w-44' />
+					<Typography variant='h3' className='mb-1'>
+						Bếp Việt
+					</Typography>
+					<Typography color='muted'>Hệ thống quản lý đặt bàn</Typography>
+				</div>
+				<LoginForm />
+			</div>
 		</div>
 	)
 }

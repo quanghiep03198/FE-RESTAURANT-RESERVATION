@@ -1,7 +1,7 @@
 import { PageDescription, PageHeader, PageTitle } from '@/components/partials/app-page'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_layout/analytics')({
+export const Route = createFileRoute('/_private-layout/analytics')({
 	component: RouteComponent
 })
 

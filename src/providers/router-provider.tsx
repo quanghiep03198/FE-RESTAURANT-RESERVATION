@@ -2,7 +2,7 @@ import useAuth from '@/apis/auth/hooks/use-auth'
 import NotFoundPage from '@/components/exceptions/not-found'
 import type { QueryClient } from '@tanstack/react-query'
 import { RouterProvider as BrowserRouterProvider, createRouter, type RouterProps } from '@tanstack/react-router'
-import { routeTree } from '../routeTree.gen'
+import { routeTree } from '../route-tree.gen'
 import { queryClient } from './query-client-provider'
 
 type CreateRouterOptions = FirstParameter<typeof createRouter>

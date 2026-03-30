@@ -34,6 +34,12 @@ export class AuthService {
 	}
 
 	public static async refreshToken(signal: AbortSignal) {
-		return await axiosInstance.get<void, ResponseBody<{ accessToken: string }>>('/auth/refresh', { signal })
+		const {
+			metadata: { accessToken }
+		} = await axiosInstance.get<void, ResponseBody<{ accessToken: string }>>('/auth/refresh', { signal })
+
+		useAuthStore.getState().setAccessToken(accessToken)
+
+		return accessToken
 	}
 }

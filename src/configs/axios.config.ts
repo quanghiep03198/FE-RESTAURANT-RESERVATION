@@ -100,10 +100,9 @@ export class AxiosClient {
 
 					try {
 						if (!credentials?.user_name) throw new UnauthorizedError('Xác thực thất bại')
-						const { metadata } = await AuthService.refreshToken(abortController.signal)
-
-						if (!metadata?.accessToken) throw new AxiosError('Cannot get access token')
-						this.processQueue(null, metadata.accessToken)
+						const accessToken = await AuthService.refreshToken(abortController.signal)
+						if (!accessToken) throw new AxiosError('Cannot get access token')
+						this.processQueue(null, accessToken)
 						const response = await this.instance(originalRequest)
 						originalRequest.retry = true
 						return response

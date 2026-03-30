@@ -11,7 +11,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate, useRouter } from '@tanstack/react-router'
 import { useRef } from 'react'
 import { toast } from 'sonner'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
+import { Card, CardContent, CardFooter } from '../ui/card'
 import { Spinner } from '../ui/spinner'
 
 export function LoginForm() {
@@ -48,16 +48,15 @@ export function LoginForm() {
 
 	return (
 		<form
-			className='w-full max-w-md'
 			onSubmit={(e) => {
 				e.preventDefault()
 				form.handleSubmit()
 			}}>
 			<Card>
-				<CardHeader>
-					<CardTitle className='text-center capitalize'>Chào mừng trở lại</CardTitle>
+				{/* <CardHeader>
+					<CardTitle className='text-center text-xl capitalize'>Chào mừng trở lại</CardTitle>
 					<CardDescription className='text-center'>Nhập tài khoản và mật khẩu để truy cập</CardDescription>
-				</CardHeader>
+				</CardHeader> */}
 				<CardContent>
 					<FieldGroup>
 						<form.Field

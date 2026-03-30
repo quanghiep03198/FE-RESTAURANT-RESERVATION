@@ -1,5 +1,5 @@
 import type { TUserRoleCode } from '@/apis/auth/types'
-import type { FileRouteTypes } from '@/routeTree.gen'
+import type { FileRouteTypes } from '@/route-tree.gen'
 import { Appointment01Icon, Dish02Icon, Invoice01Icon, LayoutGrid } from '@hugeicons/core-free-icons'
 import type { IconSvgElement } from '@hugeicons/react'
 
@@ -25,7 +25,7 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 			authorizedRoles: ['OWNER', 'MANAGER', 'CASHIER', 'WAITER']
 		},
 		{
-			title: 'Quản lý Menu',
+			title: 'Quản lý thực đơn',
 			icon: Dish02Icon,
 			items: [
 				{
