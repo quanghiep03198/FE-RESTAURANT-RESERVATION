@@ -1,10 +1,9 @@
-import { Redo } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { useRouter } from '@tanstack/react-router'
 import { HttpStatusCode } from 'axios'
 import ScrollShadow from '../customs/scroll-shadow'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
+import { Icon } from '../ui/icon'
 import { Separator } from '../ui/separator'
 import { Typography } from '../ui/typography'
 
@@ -56,7 +55,7 @@ export const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
 				</Dialog>
 				<div className='mt-6'>
 					<Button onClick={() => resetError()}>
-						<HugeiconsIcon icon={Redo} />
+						<Icon name={'Redo'} />
 						Thử lại
 					</Button>
 				</div>

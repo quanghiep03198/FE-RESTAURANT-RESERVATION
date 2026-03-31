@@ -1,9 +1,8 @@
 import { useGetUserListQuery } from '@/apis/user/hooks/use-user-request'
 import useMediaQuery from '@/hooks/use-media-query'
-import { Reload } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { Tooltip } from '../customs/tooltip'
 import { Button, type ButtonProps } from '../ui/button'
+import { Icon } from '../ui/icon'
 
 const UserTableRefreshButton: React.FC<ButtonProps> = (props) => {
 	const isMobile = useMediaQuery('(max-width: 767px')
@@ -20,10 +19,11 @@ const UserTableRefreshButton: React.FC<ButtonProps> = (props) => {
 						size={isMobile ? 'icon' : 'default'}
 						onClick={() => refetch()}
 						{...props}>
-						<HugeiconsIcon icon={Reload} /> {!isMobile && 'Tải lại'}
+						<Icon name='RefreshCcw' /> {!isMobile && 'Tải lại'}
 					</Button>
 				)
-			}}></Tooltip>
+			}}
+		/>
 	)
 }
 

@@ -20,7 +20,7 @@ export default function useAuth() {
 					return [...accumulator, ...currentQuery.queryKey.filter((key) => !!key)]
 				else return accumulator
 			}, [])
-			queryClient.cancelQueries({ queryKey: cancelledQueryKeys })
+			queryClient.cancelQueries({ queryKey: cancelledQueryKeys, exact: false })
 			return toast.loading('Đang xử lý ...')
 		},
 		onSettled: (_data, _error, _variable, context) => {
@@ -29,7 +29,7 @@ export default function useAuth() {
 		}
 	})
 
-	const isAuthenticated = !isNil(authStore?.accessToken)
+	const isAuthenticated = !isNil(authStore?.user) && !isNil(authStore?.accessToken)
 
 	return { ...authStore, isAuthenticated, logout }
 }

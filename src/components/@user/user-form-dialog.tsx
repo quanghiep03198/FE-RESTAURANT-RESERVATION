@@ -1,4 +1,4 @@
-import { useGetRolesQuery } from '@/apis/user/hooks/use-role-reqUEST'
+import { useGetRolesQuery } from '@/apis/user/hooks/use-role-request'
 import { useCreateOrUpdateUserMutataion } from '@/apis/user/hooks/use-user-request'
 import { createUserSchema, type TCreateUserSchema } from '@/apis/user/schemas/create-user.schema'
 import { updateUserSchema, type TUpdateUserSchema } from '@/apis/user/schemas/update-user.schema'
@@ -7,7 +7,7 @@ import { usePageContext } from '@/contexts/@user'
 import { useForm } from '@tanstack/react-form'
 import React, { useMemo, useRef, useState } from 'react'
 import { Button } from '../ui/button'
-import { Dialog, DialogContent } from '../ui/dialog'
+import { Dialog, DialogClose, DialogContent } from '../ui/dialog'
 import {
 	Field,
 	FieldDescription,
@@ -27,7 +27,7 @@ const DEFAULT_FORM_VALUES = Object.freeze({
 	phone: '',
 	full_name: '',
 	email: '',
-	role: null
+	role: ''
 })
 
 const UserFormDialog: React.FC = () => {
@@ -75,8 +75,16 @@ const UserFormDialog: React.FC = () => {
 	}, [roles])
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogContent className='w-'>
+		<Dialog
+			open={open}
+			onOpenChange={setOpen}
+			onOpenChangeComplete={(open) => {
+				if (!open) {
+					form.reset()
+					setAction(null)
+				}
+			}}>
+			<DialogContent className='@container max-w-2xl'>
 				<form onSubmit={handleSubmit} className='space-y-6'>
 					<FieldGroup>
 						<FieldSet>
@@ -84,13 +92,13 @@ const UserFormDialog: React.FC = () => {
 							<FieldDescription>
 								Người dùng sẽ sử dụng thông tin này để đăng nhập vào tài khoản.
 							</FieldDescription>
-							<FieldGroup>
+							<FieldGroup className='xxl:grid-cols-2 grid grid-cols-1'>
 								<form.Field
 									name='user_name'
 									children={(field) => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
-											<Field>
+											<Field className='col-span-1 @7xl:col-span-2'>
 												<FieldLabel>Tài khoản</FieldLabel>
 												<Input
 													id={field.name}
@@ -112,7 +120,7 @@ const UserFormDialog: React.FC = () => {
 									children={(field) => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
-											<Field>
+											<Field className='xxl:col-span-1 col-span-2'>
 												<FieldLabel>Mật khẩu</FieldLabel>
 												<Input
 													id={field.name}
@@ -135,7 +143,7 @@ const UserFormDialog: React.FC = () => {
 									children={(field) => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
-											<Field orientation='responsive' data-invalid={isInvalid}>
+											<Field data-invalid={isInvalid} className='col-span-2'>
 												<FieldLabel>Vai trò</FieldLabel>
 												<Select
 													name={field.name}
@@ -173,13 +181,13 @@ const UserFormDialog: React.FC = () => {
 						<FieldSet>
 							<FieldLegend>Thông tin cá nhân</FieldLegend>
 							<FieldDescription>Thông tin liên hệ của người dùng hiển thị trên ứng dụng</FieldDescription>
-							<FieldGroup>
+							<FieldGroup className='xxl:grid-cols-2! grid grid-cols-1'>
 								<form.Field
 									name='full_name'
 									children={(field) => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
-											<Field>
+											<Field className='col-span-2'>
 												<FieldLabel>Họ tên</FieldLabel>
 												<Input
 													id={field.name}
@@ -189,7 +197,7 @@ const UserFormDialog: React.FC = () => {
 													onChange={(e) => field.handleChange(e.target.value)}
 													aria-invalid={isInvalid}
 													type='text'
-													placeholder='example@gmail.com'
+													placeholder='Nguyễn Văn A'
 													autoComplete='off'
 												/>
 												{isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -202,7 +210,7 @@ const UserFormDialog: React.FC = () => {
 									children={(field) => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
-											<Field>
+											<Field className='xxl:col-span-1 col-span-2'>
 												<FieldLabel>Email</FieldLabel>
 												<Input
 													id={field.name}
@@ -224,7 +232,7 @@ const UserFormDialog: React.FC = () => {
 									children={(field) => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
-											<Field>
+											<Field className='xxl:col-span-1 col-span-2'>
 												<FieldLabel>Số điện thoại</FieldLabel>
 												<Input
 													id={field.name}
@@ -246,9 +254,13 @@ const UserFormDialog: React.FC = () => {
 					</FieldGroup>
 					<Field orientation='horizontal' className='justify-end'>
 						<Button type='submit'>Xác nhận</Button>
-						<Button type='button' variant='outline'>
-							Hủy
-						</Button>
+						<DialogClose
+							render={
+								<Button type='button' variant='outline'>
+									Hủy
+								</Button>
+							}
+						/>
 					</Field>
 				</form>
 			</DialogContent>

@@ -1,7 +1,6 @@
 import { Tooltip } from '@/components/customs/tooltip'
+import { Icon } from '@/components/ui/icon'
 import { Toggle } from '@/components/ui/toggle'
-import { FilterIcon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { useTableContext } from '../context/table.context'
 
 const ColumnFilterToggle: React.FC = () => {
@@ -19,7 +18,7 @@ const ColumnFilterToggle: React.FC = () => {
 						onPressedChange={(pressed) => {
 							setFilterOpen(pressed)
 						}}>
-						<HugeiconsIcon icon={FilterIcon} />
+						<Icon name='Funnel' />
 					</Toggle>
 				)
 			}}

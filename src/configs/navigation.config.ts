@@ -1,10 +1,9 @@
-import type { TUserRoleCode } from '@/apis/auth/types'
+import type { TUserRoleCode } from '@/apis/user/types'
+import type { IconProps } from '@/components/ui/icon'
 import type { FileRouteTypes } from '@/route-tree.gen'
-import { Appointment01Icon, Dish02Icon, Invoice01Icon, LayoutGrid } from '@hugeicons/core-free-icons'
-import type { IconSvgElement } from '@hugeicons/react'
 
 export type TNavigationConfig = {
-	icon?: IconSvgElement
+	icon?: IconProps['name']
 	title: string
 	url?: FileRouteTypes['to']
 	items?: Omit<TNavigationConfig, 'icon'>[]
@@ -15,18 +14,18 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 		{
 			title: 'Sơ đồ chỗ ngồi',
 			url: '/floor-plan',
-			icon: LayoutGrid,
+			icon: 'LayoutGrid',
 			authorizedRoles: '*'
 		},
 		{
 			title: 'Đặt bàn',
 			url: '/reservations',
-			icon: Appointment01Icon,
+			icon: 'CalendarCheck',
 			authorizedRoles: ['OWNER', 'MANAGER', 'CASHIER', 'WAITER']
 		},
 		{
 			title: 'Quản lý thực đơn',
-			icon: Dish02Icon,
+			icon: 'UtensilsCrossed',
 			items: [
 				{
 					title: 'Danh mục món',
@@ -48,7 +47,7 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 		{
 			title: 'Hóa đơn',
 			url: '/invoices',
-			icon: Invoice01Icon,
+			icon: 'Receipt',
 			authorizedRoles: ['OWNER', 'MANAGER', 'CASHIER']
 		}
 	],
@@ -56,7 +55,7 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 		{
 			title: 'Quản lý nhân viên',
 			url: '/users',
-			icon: Appointment01Icon,
+			icon: 'Users',
 			authorizedRoles: ['OWNER', 'MANAGER']
 		}
 	]

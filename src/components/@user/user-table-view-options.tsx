@@ -1,6 +1,4 @@
 import useMediaQuery from '@/hooks/use-media-query'
-import { LayoutTwoColumnIcon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { type Table } from '@tanstack/react-table'
 import { Tooltip } from '../customs/tooltip'
 import { Button } from '../ui/button'
@@ -12,6 +10,7 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger
 } from '../ui/dropdown-menu'
+import { Icon } from '../ui/icon'
 
 export function UserTableViewOptions<TData>({ table }: { table: Table<TData> }) {
 	const isMobile = useMediaQuery('(max-width: 768px)')
@@ -22,7 +21,7 @@ export function UserTableViewOptions<TData>({ table }: { table: Table<TData> }) 
 				<DropdownMenuTrigger
 					render={
 						<Button variant={isMobile ? 'ghost' : 'outline'} size={isMobile ? 'icon' : 'default'}>
-							<HugeiconsIcon icon={LayoutTwoColumnIcon} />
+							<Icon name='Columns2' />
 							{!isMobile && 'Thiết lập cột'}
 						</Button>
 					}

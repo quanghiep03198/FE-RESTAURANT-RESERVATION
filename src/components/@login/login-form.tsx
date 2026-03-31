@@ -1,34 +1,37 @@
 import useAuth from '@/apis/auth/hooks/use-auth-request'
+import { getUserProfileQuery } from '@/apis/auth/hooks/use-profile-request'
 import { loginSchema, type TLoginFormValues } from '@/apis/auth/schemas/login.schema'
 import { AuthService } from '@/apis/auth/services'
 import { Button } from '@/components/ui/button'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { Login02Icon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { useForm } from '@tanstack/react-form'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useRouter } from '@tanstack/react-router'
 import { useRef } from 'react'
 import { toast } from 'sonner'
 import { Card, CardContent, CardFooter } from '../ui/card'
+import { Icon } from '../ui/icon'
 import { Spinner } from '../ui/spinner'
 
 export function LoginForm() {
-	const { setAccessToken } = useAuth()
+	const { accessToken, setAccessToken, setProfile } = useAuth()
 	const loginToastRef = useRef<string | number | null>(null)
 	const navigate = useNavigate()
 	const router = useRouter()
+	const queryClient = useQueryClient()
 
 	const { mutateAsync, isPending } = useMutation({
 		mutationFn: async (payload: TLoginFormValues) => await AuthService.login(payload),
 		onMutate: () => {
 			loginToastRef.current = toast.loading('Đang xử lý ...')
 		},
-		onSuccess: (data) => {
+		onSuccess: async (data) => {
 			setAccessToken(data.metadata.access_token)
 			toast.success('Đăng nhập thành công !', { id: loginToastRef.current })
-			navigate({ to: '/' })
+			const { metadata } = await queryClient.fetchQuery(getUserProfileQuery(!!accessToken))
+			setProfile(metadata)
+			router.invalidate({ filter: (d) => d.pathname === '/login' }).then(() => navigate({ to: '/floor-plan' }))
 		},
 		onError: () => {
 			toast.error('Đăng nhập thất bại', { id: loginToastRef.current })
@@ -52,10 +55,6 @@ export function LoginForm() {
 				form.handleSubmit()
 			}}>
 			<Card>
-				{/* <CardHeader>
-					<CardTitle className='text-center text-xl capitalize'>Chào mừng trở lại</CardTitle>
-					<CardDescription className='text-center'>Nhập tài khoản và mật khẩu để truy cập</CardDescription>
-				</CardHeader> */}
 				<CardContent>
 					<FieldGroup>
 						<form.Field
@@ -106,7 +105,7 @@ export function LoginForm() {
 				<CardFooter>
 					<Field orientation='horizontal'>
 						<Button type='submit' className='w-full' size='lg' disabled={isPending}>
-							{isPending ? <Spinner /> : <HugeiconsIcon icon={Login02Icon} strokeWidth={2} size={16} />}
+							{isPending ? <Spinner /> : <Icon name='LogIn' />}
 							Đăng nhập
 						</Button>
 					</Field>

@@ -1,6 +1,4 @@
 import type { IUser } from '@/apis/user/types'
-import { Search } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import type { Table } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
@@ -19,7 +17,7 @@ const UserGlobalFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
 	return (
 		<InputGroup className='basis-full @5xl:basis-1/4'>
 			<InputGroupAddon>
-				<HugeiconsIcon icon={Search} />
+				<Icon name='Search' />
 			</InputGroupAddon>
 			<InputGroupInput
 				value={value}

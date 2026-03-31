@@ -1,10 +1,9 @@
-import { cn } from '@/common/utils/cn'
-import { Calendar01Icon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
+import { cn } from '@/common/libs/utils'
 import { addMonths, format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { Button } from './button'
 import { Calendar } from './calendar'
+import { Icon } from './icon'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 export type DateRangePickerProps = {
@@ -28,7 +27,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 							!calendarProps?.selected && 'text-muted-foreground',
 							triggerProps?.className
 						)}>
-						<HugeiconsIcon icon={Calendar01Icon} className='mr-2 h-4 w-4' />
+						<Icon name='Calendar' className='mr-2 h-4 w-4' />
 						{calendarProps?.selected?.from ? (
 							calendarProps?.selected.to ? (
 								<>

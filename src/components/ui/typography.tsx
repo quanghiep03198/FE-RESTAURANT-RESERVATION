@@ -1,4 +1,4 @@
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { useRef } from 'react'
 
@@ -20,7 +20,7 @@ export const typographyVariants = cva('font-sans', {
 			p: 'leading-7',
 			code: 'leading-7 font-mono',
 			blockquote: 'mt-6 border-l-2 pl-6 italic',
-			small: 'text-xs leading-snug'
+			small: 'text-sm leading-snug'
 		},
 		color: {
 			default: 'text-[inherit]',

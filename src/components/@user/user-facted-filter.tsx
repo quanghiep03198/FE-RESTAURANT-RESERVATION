@@ -1,9 +1,7 @@
 import type { IUser, TUserRoleCode } from '@/apis/user/types'
-import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
-
-import { cn } from '@/common/utils/cn'
-import { Check, CirclePlus, X } from '@hugeicons/core-free-icons'
+import { cn } from '@/common/libs/utils'
 import { type Column } from '@tanstack/react-table'
+import { CheckIcon } from 'lucide-react'
 import { Fragment } from 'react'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
@@ -16,10 +14,9 @@ import {
 	CommandList,
 	CommandSeparator
 } from '../ui/command'
+import { Icon, type IconProps } from '../ui/icon'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Separator } from '../ui/separator'
-
-type UserPropertyValue = IUser[keyof IUser]
 
 export interface IDataTableFacetedFilterProps {
 	column?: Column<IUser, TUserRoleCode>
@@ -27,7 +24,7 @@ export interface IDataTableFacetedFilterProps {
 	options: {
 		label: string
 		value: TUserRoleCode
-		icon?: IconSvgElement
+		icon?: IconProps['name']
 	}[]
 }
 
@@ -40,7 +37,7 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 			<PopoverTrigger
 				render={
 					<Button variant='outline' className='border-dashed'>
-						<HugeiconsIcon icon={CirclePlus} />
+						<Icon name='CircleFadingPlus' />
 						{title}
 						{selectedValues?.size > 0 && (
 							<div className='inline-flex items-center gap-x-2'>
@@ -80,7 +77,7 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 								return (
 									<CommandItem
 										key={option.value}
-										className='[&>:last-child]:hidden'
+										className='*:last:hidden'
 										onSelect={() => {
 											if (isSelected) selectedValues.delete(option.value)
 											else selectedValues.add(option.value)
@@ -94,11 +91,9 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 												'aria-current:border-primary aria-current:bg-primary aria-current:text-primary-foreground aria-current:[&_svg]:visible',
 												'border-input [&_svg]:invisible'
 											)}>
-											<HugeiconsIcon icon={Check} className='text-muted-foreground size-3 stroke-3' />
+											<CheckIcon className='text-muted-foreground stroke-primary-foreground size-3 stroke-3' />
 										</div>
-										{option.icon && (
-											<HugeiconsIcon icon={option.icon} className='text-muted-foreground size-4' />
-										)}
+										{option.icon && <Icon name={option.icon} className='text-muted-foreground size-4' />}
 										<span>{option.label}</span>
 										{facets?.get(option.value) && (
 											<span className='text-muted-foreground ml-auto size-4 font-mono text-xs'>
@@ -116,7 +111,7 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 									<CommandItem
 										onSelect={() => column?.setFilterValue(undefined)}
 										className='flex items-center justify-center text-center *:last:hidden'>
-										<HugeiconsIcon icon={X} />
+										<Icon name='X' />
 										Bỏ lọc
 									</CommandItem>
 								</CommandGroup>

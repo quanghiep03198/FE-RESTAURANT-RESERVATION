@@ -6,12 +6,12 @@ export const createUserSchema = object({
 		3,
 		'Tên đăng nhập phải có tối thiểu 3 ký tự'
 	),
+	password: string({ message: 'Mật khẩu không được để trống' }).min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
 	full_name: string({ message: 'Họ tên không được để trống' }).min(1, 'Họ và tên không được để trống'),
 	phone: string({ message: 'Số điện thoại không được để trống' }).refine((value) => PHONE_REGEX.test(value), {
 		message: 'Số điện thoại không hợp lệ'
 	}),
 	email: string({ message: 'Email không được để trống' }).email({ message: 'Email không hợp lệ' }),
-	password: string({ message: 'Mật khẩu không được để trống' }).min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
 	role_id: string({ message: 'Vai trò không được để trống' }).transform((value) => +value)
 })
 

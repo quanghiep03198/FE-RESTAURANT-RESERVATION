@@ -1,9 +1,5 @@
-import type { IUser } from '@/apis/user/types'
-
 import { useGetUserListQuery } from '@/apis/user/hooks/use-user-request'
-import { RecordStatus } from '@/common/constants/enums'
-import { CircleCheck, CircleLockMinusIcon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
+import type { IUser } from '@/apis/user/types'
 import { createColumnHelper } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { useMemo } from 'react'
@@ -12,6 +8,7 @@ import TableCellText from '../shared/data-grid/components/table-cell-text'
 import { ROW_ACTIONS_COLUMN_ID } from '../shared/data-grid/constants'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'
+import { Icon, type IconProps } from '../ui/icon'
 import { Typography } from '../ui/typography'
 import RoleBadge from './role-badge'
 import UserActionDropdown from './user-action-dropdown'
@@ -69,22 +66,23 @@ const UserTable: React.FC = () => {
 				cell: ({ getValue }) => {
 					const value = getValue()
 
-					const badgeValuesMap = new Map<RecordStatus, { icon: IconSvgElement; text: string }>([
-						[RecordStatus.ACTIVE, { icon: CircleCheck, text: 'Đang hoạt động' }],
-						[RecordStatus.INACTIVE, { icon: CircleLockMinusIcon, text: 'Tạm khóa' }]
-					])
+					console.log('value', value)
 
-					const isActive = value === RecordStatus.ACTIVE
+					const badgeHelper: {
+						icon: 'CircleCheckBig' | 'Lock'
+						text: string
+					} = value ? { icon: 'CircleCheckBig', text: 'Đang hoạt động' } : { icon: 'Lock', text: 'Tạm khóa' }
+
 					return (
 						<Badge
 							variant='outline'
-							aria-current={isActive}
 							className='justify-center gap-x-2 rounded-l-full rounded-r-full whitespace-nowrap'>
-							<HugeiconsIcon
-								icon={badgeValuesMap.get(value)?.icon}
+							<Icon
+								aria-current={value}
+								name={badgeHelper?.icon as IconProps['name']}
 								className='stroke-muted-foreground aria-current:stroke-success'
 							/>
-							{badgeValuesMap.get(value)?.text}
+							{badgeHelper?.text}
 						</Badge>
 					)
 				},
@@ -102,7 +100,6 @@ const UserTable: React.FC = () => {
 				cell: UserActionDropdown
 			})
 		],
-
 		[]
 	)
 

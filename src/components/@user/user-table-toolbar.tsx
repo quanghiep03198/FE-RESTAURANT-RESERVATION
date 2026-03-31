@@ -1,14 +1,13 @@
-import { useGetRolesQuery } from '@/apis/user/hooks/use-role-reqUEST'
+import { useGetRolesQuery } from '@/apis/user/hooks/use-role-request'
 import type { IUser, TUserRoleCode } from '@/apis/user/types'
 import useMediaQuery from '@/hooks/use-media-query'
-import { FilterRemoveIcon, User, UserCheck, UserStar } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import type { Column, Table } from '@tanstack/react-table'
 import type { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { useMemo } from 'react'
 import tw from 'tailwind-styled-components'
 import { Tooltip } from '../customs/tooltip'
 import { Button } from '../ui/button'
+import { Icon } from '../ui/icon'
 import { DataTableFacetedFilter, type IDataTableFacetedFilterProps } from './user-facted-filter'
 import UserGlobalFilter from './user-global-filter'
 import UserStatusFilter from './user-status-filter'
@@ -23,14 +22,14 @@ const UserTableToolbar: React.FC<{
 	const isFiltered = table.getState().columnFilters.length > 0 || table.getState().globalFilter
 	const { data } = useGetRolesQuery()
 
-	const getRoleIcon = (code: string) => {
+	const getRoleIcon = (code: TUserRoleCode) => {
 		switch (code) {
 			case 'OWNER':
-				return UserStar
+				return 'UserStar'
 			case 'MANAGER':
-				return UserCheck
+				return 'UserCheck'
 			default:
-				return User
+				return 'User'
 		}
 	}
 
@@ -70,7 +69,7 @@ const UserTableToolbar: React.FC<{
 										table.resetGlobalFilter()
 										table.resetColumnFilters()
 									}}>
-									{!isMobile && 'Bỏ lọc'} <HugeiconsIcon icon={FilterRemoveIcon} />
+									{!isMobile && 'Bỏ lọc'} <Icon name='FunnelX' />
 								</Button>
 							)
 						}}

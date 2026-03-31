@@ -1,10 +1,9 @@
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Check, ChevronDoubleCloseIcon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { uniqueId } from 'lodash-es'
 import React, { useId, useMemo, useRef, useState } from 'react'
 import tw from 'tailwind-styled-components'
+import { Icon } from '../ui/icon'
 import { Spinner } from '../ui/spinner'
 import { Typography } from '../ui/typography'
 import { DebouncedInput } from './debounced-input'
@@ -80,7 +79,7 @@ function AutoComplete<D extends object>(props: AutoCompleteProps<D>) {
 					autoComplete='off'
 					placeholder={placeholder}
 					className={cn(
-						'peer focus-within:!border-primary aria-[invalid=true]:border-destructive aria-[invalid=true]:focus-within:border-destructive rounded-md py-1 pr-9 pl-3 text-sm shadow-sm transition-colors duration-200',
+						'peer focus-within:border-primary! aria-invalid:border-destructive aria-invalid:focus-within:border-destructive rounded-md py-1 pr-9 pl-3 text-sm shadow-sm transition-colors duration-200',
 						className
 					)}
 					style={{
@@ -95,8 +94,8 @@ function AutoComplete<D extends object>(props: AutoCompleteProps<D>) {
 					{...inputProps}
 				/>
 
-				<HugeiconsIcon
-					icon={ChevronDoubleCloseIcon}
+				<Icon
+					name='ChevronsUpDown'
 					className='absolute top-1/2 right-3 ml-auto h-4 w-4 -translate-y-1/2 rotate-90 opacity-50 peer-data-[icon=false]:hidden'
 				/>
 			</PopoverTrigger>
@@ -118,8 +117,8 @@ function AutoComplete<D extends object>(props: AutoCompleteProps<D>) {
 								<Typography variant='small' className='line-clamp-1 flex-1'>
 									{String(item[labelField])}
 								</Typography>
-								<HugeiconsIcon
-									icon={Check}
+								<Icon
+									name='Check'
 									className={cn(
 										'ml-auto transition-opacity duration-200',
 										currentValue === item[valueField] ? 'opacity-100' : 'opacity-0'

@@ -24,12 +24,12 @@ const AuthGuard: React.FC<React.PropsWithChildren> = ({ children }) => {
 	if (isLoading)
 		return (
 			<Fragment>
-				<title>Authenticating ...</title>
+				<title>Đang xác thực ...</title>
 
 				<div className='relative inset-0 z-50 flex h-screen w-full items-center justify-center gap-x-2 antialiased'>
 					<Spinner />
 					<Typography variant='small' className='font-medium tracking-wide'>
-						Authenticating
+						Đang xác thực ...
 					</Typography>
 				</div>
 			</Fragment>

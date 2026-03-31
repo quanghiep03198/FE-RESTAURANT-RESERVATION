@@ -12,6 +12,7 @@ import {
 import { PageContextProvider } from '@/contexts/@user'
 
 import { createFileRoute } from '@tanstack/react-router'
+import { ErrorBoundary } from 'react-error-boundary'
 
 export const Route = createFileRoute('/_private-layout/users')({
 	component: RouteComponent
@@ -35,7 +36,9 @@ function RouteComponent() {
 						</PageAction>
 					</PageHeader>
 					<PageSeparator />
-					<UserTable />
+					<ErrorBoundary fallbackRender={({ error }) => <>{error}</>}>
+						<UserTable />
+					</ErrorBoundary>
 					<UserFormDialog />
 				</PageWrapper>
 			</PageContextProvider>

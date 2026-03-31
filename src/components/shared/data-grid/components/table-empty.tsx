@@ -1,6 +1,5 @@
+import { Icon } from '@/components/ui/icon'
 import { TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { DatabaseIcon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import React from 'react'
 import { useTableContext } from '../context/table.context'
 
@@ -17,7 +16,7 @@ const DataTableEmpty: React.FC = () => {
 			<TableRow>
 				<TableCell colSpan={table.getAllColumns().length} className='p-0'>
 					<div className='text-muted-foreground sticky top-0 left-0 flex w-[100cqw] items-center justify-center gap-x-2'>
-						<HugeiconsIcon icon={DatabaseIcon} />
+						<Icon name='Database' />
 						No data
 					</div>
 				</TableCell>

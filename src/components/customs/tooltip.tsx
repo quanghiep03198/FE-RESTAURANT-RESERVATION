@@ -1,4 +1,4 @@
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 import React from 'react'
 import { TooltipContent, TooltipProvider, TooltipTrigger, Tooltip as TooltipWrapper } from '../ui/tooltip'
 

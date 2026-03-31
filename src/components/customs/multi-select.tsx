@@ -1,8 +1,6 @@
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 import useScrollToFn from '@/hooks/use-scroll-fn'
 import useVirtualScrollPadding from '@/hooks/use-virtual-scroll-padding'
-import { Check, ChevronDoubleCloseIcon, CircleX } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useClickAway, useDeepCompareEffect } from 'ahooks'
 import { CommandLoading } from 'cmdk'
@@ -20,6 +18,7 @@ import {
 	CommandSeparator
 } from '../ui/command'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card'
+import { Icon } from '../ui/icon'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Separator } from '../ui/separator'
 import { Spinner } from '../ui/spinner'
@@ -245,14 +244,14 @@ export function MultiSelect<D extends SelectItem>({
 				onClick={() => setIsPopoverOpen(!isPopoverOpen)}
 				className={cn(
 					buttonVariants({ variant: 'outline' }),
-					'bg-background !scrollbar-none aria-[invalid=true]:!border-destructive grid w-full grid-cols-[1fr_auto] items-center overflow-hidden px-3 py-0 hover:bg-inherit [&_svg]:pointer-events-auto',
+					'bg-background scrollbar-none! aria-invalid:border-destructive! grid w-full grid-cols-[1fr_auto] items-center overflow-hidden px-3 py-0 hover:bg-inherit [&_svg]:pointer-events-auto',
 					classNames?.popoverTrigger
 				)}>
 				{Array.isArray(datalist) && Array.isArray(selectedValues) && selectedValues?.length > 0 ? (
 					<>
 						<ScrollShadow
 							orientation='horizontal'
-							className='!scrollbar-none flex items-center gap-x-1 overflow-x-auto overflow-y-hidden'>
+							className='scrollbar-none! flex items-center gap-x-1 overflow-x-auto overflow-y-hidden'>
 							{Array.isArray(selectedValues) &&
 								selectedValues.slice(0, maxCount).map((value) => {
 									const option = datalist.find((item) => item?.[valueField] === value)
@@ -264,7 +263,7 @@ export function MultiSelect<D extends SelectItem>({
 												title={String(option?.[labelField])}>
 												{String(option?.[labelField])}
 											</Typography>
-											<HugeiconsIcon icon={CircleX} />
+											<Icon name='CircleX' />
 										</Badge>
 									)
 								})}
@@ -301,8 +300,8 @@ export function MultiSelect<D extends SelectItem>({
 							)}
 						</ScrollShadow>
 						<div className='bg-background flex items-center justify-end gap-x-2'>
-							<HugeiconsIcon
-								icon={CircleX}
+							<Icon
+								name={'CircleX'}
 								className='text-muted-foreground size-3.5 cursor-pointer'
 								onClick={(event) => {
 									event.stopPropagation()
@@ -310,10 +309,7 @@ export function MultiSelect<D extends SelectItem>({
 								}}
 							/>
 							<Separator orientation='vertical' className='flex h-full min-h-4' />
-							<HugeiconsIcon
-								icon={ChevronDoubleCloseIcon}
-								className='text-muted-foreground size-4 rotate-90 cursor-pointer'
-							/>
+							<Icon name='ChevronsUpDown' className='text-muted-foreground size-4 rotate-90 cursor-pointer' />
 						</div>
 					</>
 				) : (
@@ -321,8 +317,8 @@ export function MultiSelect<D extends SelectItem>({
 						<Typography variant='small' className='text-muted-foreground block text-left text-sm font-normal'>
 							{placeholder}
 						</Typography>
-						<HugeiconsIcon
-							icon={ChevronDoubleCloseIcon}
+						<Icon
+							name='ChevronsUpDown'
 							className='text-muted-foreground ml-auto size-4 rotate-90 cursor-pointer'
 						/>
 					</>
@@ -330,7 +326,7 @@ export function MultiSelect<D extends SelectItem>({
 			</PopoverTrigger>
 			<PopoverContent
 				ref={popoverContentRef}
-				className={cn('w-[var(--radix-popover-trigger-width)] p-0', classNames?.popoverContent)}
+				className={cn('w-(--radix-popover-trigger-width) p-0', classNames?.popoverContent)}
 				align='start'>
 				<Command
 					shouldFilter={shouldFilter}
@@ -377,7 +373,7 @@ export function MultiSelect<D extends SelectItem>({
 														? 'bg-primary text-primary-foreground'
 														: 'opacity-50 [&_svg]:invisible'
 												)}>
-												<HugeiconsIcon icon={Check} className='size-3!' />
+												<Icon name='Check' className='size-3!' />
 											</div>
 											<Typography variant='small'>(Chọn tất cả)</Typography>
 										</CommandItem>
@@ -438,7 +434,7 @@ function Checkbox({ checked }: { checked: boolean }) {
 				'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border transition-all duration-100',
 				checked ? 'bg-primary text-primary-foreground' : 'opacity-50 [&_svg]:invisible'
 			)}>
-			<HugeiconsIcon icon={Check} className='!size-3' />
+			<Icon name='Check' className='size-3!' />
 		</div>
 	)
 }

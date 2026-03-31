@@ -1,12 +1,11 @@
 import { Tooltip } from '@/components/customs/tooltip'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { Icon } from '@/components/ui/icon'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Typography } from '@/components/ui/typography'
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { type PaginationState, type Table } from '@tanstack/react-table'
 import { type AxiosRequestConfig } from 'axios'
 import React, { memo, useEffect } from 'react'
@@ -134,7 +133,7 @@ const TablePagination: React.FC<DataTablePaginationProps> = ({
 								size='icon'
 								onClick={goToFirstPage}
 								onPointerEnter={() => handlePrefetch({ limit: pageSize, page: 1 })}>
-								<HugeiconsIcon icon={ChevronsLeft} />
+								<Icon name='ChevronsLeft' />
 							</Button>
 						)
 					}}
@@ -154,7 +153,7 @@ const TablePagination: React.FC<DataTablePaginationProps> = ({
 								onPointerEnter={() => {
 									if (canPreviousPage) handlePrefetch({ limit: pageSize, page: pageIndex - 1 })
 								}}>
-								<HugeiconsIcon icon={ChevronLeft} />
+								<Icon name='ChevronLeft' />
 							</Button>
 						)
 					}}
@@ -174,7 +173,7 @@ const TablePagination: React.FC<DataTablePaginationProps> = ({
 								onPointerEnter={() => {
 									if (canNextPage) handlePrefetch({ limit: pageSize, page: pageIndex + 1 })
 								}}>
-								<HugeiconsIcon icon={ChevronRight} />
+								<Icon name='ChevronRight' />
 							</Button>
 						)
 					}}
@@ -192,7 +191,7 @@ const TablePagination: React.FC<DataTablePaginationProps> = ({
 								size='icon'
 								onClick={goToLastPage}
 								onPointerEnter={() => handlePrefetch({ limit: pageSize, page: pageCount })}>
-								<HugeiconsIcon icon={ChevronsRight} />
+								<Icon name='ChevronsRight' />
 							</Button>
 						)
 					}}

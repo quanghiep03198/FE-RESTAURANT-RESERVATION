@@ -1,8 +1,7 @@
-import { ArrowLeft } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { useRouter } from '@tanstack/react-router'
 import { HttpStatusCode } from 'axios'
 import { Button } from '../ui/button'
+import { Icon } from '../ui/icon'
 import { Separator } from '../ui/separator'
 import { Typography } from '../ui/typography'
 
@@ -23,7 +22,7 @@ export default function NotFoundPage() {
 					Trang không tồn tại. Vui lòng kiểm tra lại đường dẫn.
 				</Typography>
 				<Button variant='link' onClick={() => router.history.back()} className='p-0'>
-					<HugeiconsIcon icon={ArrowLeft} />
+					<Icon name={'ArrowLeft'} />
 					Quay lại
 				</Button>
 			</div>

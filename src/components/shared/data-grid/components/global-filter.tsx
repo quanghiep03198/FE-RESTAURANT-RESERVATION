@@ -1,10 +1,9 @@
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 import { DebouncedInput } from '@/components/customs/debounced-input'
 import { Tooltip } from '@/components/customs/tooltip'
 import { buttonVariants } from '@/components/ui/button'
+import { Icon } from '@/components/ui/icon'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { SearchIcon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { type Table } from '@tanstack/react-table'
 import { pick } from 'lodash-es'
 import { useTableContext } from '../context/table.context'
@@ -30,14 +29,14 @@ export const GlobalFilterPopover: React.FC<GlobalFilterPopoverProps> = ({
 				triggerProps={{
 					render: (
 						<PopoverTrigger className={cn(buttonVariants({ variant: 'outline', size: 'icon' }))}>
-							<HugeiconsIcon icon={SearchIcon} />
+							<Icon name='Search' />
 						</PopoverTrigger>
 					)
 				}}
 			/>
 
 			<PopoverContent align='end' side='left' sideOffset={4} className='relative w-64 p-0'>
-				<HugeiconsIcon icon={SearchIcon} className='absolute top-1/2 left-2 -translate-y-1/2' />
+				<Icon name={'Search'} className='absolute top-1/2 left-2 -translate-y-1/2' />
 				<DebouncedInput
 					value={globalFilter}
 					onChange={(value) => {

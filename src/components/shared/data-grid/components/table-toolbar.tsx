@@ -1,8 +1,7 @@
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 import { Tooltip } from '@/components/customs/tooltip'
 import { Button } from '@/components/ui/button'
-import { FilterResetIcon, HorizontalResizeIcon, PinOff } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
+import { Icon } from '@/components/ui/icon'
 import { type Table } from '@tanstack/react-table'
 import { useMemoizedFn } from 'ahooks'
 import { pick } from 'lodash-es'
@@ -56,7 +55,7 @@ const TableToolbar: React.FC<ToolbarProps> = (props) => {
 									event$.emit(pick(table.getState(), ['columnPinning']))
 								}}
 								className={cn(!isSomeColumnsPinned && 'hidden')}>
-								<HugeiconsIcon icon={PinOff} />
+								<Icon name={'PinOff'} />
 							</Button>
 						)
 					}}
@@ -70,7 +69,7 @@ const TableToolbar: React.FC<ToolbarProps> = (props) => {
 								size='icon'
 								onClick={() => resetAllFilters()}
 								className={cn(!isFilterDirty && 'hidden')}>
-								<HugeiconsIcon icon={FilterResetIcon} />
+								<Icon name={'FunnelX'} />
 							</Button>
 						)
 					}}
@@ -91,7 +90,7 @@ const TableToolbar: React.FC<ToolbarProps> = (props) => {
 						triggerProps={{
 							render: (
 								<Button variant='outline' size='icon' onClick={() => table.resetColumnSizing()}>
-									<HugeiconsIcon icon={HorizontalResizeIcon} />
+									<Icon name={'FoldHorizontal'} />
 								</Button>
 							)
 						}}></Tooltip>

@@ -1,4 +1,4 @@
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { flexRender, type Row } from '@tanstack/react-table'

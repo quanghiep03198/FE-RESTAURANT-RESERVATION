@@ -43,11 +43,11 @@ export class AuthService {
 
 	public static async refreshToken(signal: AbortSignal) {
 		const {
-			metadata: { accessToken }
-		} = await axiosInstance.get<void, ResponseBody<{ accessToken: string }>>('/auth/refresh', { signal })
+			metadata: { access_token }
+		} = await axiosInstance.get<void, ResponseBody<{ access_token: string }>>('/auth/refresh', { signal })
 
-		useAuthStore.getState().setAccessToken(accessToken)
+		useAuthStore.getState().setAccessToken(access_token)
 
-		return accessToken
+		return access_token
 	}
 }

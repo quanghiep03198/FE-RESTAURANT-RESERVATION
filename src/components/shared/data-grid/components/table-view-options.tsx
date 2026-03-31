@@ -1,4 +1,4 @@
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 import { Tooltip } from '@/components/customs/tooltip'
 import { buttonVariants } from '@/components/ui/button'
 import {
@@ -10,8 +10,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Columns, Undo } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
+import { Icon } from '@/components/ui/icon'
 import { useUpdate } from 'ahooks'
 import { useTableContext } from '../context/table.context'
 
@@ -27,7 +26,7 @@ export const TableViewOptions: React.FC = () => {
 				triggerProps={{
 					render: (
 						<DropdownMenuTrigger className={cn(buttonVariants({ variant: 'outline', size: 'icon' }))}>
-							<HugeiconsIcon icon={Columns} />
+							<Icon name='Columns2' />
 						</DropdownMenuTrigger>
 					)
 				}}></Tooltip>
@@ -58,7 +57,7 @@ export const TableViewOptions: React.FC = () => {
 						table.resetColumnVisibility()
 						rerender()
 					}}>
-					<HugeiconsIcon icon={Undo} />
+					<Icon name='Undo' />
 					Đặt lại
 				</DropdownMenuItem>
 			</DropdownMenuContent>

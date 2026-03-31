@@ -1,5 +1,4 @@
 import { RequestHeaders } from '@/common/constants/enums'
-import { UnauthorizedError } from '@/common/errors'
 
 import { AuthService } from '@/apis/auth/services'
 import axios, { AxiosError, HttpStatusCode, type AxiosInstance } from 'axios'
@@ -50,6 +49,7 @@ export class AxiosClient {
 		this.instance.interceptors.request.use(
 			(config) => {
 				const accessToken = AuthService.getAccessToken()
+				if (!accessToken) return config
 				config.headers[RequestHeaders.AUTHORIZATION] = `Bearer ${accessToken}`
 				return config
 			},
@@ -92,17 +92,14 @@ export class AxiosClient {
 					this.isRefreshingToken = true
 
 					const credentials = AuthService.getCredentials()
-					if (!credentials?.user_name) {
-						AuthService.logout()
+					if (!credentials) {
 						abortController.abort()
-						toast.error('Xác thực thất bại')
+						throw new AxiosError('Missing user credentials')
 					}
 
 					try {
-						if (!credentials?.user_name) throw new UnauthorizedError('Xác thực thất bại')
-						const accessToken = await AuthService.refreshToken(abortController.signal)
+						const accessToken = await AuthService.refreshToken(abortController?.signal)
 						if (!accessToken) throw new AxiosError('Cannot get access token')
-						AuthService.setAccessToken(accessToken)
 						this.processQueue(null, accessToken)
 						const response = await this.instance(originalRequest)
 						originalRequest.retry = true

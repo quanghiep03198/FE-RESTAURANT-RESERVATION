@@ -1,7 +1,7 @@
 import generateAvatar from '@/common/libs/generate-avatar'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import { AxiosError, type AxiosRequestConfig } from 'axios'
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { AuthService } from '../services'
 import useAuth from './use-auth-request'
 
@@ -36,16 +36,14 @@ export const useGetUserProfileQuery = () => {
 		abortControllerRef.current = new AbortController()
 	}
 
-	useEffect(() => {
-		if (!isAuthenticated) {
-			abortControllerRef.current.abort()
-			abortControllerRef.current = null
-		}
-	}, [isAuthenticated])
+	if (!isAuthenticated) {
+		abortControllerRef.current.abort()
+		abortControllerRef.current = null
+	}
 
 	const queryOptions = useMemo(() => {
-		return getUserProfileQuery(isAuthenticated, { signal: abortControllerRef.current.signal })
+		return getUserProfileQuery(isAuthenticated, { signal: abortControllerRef.current?.signal })
 	}, [isAuthenticated, abortControllerRef.current?.signal?.aborted])
 
-	return useQuery(getUserProfileQuery(isAuthenticated, { signal: abortControllerRef.current.signal }))
+	return useQuery(queryOptions)
 }

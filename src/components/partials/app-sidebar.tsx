@@ -13,18 +13,16 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 	SidebarRail,
-	SidebarSeparator,
 	useSidebar
 } from '@/components/ui/sidebar'
 import type { TNavigationConfig } from '@/configs/navigation.config'
 import navigationConfig from '@/configs/navigation.config'
 import useMediaQuery from '@/hooks/use-media-query'
-import { ChevronRight, LockIcon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { Link, useRouterState } from '@tanstack/react-router'
 import { Fragment, useEffect, useLayoutEffect, useRef } from 'react'
 import tw from 'tailwind-styled-components'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible'
+import { Icon } from '../ui/icon'
 import { Typography } from '../ui/typography'
 import NavUser from './nav-user'
 
@@ -56,7 +54,7 @@ const AppSidebar: React.FC = () => {
 					</div>
 				</div>
 			</SidebarHeader>
-			<SidebarContent>
+			<SidebarContent className='overflow-x-hidden'>
 				<SidebarGroup>
 					<SidebarGroupLabel>Menu chính</SidebarGroupLabel>
 					<SidebarMenu role='menu' aria-label='Main menu'>
@@ -67,6 +65,7 @@ const AppSidebar: React.FC = () => {
 									<CollapsibleTrigger
 										render={
 											<SidebarMenuButton
+												size='default'
 												className='[&[aria-expanded=true]_svg:last-child]:rotate-90'
 												aria-disabled={item.items.every(
 													(subItem) =>
@@ -77,13 +76,13 @@ const AppSidebar: React.FC = () => {
 													if (isMobile) return
 													setOpen(true)
 												}}>
-												{item.icon && <HugeiconsIcon icon={item.icon} />}
+												{item.icon && <Icon name={item.icon} />}
 												<SidebarMenuTitle>{item.title}</SidebarMenuTitle>
-												<HugeiconsIcon icon={ChevronRight} className='ml-auto' />
+												<Icon name='ChevronRight' className='ml-auto' />
 											</SidebarMenuButton>
 										}
 									/>
-									<CollapsibleContent className='!scrollbar-none data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down w-full overflow-auto transition-none'>
+									<CollapsibleContent className='scrollbar-none! data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down w-full overflow-auto transition-none'>
 										<SidebarMenuSub>
 											{item.items?.map((subItem, subIndex) => (
 												<SidebarMenuSubLink key={`${index + 1}.${subIndex + 1}`} {...subItem} />
@@ -97,7 +96,7 @@ const AppSidebar: React.FC = () => {
 				</SidebarGroup>
 				{user?.role?.code === 'OWNER' && (
 					<Fragment>
-						<SidebarSeparator />
+						{/* <SidebarSeparator className='max-w-full' /> */}
 						<SidebarGroup>
 							<SidebarGroupLabel>Quản lý</SidebarGroupLabel>
 							<SidebarMenu role='menu' aria-label='Administration'>
@@ -144,7 +143,7 @@ const SidebarMenuLink: React.FC<NavLinkProps> = ({ url, title, icon, viewTransit
 				if (isMobile) setOpenMobile(!openMobile)
 			}}>
 			<SidebarMenuButton
-				size='sm'
+				size='default'
 				className='group-aria-disabled/menuitem:cursor-not-allowed'
 				tooltip={title}
 				render={
@@ -155,11 +154,9 @@ const SidebarMenuLink: React.FC<NavLinkProps> = ({ url, title, icon, viewTransit
 						activeProps={{
 							className: 'text-primary hover:text-primary bg-primary/10 '
 						}}>
-						<HugeiconsIcon icon={icon} size={18} className='size-4.5' />
+						<Icon name={icon} size={18} />
 						<SidebarMenuTitle>{title}</SidebarMenuTitle>
-						{!isLinkActive && (
-							<HugeiconsIcon icon={LockIcon} size={14} className='stroke-muted-foreground ml-auto size-3.5' />
-						)}
+						{!isLinkActive && <Icon name='Lock' size={14} className='stroke-muted-foreground ml-auto size-3.5' />}
 					</Link>
 				}
 			/>
@@ -210,8 +207,8 @@ const SidebarMenuSubLink: React.FC<Omit<NavLinkProps, 'icon'>> = ({ url, title, 
 				}
 			/>
 			{!isAccessible && (
-				<HugeiconsIcon
-					icon={LockIcon}
+				<Icon
+					name='Lock'
 					size={14}
 					className='stroke-muted-foreground absolute top-1/2 right-0 translate-x-3.5 -translate-y-1/2'
 				/>

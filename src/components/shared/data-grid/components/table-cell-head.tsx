@@ -1,4 +1,4 @@
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 import {
 	ContextMenu,
 	ContextMenuCheckboxItem,
@@ -10,9 +10,8 @@ import {
 	ContextMenuSubTrigger,
 	ContextMenuTrigger
 } from '@/components/ui/context-menu'
+import { Icon, type IconProps } from '@/components/ui/icon'
 import { Typography } from '@/components/ui/typography'
-import { ArrowDown, ArrowUp, ArrowUpDown, EyeOff, Pin, Resize } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
 import { type Header, flexRender } from '@tanstack/react-table'
 import { useUpdate } from 'ahooks'
 import { pick } from 'lodash-es'
@@ -28,14 +27,14 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
 	const rerender = useUpdate()
 	const { table, event$ } = useTableContext('table', 'event$')
 
-	const currentSortingState: IconSvgElement = (() => {
+	const currentSortingState: IconProps['name'] = (() => {
 		switch (getIsSorted()) {
 			case 'asc':
-				return ArrowUp
+				return 'ArrowUp'
 			case 'desc':
-				return ArrowDown
+				return 'ArrowDown'
 			default:
-				return ArrowUpDown
+				return 'ArrowUpDown'
 		}
 	})()
 
@@ -74,13 +73,13 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
 				}}
 				title={headerTitle}>
 				{columnDef.enableSorting && (
-					<HugeiconsIcon
-						icon={currentSortingState}
+					<Icon
+						name={currentSortingState}
 						size={14}
 						className='h-(--icon-size) max-w-(--icon-size) min-w-(--icon-size)'
 					/>
 				)}
-				<Typography as='small' variant='small' className='line-clamp-1 text-left text-xs text-inherit'>
+				<Typography as='small' variant='small' className='line-clamp-1 text-left text-sm text-inherit'>
 					{flexRender(columnDef.header, header.getContext())}
 				</Typography>
 			</ContextMenuTrigger>
@@ -89,14 +88,14 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
 					disabled={!columnDef.enableSorting}
 					className='gap-x-2'
 					onClick={() => header.column.toggleSorting(false)}>
-					<HugeiconsIcon icon={ArrowUp} />
+					<Icon name='ArrowUp' />
 					Sắp xếp tăng dần
 				</ContextMenuItem>
 				<ContextMenuItem
 					disabled={!columnDef.enableSorting}
 					className='gap-x-2'
 					onClick={() => header.column.toggleSorting(true)}>
-					<HugeiconsIcon icon={ArrowDown} />
+					<Icon name='ArrowDown' />
 					Sắp xếp giảm dần
 				</ContextMenuItem>
 				<ContextMenuSeparator />
@@ -105,7 +104,7 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
 						aria-disabled={!header.isPlaceholder && !header.column.columnDef.enablePinning}
 						disabled={!header.isPlaceholder && !header.column.columnDef.enablePinning}
 						className='aria-disabled:text-muted-foreground gap-x-2'>
-						<HugeiconsIcon icon={Pin} />
+						<Icon name='Pin' />
 						Ghim cột
 					</ContextMenuSubTrigger>
 					<ContextMenuSubContent className='w-56'>
@@ -137,10 +136,10 @@ const TableCellHead: React.FC<TableCellHeadProps> = ({ header }) => {
 				</ContextMenuSub>
 				<ContextMenuSeparator className='h-[0.5px]' />
 				<ContextMenuItem className='gap-x-2' onClick={header.column.resetSize}>
-					<HugeiconsIcon icon={Resize} /> Đặt lại kích thước
+					<Icon name='FoldHorizontal' /> Đặt lại kích thước
 				</ContextMenuItem>
 				<ContextMenuItem className='gap-x-2' onClick={header.column.getToggleVisibilityHandler()}>
-					<HugeiconsIcon icon={EyeOff} /> Ẩn cột
+					<Icon name='EyeOff' /> Ẩn cột
 				</ContextMenuItem>
 			</ContextMenuContent>
 		</ContextMenu>

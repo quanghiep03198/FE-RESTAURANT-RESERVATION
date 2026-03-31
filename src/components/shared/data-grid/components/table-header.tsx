@@ -1,4 +1,4 @@
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { type HeaderGroup, type RowData } from '@tanstack/react-table'

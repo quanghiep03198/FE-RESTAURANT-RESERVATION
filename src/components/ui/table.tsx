@@ -1,11 +1,11 @@
 import * as React from 'react'
 
-import { cn } from '@/common/utils/cn'
+import { cn } from '@/common/libs/utils'
 
 const Table: React.FC<React.ComponentProps<'table'>> = ({ className, ...props }) => (
 	<table
 		cellSpacing={0}
-		className={cn('w-full caption-bottom border-separate border-spacing-0 text-xs', className)}
+		className={cn('w-full caption-bottom border-separate border-spacing-0 text-sm', className)}
 		{...props}
 	/>
 )
@@ -65,7 +65,7 @@ const TableCell: React.FC<React.ComponentProps<'td'>> = ({ className, ...props }
 TableCell.displayName = 'TableCell'
 
 const TableCaption: React.FC<React.ComponentProps<'tfoot'>> = ({ className, ...props }) => (
-	<caption className={cn('text-muted-foreground mt-4 text-xs', className)} {...props} />
+	<caption className={cn('text-muted-foreground mt-4 text-sm', className)} {...props} />
 )
 
 TableCaption.displayName = 'TableCaption'

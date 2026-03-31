@@ -1,6 +1,4 @@
 import useAuth from '@/apis/auth/hooks/use-auth-request'
-import { BadgeCheck, ChevronRight, Logout02Icon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {
 	DropdownMenu,
@@ -11,6 +9,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '../ui/dropdown-menu'
+import { Icon } from '../ui/icon'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '../ui/sidebar'
 
 const NavUser: React.FC = () => {
@@ -36,7 +35,7 @@ const NavUser: React.FC = () => {
 							<span className='truncate font-medium'>{user?.full_name}</span>
 							<span className='truncate text-xs'>{user?.email}</span>
 						</div>
-						<HugeiconsIcon icon={ChevronRight} />
+						<Icon name='ChevronsUpDown' />
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
 						className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'
@@ -60,11 +59,11 @@ const NavUser: React.FC = () => {
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
 							<DropdownMenuItem>
-								<HugeiconsIcon icon={BadgeCheck} />
+								<Icon name='BadgeCheck' />
 								Account
 							</DropdownMenuItem>
 							<DropdownMenuItem onClick={() => logout()}>
-								<HugeiconsIcon icon={Logout02Icon} />
+								<Icon name='LogOut' />
 								Log out
 							</DropdownMenuItem>
 						</DropdownMenuGroup>

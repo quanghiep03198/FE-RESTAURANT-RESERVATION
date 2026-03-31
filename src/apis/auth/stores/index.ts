@@ -1,4 +1,4 @@
-import type { IUser } from '@/apis/auth/types'
+import type { IUser } from '@/apis/user/types'
 import { shared } from 'use-broadcast-ts'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
@@ -20,19 +20,11 @@ export const useAuthStore = create(
 				...initialState,
 				setProfile: (profile: IUser) => {
 					const state = get()
-					set({
-						user: {
-							...state.user,
-							...profile
-						}
-					})
+					set({ user: { ...state.user, ...profile } })
 				},
 				setAccessToken: (accessToken) => {
 					const state = get()
-					set({
-						...state,
-						accessToken
-					})
+					set({ ...state, accessToken })
 				},
 				resetCredentials: () => {
 					set(initialState)
