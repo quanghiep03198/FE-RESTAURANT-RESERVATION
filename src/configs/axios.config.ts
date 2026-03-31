@@ -102,6 +102,7 @@ export class AxiosClient {
 						if (!credentials?.user_name) throw new UnauthorizedError('Xác thực thất bại')
 						const accessToken = await AuthService.refreshToken(abortController.signal)
 						if (!accessToken) throw new AxiosError('Cannot get access token')
+						AuthService.setAccessToken(accessToken)
 						this.processQueue(null, accessToken)
 						const response = await this.instance(originalRequest)
 						originalRequest.retry = true

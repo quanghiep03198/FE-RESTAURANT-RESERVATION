@@ -1,4 +1,4 @@
-import { useGetUserListQuery } from '@/apis/user/hooks/use-user-req'
+import { useGetUserListQuery } from '@/apis/user/hooks/use-user-request'
 import useMediaQuery from '@/hooks/use-media-query'
 import { Reload } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'

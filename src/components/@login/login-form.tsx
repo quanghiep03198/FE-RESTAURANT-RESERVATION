@@ -1,4 +1,4 @@
-import useAuth from '@/apis/auth/hooks/use-auth-req'
+import useAuth from '@/apis/auth/hooks/use-auth-request'
 import { loginSchema, type TLoginFormValues } from '@/apis/auth/schemas/login.schema'
 import { AuthService } from '@/apis/auth/services'
 import { Button } from '@/components/ui/button'
@@ -26,7 +26,6 @@ export function LoginForm() {
 			loginToastRef.current = toast.loading('Đang xử lý ...')
 		},
 		onSuccess: (data) => {
-			console.log('data', data)
 			setAccessToken(data.metadata.access_token)
 			toast.success('Đăng nhập thành công !', { id: loginToastRef.current })
 			navigate({ to: '/' })

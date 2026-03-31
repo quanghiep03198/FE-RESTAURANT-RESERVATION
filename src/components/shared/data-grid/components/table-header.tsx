@@ -84,8 +84,6 @@ const TableHeaderFilterRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({
 	const { filterOpen } = useTableContext('filterOpen')
 	const computeStickyOffsetPosition = useMemoizedFn(getStickyOffsetPosition)
 
-	console.log('filterOpen', filterOpen)
-
 	return (
 		<TableRow data-role='data-grid-row' className='max-h-(--header-row-height,36px)'>
 			{headerGroup.headers.map((header) => {

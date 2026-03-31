@@ -1,16 +1,16 @@
 import type { TUserRoleCode } from '@/apis/user/types'
-import { User, UserCog, UserStar } from '@hugeicons/core-free-icons'
+import { User, UserCheck, UserStar } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
 import React from 'react'
 import { Badge } from '../ui/badge'
 
-const RoleBadge: React.FC<{ data: TUserRoleCode }> = ({ data }) => {
+const RoleBadge: React.FC<{ value: TUserRoleCode }> = ({ value }) => {
 	const roleData: { icon: IconSvgElement; name: string } = (() => {
-		switch (data) {
+		switch (value) {
 			case 'OWNER':
-				return { icon: UserCog, name: 'Chủ sở hữu' }
+				return { icon: UserStar, name: 'Chủ sở hữu' }
 			case 'MANAGER':
-				return { icon: UserStar, name: 'Quản lý' }
+				return { icon: UserCheck, name: 'Quản lý' }
 			case 'WAITER':
 				return { icon: User, name: 'Phục vụ' }
 			case 'CASHIER':

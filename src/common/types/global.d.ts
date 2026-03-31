@@ -2,6 +2,7 @@
 /// <reference types="vite/client" />
 
 import type { HttpStatusCode } from 'axios'
+import type { RecordStatus } from '../constants/enums'
 
 export declare global {
 	interface ImportMetaEnv {
@@ -16,7 +17,7 @@ export declare global {
 
 	interface IBaseEntity {
 		id: number
-		is_active: boolean
+		is_active: RecordStatus
 		created_at?: Date
 		updated_at?: Date
 	}

@@ -12,7 +12,7 @@ export default function useAuth() {
 	const queryClient = useQueryClient()
 
 	const { mutateAsync: logout } = useMutation({
-		mutationFn: AuthService.logout,
+		mutationFn: AuthService.revokeToken,
 		onMutate: () => {
 			const queryCache = queryClient.getQueryCache()
 			const cancelledQueryKeys = queryCache.getAll().reduce<QueryKey>((accumulator, currentQuery) => {

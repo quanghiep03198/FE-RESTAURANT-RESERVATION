@@ -1,4 +1,4 @@
-import { PROFILE_QUERY_KEY } from '@/apis/auth/hooks/use-profile-req'
+import { PROFILE_QUERY_KEY } from '@/apis/auth/hooks/use-profile-request'
 import { ErrorBoundaryFallback } from '@/components/exceptions/error-boundar-fallback'
 import AppNavbar from '@/components/partials/app-navbar'
 import AppSidebar from '@/components/partials/app-sidebar'

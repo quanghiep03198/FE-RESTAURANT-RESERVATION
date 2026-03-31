@@ -3,9 +3,9 @@ import { queryOptions, useQuery } from '@tanstack/react-query'
 import { AxiosError, type AxiosRequestConfig } from 'axios'
 import { useEffect, useMemo, useRef } from 'react'
 import { AuthService } from '../services'
-import useAuth from './use-auth-req'
+import useAuth from './use-auth-request'
 
-export const PROFILE_QUERY_KEY = 'PROFILE_QUERY_KEY'
+export const PROFILE_QUERY_KEY = 'PROFILE'
 
 export const getUserProfileQuery = (enabled?: boolean, config?: AxiosRequestConfig) => {
 	const unexpectedErrorCodes = [AxiosError.ERR_NETWORK, AxiosError.ETIMEDOUT, AxiosError.ECONNABORTED]

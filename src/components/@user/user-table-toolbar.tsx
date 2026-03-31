@@ -1,11 +1,11 @@
-import type { Table } from '@tanstack/react-table'
+import { useGetRolesQuery } from '@/apis/user/hooks/use-role-reqUEST'
+import type { IUser, TUserRoleCode } from '@/apis/user/types'
+import useMediaQuery from '@/hooks/use-media-query'
+import { FilterRemoveIcon, User, UserCheck, UserStar } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
+import type { Column, Table } from '@tanstack/react-table'
 import type { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { useMemo } from 'react'
-
-import type { IUser } from '@/apis/user/types'
-import useMediaQuery from '@/hooks/use-media-query'
-import { FilterRemoveIcon, User, UserCog, UserStar } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import tw from 'tailwind-styled-components'
 import { Tooltip } from '../customs/tooltip'
 import { Button } from '../ui/button'
@@ -21,36 +21,29 @@ const UserTableToolbar: React.FC<{
 }> = ({ table }) => {
 	const isMobile = useMediaQuery('(max-width: 767px)')
 	const isFiltered = table.getState().columnFilters.length > 0 || table.getState().globalFilter
+	const { data } = useGetRolesQuery()
+
+	const getRoleIcon = (code: string) => {
+		switch (code) {
+			case 'OWNER':
+				return UserStar
+			case 'MANAGER':
+				return UserCheck
+			default:
+				return User
+		}
+	}
 
 	const roles: IDataTableFacetedFilterProps['options'] = useMemo(
-		() => [
-			{
-				label: 'Chủ sở hữu',
-				value: 'OWNER',
-				icon: UserCog
-			},
-			{
-				label: 'Quản lý',
-				value: 'MANAGER',
-				icon: UserStar
-			},
-			{
-				label: 'Thu ngân',
-				value: 'CASHIER',
-				icon: User
-			},
-			{
-				label: 'Phục vụ',
-				value: 'WAITER',
-				icon: User
-			},
-			{
-				label: 'Nhân viên bếp',
-				value: 'KITCHEN',
-				icon: User
-			}
-		],
-		[]
+		() =>
+			Array.isArray(data)
+				? data.map((role) => ({
+						label: role.name,
+						value: role.code,
+						icon: getRoleIcon(role.code)
+					}))
+				: [],
+		[data]
 	)
 
 	return (
@@ -58,8 +51,12 @@ const UserTableToolbar: React.FC<{
 			<ToolbarGroup className='md:flex-1 md:basis-full'>
 				<UserGlobalFilter table={table} />
 				<UserStatusFilter table={table} />
-				{table.getColumn('roles') && (
-					<DataTableFacetedFilter column={table.getColumn('role')} title='Vai trò' options={roles} />
+				{table.getColumn('role') && (
+					<DataTableFacetedFilter
+						column={table.getColumn('role') as Column<IUser, TUserRoleCode>}
+						title='Vai trò'
+						options={roles}
+					/>
 				)}
 				{isFiltered && (
 					<Tooltip

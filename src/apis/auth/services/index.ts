@@ -22,6 +22,10 @@ export class AuthService {
 		return useAuthStore.getState()?.user
 	}
 
+	public static setAccessToken(accessToken: string) {
+		return useAuthStore.getState().setAccessToken(accessToken)
+	}
+
 	public static getAccessToken() {
 		return useAuthStore.getState()?.accessToken
 	}
@@ -31,7 +35,10 @@ export class AuthService {
 		queryClient.removeQueries({ type: 'all', exact: false }) // * remove all triggered queries
 		queryClient.cancelQueries({ fetchStatus: 'fetching' }) // * cancel all running queries
 		queryClient.clear() // * clear cached queries
-		// return await axiosInstance.post<undefined, ResponseBody<null>>('/auth/logout')
+	}
+
+	public static async revokeToken() {
+		return await axiosInstance.post<undefined, ResponseBody<null>>('/auth/logout')
 	}
 
 	public static async refreshToken(signal: AbortSignal) {

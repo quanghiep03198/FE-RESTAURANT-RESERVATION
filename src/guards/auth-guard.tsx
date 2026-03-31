@@ -1,5 +1,5 @@
-import useAuth from '@/apis/auth/hooks/use-auth-req'
-import { useGetUserProfileQuery } from '@/apis/auth/hooks/use-profile-req'
+import useAuth from '@/apis/auth/hooks/use-auth-request'
+import { useGetUserProfileQuery } from '@/apis/auth/hooks/use-profile-request'
 import { AuthService } from '@/apis/auth/services'
 import { Spinner } from '@/components/ui/spinner'
 import { Typography } from '@/components/ui/typography'
@@ -9,7 +9,6 @@ import { Fragment, useEffect } from 'react'
 const AuthGuard: React.FC<React.PropsWithChildren> = ({ children }) => {
 	const { isAuthenticated, setProfile: setUserProfile } = useAuth()
 	const { data, isLoading, isError } = useGetUserProfileQuery()
-	console.log('data', data)
 
 	const router = useRouter()
 

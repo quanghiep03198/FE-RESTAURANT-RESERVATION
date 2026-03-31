@@ -8,7 +8,6 @@ import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
 
 import { CircleCheck, CircleMinus, CirclePlus, X } from '@hugeicons/core-free-icons'
 import type { Table } from '@tanstack/react-table'
-import { isNil } from 'lodash-es'
 import React, { useMemo } from 'react'
 import { Badge } from '../ui/badge'
 import { buttonVariants } from '../ui/button'
@@ -45,47 +44,43 @@ const UserStatusFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
 				}
 			].map((item: DropdownOption) => ({
 				...item,
-				count: data.filter((user) =>
-					user.is_active ? item.value === RecordStatus.ACTIVE : item.value === RecordStatus.INACTIVE
-				).length
+				count: data.filter((user) => user.is_active === item.value).length
 			})),
 		[data]
 	)
 
 	const handleValueChange = (value: RecordStatus) => {
-		table.getColumn('is_active').setFilterValue(value === RecordStatus.ACTIVE)
-		// setParams({ ...searchParams, status: value as TruckloadDeliveryStatus })
+		table.getColumn('is_active').setFilterValue(value)
 	}
 
 	return (
 		<DropdownMenu modal={false}>
-			<DropdownMenuTrigger className={cn(buttonVariants({ variant: 'outline', className: 'border-dashed' }))}>
-				<HugeiconsIcon icon={CirclePlus} /> Trạng thái
-				{typeof currentFilterValue === 'boolean' && (
-					<div className='inline-flex items-center md:hidden'>
-						<Separator orientation='vertical' className='mx-2 h-4' />{' '}
-						<Badge variant='secondary' className='mx-1 rounded-sm px-1.5 font-normal'>
-							{currentFilterValue ? 'Đang hoạt động' : 'Tạm khóa'}
-						</Badge>
+			<DropdownMenuTrigger
+				render={
+					<div className={cn(buttonVariants({ variant: 'outline', className: 'border-dashed' }))}>
+						<HugeiconsIcon icon={CirclePlus} /> Trạng thái
+						{currentFilterValue && (
+							<div className='inline-flex items-center'>
+								<Separator orientation='vertical' className='mx-2 h-4' />
+								<Badge variant='secondary' className='mx-1 rounded-sm px-1.5 font-normal'>
+									{currentFilterValue === RecordStatus.ACTIVE ? 'Đang hoạt động' : 'Tạm khóa'}
+								</Badge>
+							</div>
+						)}
 					</div>
-				)}
-			</DropdownMenuTrigger>
+				}
+			/>
 			<DropdownMenuContent className='w-64' align='end'>
-				<DropdownMenuRadioGroup
-					value={
-						isNil(currentFilterValue) ? null : currentFilterValue ? RecordStatus.ACTIVE : RecordStatus.INACTIVE
-					}
-					onValueChange={handleValueChange}>
+				<DropdownMenuRadioGroup value={currentFilterValue} onValueChange={handleValueChange}>
 					{dropdownOptions.map((option) => (
 						<DropdownMenuRadioItem key={option.value} value={option.value} className='gap-x-2'>
 							<HugeiconsIcon
 								icon={option.icon}
-								className={cn({
+								className={cn('size-4', {
 									'stroke-success': option.value === RecordStatus.ACTIVE,
 									'stroke-muted-foreground': option.value === RecordStatus.INACTIVE
 								})}
 							/>
-
 							{option.label}
 							<Badge variant='outline' className='ml-auto font-normal'>
 								{option.count}
@@ -95,7 +90,7 @@ const UserStatusFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
 				</DropdownMenuRadioGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
-					disabled={!table.getColumn('is_active')?.getFilterValue()}
+					// disabled={!table.getColumn('is_active')?.getFilterValue()}
 					className='justify-center gap-x-2'
 					onClick={() => table.getColumn('is_active').setFilterValue(null)}>
 					<HugeiconsIcon icon={X} />

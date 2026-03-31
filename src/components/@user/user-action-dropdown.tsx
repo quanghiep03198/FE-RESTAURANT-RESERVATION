@@ -1,17 +1,15 @@
-import { useUpdateUserStatusMutation } from '@/apis/user/hooks/use-user-req'
+import { useUpdateUserStatusMutation } from '@/apis/user/hooks/use-user-request'
 import type { IUser } from '@/apis/user/types'
-import { CommonActions } from '@/common/constants/enums'
-
+import { CommonActions, RecordStatus } from '@/common/constants/enums'
 import { usePageContext } from '@/contexts/@user'
 import { Ellipsis } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import type { CellContext } from '@tanstack/react-table'
-import { pick } from 'lodash-es'
 import { useState } from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Spinner } from '../ui/spinner'
 
-const UserActionDropdown: React.FC<CellContext<IUser, unknown>> = ({ row }) => {
+const UserActionDropdown: React.FC<CellContext<IUser, any>> = ({ row }) => {
 	const { event$ } = usePageContext()
 	const [open, setOpen] = useState<boolean>(false)
 
@@ -20,21 +18,17 @@ const UserActionDropdown: React.FC<CellContext<IUser, unknown>> = ({ row }) => {
 	return (
 		<DropdownMenu open={open || isPending} onOpenChange={setOpen}>
 			<DropdownMenuTrigger className='text-muted-foreground hover:text-foreground transition-colors duration-200 ease-in-out'>
-				<HugeiconsIcon icon={Ellipsis} size={14} />
+				<HugeiconsIcon icon={Ellipsis} className='size-4' />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent side='left' align='start'>
 				<DropdownMenuItem
 					onClick={() =>
 						event$.emit({
 							action: CommonActions.UPDATE,
-							payload: pick(row.original, [
-								'username',
-								'display_name',
-								'email',
-								'employee_code',
-								'roles',
-								'authorized_factory_codes'
-							])
+							payload: {
+								...row.original,
+								role_id: String(row.original.role.id)
+							}
 						})
 					}>
 					Cập nhật
@@ -42,7 +36,11 @@ const UserActionDropdown: React.FC<CellContext<IUser, unknown>> = ({ row }) => {
 				<DropdownMenuItem
 					disabled={isPending}
 					onClick={async () => {
-						await mutateAsync({ id: row.original.id, is_active: !row.original.is_active })
+						await mutateAsync({
+							id: row.original.id,
+							is_active:
+								row.original.is_active === RecordStatus.ACTIVE ? RecordStatus.INACTIVE : RecordStatus.ACTIVE
+						})
 					}}>
 					{isPending && <Spinner />}
 					{row.original.is_active ? 'Tạm khóa' : 'Mở khóa'}

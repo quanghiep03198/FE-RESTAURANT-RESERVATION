@@ -264,8 +264,6 @@ export const DataGrid: React.FC<DataTableProps> = ({
 			}
 		}))
 
-	console.log('store.current', store.current)
-
 	const { isResizingColumn } = table.getState().columnSizingInfo
 
 	return (

@@ -1,8 +1,8 @@
 import type { IUser, TUserRoleCode } from '@/apis/user/types'
-import { cn } from '@/common/utils/cn'
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
 
-import { Check, CirclePlus } from '@hugeicons/core-free-icons'
+import { cn } from '@/common/utils/cn'
+import { Check, CirclePlus, X } from '@hugeicons/core-free-icons'
 import { type Column } from '@tanstack/react-table'
 import { Fragment } from 'react'
 import { Badge } from '../ui/badge'
@@ -22,7 +22,7 @@ import { Separator } from '../ui/separator'
 type UserPropertyValue = IUser[keyof IUser]
 
 export interface IDataTableFacetedFilterProps {
-	column?: Column<IUser, UserPropertyValue>
+	column?: Column<IUser, TUserRoleCode>
 	title?: string
 	options: {
 		label: string
@@ -43,11 +43,8 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 						<HugeiconsIcon icon={CirclePlus} />
 						{title}
 						{selectedValues?.size > 0 && (
-							<div className='inline-flex items-center gap-x-2 md:hidden'>
+							<div className='inline-flex items-center gap-x-2'>
 								<Separator orientation='vertical' className='mx-2 h-4' />
-								<Badge variant='secondary' className='hidden rounded-sm px-1.5 font-normal'>
-									{selectedValues.size}
-								</Badge>
 								<div className='flex gap-1'>
 									{selectedValues.size > 2 ? (
 										<Badge variant='secondary' className='rounded-sm px-1.5 font-normal'>
@@ -83,34 +80,28 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 								return (
 									<CommandItem
 										key={option.value}
+										className='[&>:last-child]:hidden'
 										onSelect={() => {
-											if (isSelected) {
-												selectedValues.delete(option.value)
-											} else {
-												selectedValues.add(option.value)
-											}
+											if (isSelected) selectedValues.delete(option.value)
+											else selectedValues.add(option.value)
 											const filterValues = Array.from(selectedValues)
 											column?.setFilterValue(filterValues.length ? filterValues : undefined)
 										}}>
 										<div
+											aria-current={isSelected}
 											className={cn(
-												'flex size-4 items-center justify-center rounded-lg border',
-												isSelected
-													? 'border-primary bg-primary text-primary-foreground'
-													: 'border-input [&_svg]:invisible'
+												'flex size-4 items-center justify-center rounded border',
+												'aria-current:border-primary aria-current:bg-primary aria-current:text-primary-foreground aria-current:[&_svg]:visible',
+												'border-input [&_svg]:invisible'
 											)}>
-											<HugeiconsIcon icon={Check} />
+											<HugeiconsIcon icon={Check} className='text-muted-foreground size-3 stroke-3' />
 										</div>
 										{option.icon && (
-											<HugeiconsIcon
-												icon={option.icon}
-												size={18}
-												className='text-muted-foreground size-4.5'
-											/>
+											<HugeiconsIcon icon={option.icon} className='text-muted-foreground size-4' />
 										)}
 										<span>{option.label}</span>
 										{facets?.get(option.value) && (
-											<span className='text-muted-foreground ml-auto flex size-4 items-center justify-center font-mono text-xs'>
+											<span className='text-muted-foreground ml-auto size-4 font-mono text-xs'>
 												{facets.get(option.value)}
 											</span>
 										)}
@@ -124,8 +115,9 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 								<CommandGroup>
 									<CommandItem
 										onSelect={() => column?.setFilterValue(undefined)}
-										className='justify-center text-center'>
-										Xóa lọc
+										className='flex items-center justify-center text-center *:last:hidden'>
+										<HugeiconsIcon icon={X} />
+										Bỏ lọc
 									</CommandItem>
 								</CommandGroup>
 							</Fragment>

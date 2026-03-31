@@ -1,4 +1,4 @@
-import useAuth from '@/apis/auth/hooks/use-auth-req'
+import useAuth from '@/apis/auth/hooks/use-auth-request'
 import { LoginForm } from '@/components/@login/login-form'
 import { Typography } from '@/components/ui/typography'
 import { createFileRoute, Navigate, redirect } from '@tanstack/react-router'

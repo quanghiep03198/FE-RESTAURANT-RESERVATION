@@ -1,4 +1,4 @@
-import useAuth from '@/apis/auth/hooks/use-auth-req'
+import useAuth from '@/apis/auth/hooks/use-auth-request'
 import {
 	Sidebar,
 	SidebarContent,

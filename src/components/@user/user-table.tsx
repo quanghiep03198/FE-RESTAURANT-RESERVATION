@@ -1,8 +1,9 @@
 import type { IUser } from '@/apis/user/types'
 
-import { useGetUserListQuery } from '@/apis/user/hooks/use-user-req'
+import { useGetUserListQuery } from '@/apis/user/hooks/use-user-request'
+import { RecordStatus } from '@/common/constants/enums'
 import { CircleCheck, CircleLockMinusIcon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
+import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { useMemo } from 'react'
@@ -46,9 +47,10 @@ const UserTable: React.FC = () => {
 				header: 'Số điện thoại',
 				cell: TableCellText
 			}),
-			columnHelper.accessor('role', {
+			columnHelper.accessor('role.code', {
+				id: 'role',
 				header: 'Vai trò',
-				cell: ({ getValue }) => <RoleBadge data={getValue()} />,
+				cell: ({ getValue }) => <RoleBadge value={getValue()} />,
 				filterFn: 'arrIncludesSome',
 				enableSorting: true,
 				enableColumnFilter: true,
@@ -65,17 +67,24 @@ const UserTable: React.FC = () => {
 				header: 'Trạng thái',
 				enableHiding: true,
 				cell: ({ getValue }) => {
-					const isActive = getValue()
+					const value = getValue()
+
+					const badgeValuesMap = new Map<RecordStatus, { icon: IconSvgElement; text: string }>([
+						[RecordStatus.ACTIVE, { icon: CircleCheck, text: 'Đang hoạt động' }],
+						[RecordStatus.INACTIVE, { icon: CircleLockMinusIcon, text: 'Tạm khóa' }]
+					])
+
+					const isActive = value === RecordStatus.ACTIVE
 					return (
 						<Badge
 							variant='outline'
+							aria-current={isActive}
 							className='justify-center gap-x-2 rounded-l-full rounded-r-full whitespace-nowrap'>
 							<HugeiconsIcon
-								icon={isActive ? CircleCheck : CircleLockMinusIcon}
+								icon={badgeValuesMap.get(value)?.icon}
 								className='stroke-muted-foreground aria-current:stroke-success'
 							/>
-
-							{isActive ? 'Đang hoạt động' : 'Tạm khóa'}
+							{badgeValuesMap.get(value)?.text}
 						</Badge>
 					)
 				},
@@ -105,7 +114,7 @@ const UserTable: React.FC = () => {
 			border='bottom-only'
 			defaultFilterOpen={false}
 			containerProps={{
-				style: { height: 'calc(var(--outlet-wrapper-height) - 12.5rem)' }
+				style: { height: 'calc(var(--outlet-wrapper-height) - 8rem)' }
 			}}
 			virtualizerOptions={{ estimateSize: 48 }}
 			toolbarProps={{

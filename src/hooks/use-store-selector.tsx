@@ -12,7 +12,6 @@ import { useShallow } from 'zustand/react/shallow'
 export const createStoreSelector = <T extends { [K in keyof T]: any }>(context: React.Context<StoreApi<T>>) => {
 	return <K extends keyof T>(...selectors: K[]) => {
 		const store = use(context)
-		console.log('context', context)
 		if (!store) throw new Error('Missing store provider')
 		if (!selectors) return useStore(store)
 		return useStore(

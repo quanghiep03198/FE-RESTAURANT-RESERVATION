@@ -1,3 +1,5 @@
+import CreateUserFormDialogTrigger from '@/components/@user/create-user-dialog-form-trigger'
+import UserFormDialog from '@/components/@user/user-form-dialog'
 import UserTable from '@/components/@user/user-table'
 import {
 	PageAction,
@@ -7,11 +9,8 @@ import {
 	PageTitle,
 	PageWrapper
 } from '@/components/partials/app-page'
-import { Button } from '@/components/ui/button'
 import { PageContextProvider } from '@/contexts/@user'
 
-import { Plus } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_private-layout/users')({
@@ -32,14 +31,12 @@ function RouteComponent() {
 							Quản lý thông tin tài khoản và thiết lập vai trò để kiểm soát quyền truy cập hệ thống.
 						</PageDescription>
 						<PageAction>
-							<Button>
-								<HugeiconsIcon icon={Plus} />
-								Thêm người dùng
-							</Button>
+							<CreateUserFormDialogTrigger />
 						</PageAction>
 					</PageHeader>
 					<PageSeparator />
 					<UserTable />
+					<UserFormDialog />
 				</PageWrapper>
 			</PageContextProvider>
 		</>
