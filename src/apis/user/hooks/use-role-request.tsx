@@ -6,7 +6,7 @@ const GET_ROLE_QUERY_KEY = 'ROLES'
 export const useGetRolesQuery = () => {
 	return useQuery({
 		queryKey: [GET_ROLE_QUERY_KEY],
-		queryFn: RoleService.getRoles,
+		queryFn: RoleService.getAll,
 		select: (res) => (Array.isArray(res.metadata) ? res.metadata : [])
 	})
 }

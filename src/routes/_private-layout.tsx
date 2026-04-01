@@ -1,7 +1,7 @@
 import { PROFILE_QUERY_KEY } from '@/apis/auth/hooks/use-profile-request'
 import { ErrorBoundaryFallback } from '@/components/exceptions/error-boundar-fallback'
-import AppNavbar from '@/components/partials/app-navbar'
-import AppSidebar from '@/components/partials/app-sidebar'
+import AppNavbar from '@/components/private-layout-partials/app-navbar'
+import AppSidebar from '@/components/private-layout-partials/app-sidebar'
 import Loading from '@/components/shared/loading'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import AuthGuard from '@/guards/auth-guard'
@@ -58,7 +58,7 @@ function RouteComponent() {
 }
 
 const LayoutWrapper: React.FC<React.ComponentProps<'div'>> = tw.div`
-	relative min-h-screen max-h-full flex-1 overflow-y-scroll @container/layout-wrapper flex flex-col justify-between
+	relative bg-secondary min-h-screen max-h-full flex-1 overflow-y-scroll @container/layout-wrapper flex flex-col justify-between
 	[counter-reset:h_var(--screen-height)_w_var(--screen-width)]
 	(--scrollbar-thickness:10px) 
 	[--outlet-padding:12px] 

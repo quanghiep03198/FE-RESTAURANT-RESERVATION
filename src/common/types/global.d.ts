@@ -17,6 +17,8 @@ export declare global {
 	interface IBaseEntity {
 		id: number
 		is_active: boolean
+		slug?: string
+		code?: string
 		created_at?: Date
 		updated_at?: Date
 	}

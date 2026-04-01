@@ -36,7 +36,7 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 		<Popover>
 			<PopoverTrigger
 				render={
-					<Button variant='outline' className='border-dashed'>
+					<Button variant='outline' className='bg-background border-dashed'>
 						<Icon name='CircleFadingPlus' />
 						{title}
 						{selectedValues?.size > 0 && (

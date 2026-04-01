@@ -101,13 +101,13 @@ const TablePagination: React.FC<DataTablePaginationProps> = ({
 			className='ml-auto flex items-center space-x-2 py-0.5 sm:space-x-2 lg:space-x-4 xl:space-x-4'>
 			<div className='flex items-center space-x-2'>
 				<Label className='font-medium whitespace-nowrap'>Hàng mỗi trang</Label>
-				<Select>
-					<SelectTrigger>
+				<Select value={pageSize} onValueChange={(value) => changePageSize(String(value))}>
+					<SelectTrigger className='bg-background'>
 						<SelectValue placeholder='Số hàng mỗi trang' />
 					</SelectTrigger>
 					<SelectContent>
 						{[10, 20, 30, 40, 50].map((size) => (
-							<SelectItem key={size} value={String(size)} onSelect={() => changePageSize(String(size))}>
+							<SelectItem key={size} value={String(size)}>
 								{size}
 							</SelectItem>
 						))}

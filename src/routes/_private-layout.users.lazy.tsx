@@ -8,12 +8,12 @@ import {
 	PageSeparator,
 	PageTitle,
 	PageWrapper
-} from '@/components/partials/app-page'
-import { PageContextProvider } from '@/contexts/@user'
+} from '@/components/private-layout-partials/app-page'
+import { PageContextProvider } from '@/contexts/event-context'
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_private-layout/users')({
+export const Route = createLazyFileRoute('/_private-layout/users')({
 	component: RouteComponent
 })
 

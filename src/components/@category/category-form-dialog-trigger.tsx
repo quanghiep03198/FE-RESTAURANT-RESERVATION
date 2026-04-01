@@ -1,18 +1,17 @@
 import { CommonActions } from '@/common/constants/enums'
 import { usePageContext } from '@/contexts/event-context'
-import type { ButtonProps } from 'react-day-picker'
-import { Button } from '../ui/button'
+import React from 'react'
+import { Button, type ButtonProps } from '../ui/button'
 import { Icon } from '../ui/icon'
 
-const CreateUserFormDialogTrigger: React.FC<ButtonProps> = (props) => {
+const CategoryFormDialogTrigger: React.FC<ButtonProps> = (props) => {
 	const { event$ } = usePageContext()
 
 	return (
 		<Button {...props} onClick={() => event$.emit({ action: CommonActions.CREATE })}>
-			<Icon name='Plus' />
-			Thêm người dùng
+			<Icon name='Plus' /> Thêm danh mục mới
 		</Button>
 	)
 }
 
-export default CreateUserFormDialogTrigger
+export default CategoryFormDialogTrigger

@@ -13,7 +13,7 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 	main: [
 		{
 			title: 'Sơ đồ chỗ ngồi',
-			url: '/floor-plan',
+			url: '/tables-map',
 			icon: 'LayoutGrid',
 			authorizedRoles: '*'
 		},
@@ -29,7 +29,7 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 			items: [
 				{
 					title: 'Danh mục món',
-					url: '/dish-categories',
+					url: '/categories',
 					authorizedRoles: ['OWNER', 'MANAGER']
 				},
 				{

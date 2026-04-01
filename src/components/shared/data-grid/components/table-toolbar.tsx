@@ -10,7 +10,7 @@ import { ROW_ACTIONS_COLUMN_ID, ROW_EXPANSION_COLUMN_ID, ROW_SELECTION_COLUMN_ID
 import { useTableContext } from '../context/table.context'
 import { type ToolbarProps } from '../types'
 import ColumnFilterToggle from './column-filter-toggle'
-import { GlobalFilterPopover } from './global-filter'
+import { GlobalFilterPopover } from './popover-global-filter'
 import { TableViewOptions } from './table-view-options'
 
 const TableToolbar: React.FC<ToolbarProps> = (props) => {

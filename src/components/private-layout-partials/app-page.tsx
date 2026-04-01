@@ -17,7 +17,7 @@ export const PageHeader: React.FC<PageTitleProps> = ({ children, className, ref 
 )
 
 export const PageTitle: React.FC<TypographyProps> = ({ children, className }) => (
-	<Typography className={cn('col-start-1 text-left text-lg/relaxed font-semibold tracking-tight', className)}>
+	<Typography className={cn('col-start-1 text-left text-xl/relaxed font-semibold tracking-tight', className)}>
 		{children}
 	</Typography>
 )
@@ -26,7 +26,7 @@ export const PageDescription: React.FC<TypographyProps> = ({ children, className
 	<Typography
 		variant='small'
 		color='muted'
-		className={cn('col-start-1 row-start-2 text-left text-xs/relaxed text-pretty', className)}>
+		className={cn('col-start-1 row-start-2 text-left text-sm/relaxed text-pretty', className)}>
 		{children}
 	</Typography>
 )

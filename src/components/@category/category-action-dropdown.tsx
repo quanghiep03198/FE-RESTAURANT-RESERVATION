@@ -1,5 +1,5 @@
-import { useUpdateUserStatusMutation } from '@/apis/user/hooks/use-user-request'
-import type { IUser } from '@/apis/user/types'
+import { useUpdateCategoryStatusMutation } from '@/apis/menu/hooks/use-category-request'
+import type { ICategory } from '@/apis/menu/types'
 import { CommonActions } from '@/common/constants/enums'
 import { usePageContext } from '@/contexts/event-context'
 import type { CellContext } from '@tanstack/react-table'
@@ -8,26 +8,23 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Icon } from '../ui/icon'
 import { Spinner } from '../ui/spinner'
 
-const UserActionDropdown: React.FC<CellContext<IUser, any>> = ({ row }) => {
+const CategoryActionDropdown: React.FC<CellContext<ICategory, any>> = ({ row }) => {
 	const { event$ } = usePageContext()
 	const [open, setOpen] = useState<boolean>(false)
 
-	const { mutateAsync, isPending } = useUpdateUserStatusMutation()
+	const { mutateAsync, isPending } = useUpdateCategoryStatusMutation()
 
 	return (
 		<DropdownMenu open={open || isPending} onOpenChange={setOpen}>
 			<DropdownMenuTrigger className='text-muted-foreground hover:text-foreground transition-colors duration-200 ease-in-out'>
 				<Icon name='Ellipsis' />
 			</DropdownMenuTrigger>
-			<DropdownMenuContent side='left' align='start'>
+			<DropdownMenuContent side='left' align='start' className='w-48'>
 				<DropdownMenuItem
 					onClick={() =>
 						event$.emit({
 							action: CommonActions.UPDATE,
-							payload: {
-								...row.original,
-								role_id: String(row.original.role.id)
-							}
+							payload: row.original
 						})
 					}>
 					Cập nhật
@@ -36,16 +33,16 @@ const UserActionDropdown: React.FC<CellContext<IUser, any>> = ({ row }) => {
 					disabled={isPending}
 					onClick={async () => {
 						await mutateAsync({
-							id: row.original.id,
+							slug: row.original.slug,
 							is_active: !row.original.is_active
 						})
 					}}>
 					{isPending && <Spinner />}
-					{row.original.is_active ? 'Tạm khóa' : 'Mở khóa'}
+					{row.original.is_active ? 'Ngừng kinh doanh' : 'Đưa vào kinh doanh'}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	)
 }
 
-export default UserActionDropdown
+export default CategoryActionDropdown

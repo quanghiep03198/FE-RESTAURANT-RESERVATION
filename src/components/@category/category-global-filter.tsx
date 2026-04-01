@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Icon } from '../ui/icon'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 
-const UserGlobalFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
+const CategoryGlobalFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
 	const [value, setValue] = useState<string>(table.getState().globalFilter)
 
 	useEffect(() => {
@@ -16,7 +16,7 @@ const UserGlobalFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
 	}, [value])
 
 	return (
-		<InputGroup className='basis-full @5xl:basis-1/4'>
+		<InputGroup className='bg-background basis-full @5xl:basis-1/4'>
 			<InputGroupAddon>
 				<Icon name='Search' />
 			</InputGroupAddon>
@@ -29,4 +29,4 @@ const UserGlobalFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
 		</InputGroup>
 	)
 }
-export default UserGlobalFilter
+export default CategoryGlobalFilter

@@ -13,7 +13,7 @@ export const GET_USER_LIST_QUERY_KEY = 'USERS'
 export const useGetUserListQuery = () => {
 	return useQuery({
 		queryKey: [GET_USER_LIST_QUERY_KEY],
-		queryFn: UserService.getUsers,
+		queryFn: UserService.getAll,
 		select: (response) => {
 			const data = Array.isArray(response.metadata)
 				? response.metadata.map<IUser>((item) => ({
@@ -32,7 +32,7 @@ export const useUpdateUserStatusMutation = () => {
 
 	return useMutation({
 		mutationFn: async ({ id, ...update }: TUpdateUserValues & Pick<IUser, 'id'>) =>
-			await UserService.updateUser(id, update),
+			await UserService.updateOneById(id, update),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [GET_USER_LIST_QUERY_KEY] })
 		}
@@ -50,7 +50,7 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
 		[
 			CommonActions.CREATE,
 			{
-				handler: async (payload: TCreateUserValues) => await UserService.createUser(payload),
+				handler: async (payload: TCreateUserValues) => await UserService.insertOne(payload),
 				message: 'Thêm mới người dùng thành công'
 			}
 		],
@@ -58,7 +58,7 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
 			CommonActions.UPDATE,
 			{
 				handler: async ({ id, ...payload }: TUpdateUserValues & Pick<IUser, 'id'>) =>
-					await UserService.updateUser(id, payload),
+					await UserService.updateOneById(id, payload),
 				message: 'Đã cập nhật thành công'
 			}
 		]

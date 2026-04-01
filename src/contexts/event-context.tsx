@@ -1,21 +1,20 @@
-import type { IUser } from '@/apis/user/types'
 import type { CommonActions } from '@/common/constants/enums'
 import { useEventEmitter } from 'ahooks'
 import { type EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { createContext, use } from 'react'
 
-type EventEmitterValue =
+type EventEmitterValue<D extends IBaseEntity> =
 	| { action: CommonActions.CREATE; payload?: never }
-	| { action: CommonActions.UPDATE; payload: Partial<IUser> & { role_id: string } }
+	| { action: CommonActions; payload: Partial<D> }
 
-type TPageContext = {
-	event$: EventEmitter<EventEmitterValue>
+type TPageContext<T = EventEmitterValue<any>> = {
+	event$: EventEmitter<T>
 }
 
 const PageContext = createContext<TPageContext>(null)
 
-export const PageContextProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-	const event$ = useEventEmitter<EventEmitterValue>()
+export function PageContextProvider<T extends EventEmitterValue<any>>({ children }: React.PropsWithChildren) {
+	const event$ = useEventEmitter<T>()
 
 	return <PageContext.Provider value={{ event$ }}>{children}</PageContext.Provider>
 }

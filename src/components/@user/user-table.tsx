@@ -67,7 +67,7 @@ const UserTable: React.FC = () => {
 					const value = getValue()
 
 					const badgeHelper: {
-						icon: 'CircleCheckBig' | 'Lock'
+						icon: IconProps['name']
 						text: string
 					} = value ? { icon: 'CircleCheckBig', text: 'Đang hoạt động' } : { icon: 'Lock', text: 'Tạm khóa' }
 
@@ -109,7 +109,7 @@ const UserTable: React.FC = () => {
 			border='bottom-only'
 			defaultFilterOpen={false}
 			containerProps={{
-				style: { height: 'calc(var(--outlet-wrapper-height) - 8rem)' }
+				style: { height: 'calc(var(--outlet-wrapper-height) - 9rem)' }
 			}}
 			virtualizerOptions={{ estimateSize: 48 }}
 			toolbarProps={{

@@ -20,7 +20,10 @@ export function UserTableViewOptions<TData>({ table }: { table: Table<TData> }) 
 			<Tooltip message='Thiết lập cột' contentProps={{ hidden: !isMobile }}>
 				<DropdownMenuTrigger
 					render={
-						<Button variant={isMobile ? 'ghost' : 'outline'} size={isMobile ? 'icon' : 'default'}>
+						<Button
+							className={!isMobile && 'bg-background'}
+							variant={isMobile ? 'ghost' : 'outline'}
+							size={isMobile ? 'icon' : 'default'}>
 							<Icon name='Columns2' />
 							{!isMobile && 'Thiết lập cột'}
 						</Button>

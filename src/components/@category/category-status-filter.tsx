@@ -22,7 +22,7 @@ import { Separator } from '../ui/separator'
 
 type DropdownOption = { label: string; value: boolean; icon: IconProps['name']; count: number }
 
-const UserStatusFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
+const CategoryStatusFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
 	const { data } = table.options
 
 	const currentFilterValue = table.getColumn('is_active').getFilterValue()
@@ -31,12 +31,12 @@ const UserStatusFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
 		() =>
 			[
 				{
-					label: 'Đang hoạt động',
+					label: 'Đang phục vụ',
 					value: true,
 					icon: 'CircleCheck'
 				},
 				{
-					label: 'Tạm khóa',
+					label: 'Đã ngừng kinh doanh',
 					value: false,
 					icon: 'CircleMinus'
 				}
@@ -99,4 +99,4 @@ const UserStatusFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
 	)
 }
 
-export default UserStatusFilter
+export default CategoryStatusFilter
