@@ -7,11 +7,11 @@ import type { TUpdateCategoryValues } from '../schemas/update-category.schema'
 import { CategoryService } from '../services'
 import type { ICategory } from '../types'
 
-export const GET_CATEGORIES_QUERY = 'DISH_CATEGORIES'
+export const GET_CATEGORY_QUERY = 'CATEGORIES'
 
 export const useGetCategoriesQuery = () => {
 	return useQuery({
-		queryKey: [GET_CATEGORIES_QUERY],
+		queryKey: [GET_CATEGORY_QUERY],
 		queryFn: CategoryService.getAll,
 		select: (response) =>
 			Array.isArray(response.metadata)
@@ -56,7 +56,7 @@ export const useCreateOrUpdateCategoryMutation = (action: CommonActions.CREATE |
 			toastRef.current = toast.loading('Đang xử lý ...')
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [GET_CATEGORIES_QUERY] })
+			queryClient.invalidateQueries({ queryKey: [GET_CATEGORY_QUERY] })
 			toast.success(currentConfig?.message, { id: toastRef.current })
 		},
 		onError: () => {
@@ -72,7 +72,7 @@ export const useUpdateCategoryStatusMutation = () => {
 		mutationFn: async ({ slug, ...update }: Pick<TUpdateCategoryValues, 'is_active'> & Pick<ICategory, 'slug'>) =>
 			await CategoryService.updateOneBySlug(slug, update),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [GET_CATEGORIES_QUERY] })
+			queryClient.invalidateQueries({ queryKey: [GET_CATEGORY_QUERY] })
 		}
 	})
 }

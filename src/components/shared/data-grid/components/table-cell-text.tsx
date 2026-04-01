@@ -12,7 +12,11 @@ const TableCellText: React.FC<CellContext<any, any>> = (props) => {
 			</Typography>
 		)
 
-	return value
+	return (
+		<Typography variant='small' className='line-clamp-1' title={value}>
+			{value}
+		</Typography>
+	)
 }
 
 export default TableCellText

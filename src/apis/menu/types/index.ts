@@ -8,4 +8,14 @@ export interface ICategory extends IBaseEntity {
 	children: Array<ICategory>
 }
 
-export interface IDish extends IBaseEntity {}
+export interface IDish extends IBaseEntity {
+	category_id: number
+	slug: string
+	name: string
+	description: string
+	price: number
+	original_price: number | null
+	cost_price: number | null
+	image_url: string | null
+	unit: string
+}

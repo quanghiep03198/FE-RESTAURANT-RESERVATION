@@ -59,7 +59,7 @@ const CategoryTable: React.FC = () => {
 
 					return (
 						<Badge
-							variant='outline'
+							variant='ghost'
 							className='justify-center gap-x-2 rounded-l-full rounded-r-full whitespace-nowrap'>
 							<Icon
 								aria-current={value}
@@ -94,7 +94,7 @@ const CategoryTable: React.FC = () => {
 			data={data}
 			loading={isLoading}
 			containerProps={{
-				className: 'xxl:h-[calc(var(--outlet-wrapper-height)-20rem)] h-80'
+				className: 'xl:h-[calc(var(--outlet-wrapper-height)-9rem)] h-80'
 			}}
 			virtualizerOptions={{ estimateSize: 56 }}
 			toolbarProps={{

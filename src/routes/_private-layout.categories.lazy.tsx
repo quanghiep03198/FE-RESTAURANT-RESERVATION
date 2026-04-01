@@ -1,6 +1,5 @@
 import CategoryFormDialog from '@/components/@category/category-form-dialog'
 import CategoryFormDialogTrigger from '@/components/@category/category-form-dialog-trigger'
-import CategoryOverviews from '@/components/@category/category-overviews'
 import CategoryTable from '@/components/@category/category-table'
 import {
 	PageAction,
@@ -36,7 +35,7 @@ function RouteComponent() {
 					</PageHeader>
 					<PageSeparator />
 					<CategoryFormDialog />
-					<CategoryOverviews />
+					{/* <CategoryOverviews /> */}
 					<CategoryTable />
 				</PageWrapper>
 			</PageContextProvider>

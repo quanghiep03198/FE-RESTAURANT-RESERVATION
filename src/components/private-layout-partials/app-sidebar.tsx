@@ -46,7 +46,7 @@ const AppSidebar: React.FC = () => {
 					<img src='/logo.png' className='max-w-16 object-contain' />
 					<div>
 						<Typography variant='h4' className='leading-none'>
-							Toque Blanche
+							The Knives
 						</Typography>
 						<Typography variant='small' color='muted' className='text-xs'>
 							Hệ thống quản lý Đặt bàn
