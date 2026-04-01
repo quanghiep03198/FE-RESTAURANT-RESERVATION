@@ -42,7 +42,7 @@ const CategoryOverviews: React.FC = () => {
 							? data.filter((item) => item.is_active).reduce((acc, curr) => acc + curr.dishes.length, 0)
 							: 0}
 					</CardTitle>
-					<CardDescription className='mt-2'>Tổng </CardDescription>
+					<CardDescription className='mt-2'> Các món hiện đang được kinh doanh tại nhà hàng</CardDescription>
 				</CardContent>
 			</Card>
 			<Card className='bg-primary text-primary-foreground'>
@@ -63,6 +63,6 @@ const CategoryOverviews: React.FC = () => {
 	)
 }
 
-const CardImage = tw.div`col-start-1 h-full w-full aspect-[3/4] bg-radial-[at_25%_25%] to-75% from-background to-accent text-acceent-foreground rounded-l-[inherit]  inline-grid place-content-center`
+const CardImage = tw.div`col-start-1 h-full w-full aspect-3/4  bg-radial-[at_35%_35%] to-75% from-background to-primary/25 text-acceent-foreground rounded-l-[inherit]  inline-grid place-content-center`
 
 export default CategoryOverviews
