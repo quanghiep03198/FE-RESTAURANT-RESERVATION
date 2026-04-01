@@ -1,6 +1,7 @@
 import type { IUser } from '@/apis/user/types'
 import type { Table } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
+import { Icon } from '../ui/icon'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 
 const UserGlobalFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {

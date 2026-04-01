@@ -66,8 +66,6 @@ const UserTable: React.FC = () => {
 				cell: ({ getValue }) => {
 					const value = getValue()
 
-					console.log('value', value)
-
 					const badgeHelper: {
 						icon: 'CircleCheckBig' | 'Lock'
 						text: string

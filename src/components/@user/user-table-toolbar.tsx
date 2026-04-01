@@ -14,6 +14,17 @@ import UserStatusFilter from './user-status-filter'
 import UserTableRefreshButton from './user-table-refetch-button'
 import { UserTableViewOptions } from './user-table-view-options'
 
+const getRoleIcon = (code: TUserRoleCode) => {
+	switch (code) {
+		case 'OWNER':
+			return 'UserStar'
+		case 'MANAGER':
+			return 'UserCheck'
+		default:
+			return 'User'
+	}
+}
+
 const UserTableToolbar: React.FC<{
 	table: Table<IUser>
 	event$: EventEmitter<Record<string, unknown>>
@@ -21,17 +32,6 @@ const UserTableToolbar: React.FC<{
 	const isMobile = useMediaQuery('(max-width: 767px)')
 	const isFiltered = table.getState().columnFilters.length > 0 || table.getState().globalFilter
 	const { data } = useGetRolesQuery()
-
-	const getRoleIcon = (code: TUserRoleCode) => {
-		switch (code) {
-			case 'OWNER':
-				return 'UserStar'
-			case 'MANAGER':
-				return 'UserCheck'
-			default:
-				return 'User'
-		}
-	}
 
 	const roles: IDataTableFacetedFilterProps['options'] = useMemo(
 		() =>
@@ -84,7 +84,7 @@ const UserTableToolbar: React.FC<{
 	)
 }
 
-const Toolbar: React.FC<React.ComponentProps<'div'>> = tw.div`flex items-stretch justify-between`
+const Toolbar: React.FC<React.ComponentProps<'div'>> = tw.div`flex items-stretch justify-between gap-x-1.5`
 const ToolbarGroup: React.FC<React.ComponentProps<'div'>> = tw.div`flex items-center gap-x-1.5`
 
 export default UserTableToolbar
