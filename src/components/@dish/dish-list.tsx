@@ -1,10 +1,12 @@
 import { useGetCategoriesQuery } from '@/apis/menu/hooks/use-category-request'
-import { Tooltip } from '../customs/tooltip'
-import { Button } from '../ui/button'
-
 import { useStoredDishFilter } from '@/apis/menu/hooks/use-stored-dish-filter'
+import { CommonActions } from '@/common/constants/enums'
+import { usePageContext } from '@/contexts/event-context'
+import { sortBy } from 'lodash-es'
 import { useMemo } from 'react'
+import { Tooltip } from '../customs/tooltip'
 import { Badge } from '../ui/badge'
+import { Button } from '../ui/button'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '../ui/empty'
 import { Icon } from '../ui/icon'
@@ -12,10 +14,13 @@ import { Typography } from '../ui/typography'
 import DishCard from './dish-card'
 
 const DishList = () => {
+	const { event$ } = usePageContext()
 	const { data } = useGetCategoriesQuery()
 	const { filterValues, resetFilterValues } = useStoredDishFilter()
 
 	const filteredData = useMemo(() => {
+		if (!Array.isArray(data)) return []
+
 		let _data = data
 
 		if (filterValues.category) _data = _data.filter((item) => item.slug === filterValues.category)
@@ -30,15 +35,29 @@ const DishList = () => {
 			typeof filterValues.price?.min === 'number' &&
 			typeof filterValues.price?.max === 'number'
 		)
-			_data = _data.filter((item) =>
-				item.dishes.some((dish) => dish.price > filterValues.price.min && dish.price < filterValues.price.max)
-			)
+			_data = _data
+				.filter((item) =>
+					item.dishes.some((dish) => dish.price > filterValues.price.min && dish.price < filterValues.price.max)
+				)
+				.map((item) => {
+					item.dishes = item.dishes.filter(
+						(dish) => dish.price > filterValues.price.min && dish.price < filterValues.price.max
+					)
+					return item
+				})
 
 		if (typeof filterValues.isActive === 'boolean')
 			_data.filter((item) => item.dishes.some((dish) => dish.is_active === filterValues.isActive))
 
 		return _data
 	}, [filterValues, data])
+
+	const handleOpenCreateDishDialog = (id: number, name: string) => {
+		event$.emit({
+			action: CommonActions.CREATE,
+			payload: { id, name }
+		})
+	}
 
 	return (
 		<div className='@container space-y-10'>
@@ -57,7 +76,8 @@ const DishList = () => {
 											<Button
 												variant='outline'
 												size='icon'
-												className='bg-background rounded-full opacity-0 transition-opacity duration-200 ease-linear group-hover:opacity-100'>
+												className='bg-background rounded-full opacity-0 transition-opacity duration-200 ease-linear group-hover:opacity-100'
+												onClick={() => handleOpenCreateDishDialog(item.id, item.name)}>
 												<Icon name='Plus' />
 											</Button>
 										)
@@ -74,8 +94,8 @@ const DishList = () => {
 										align: 'start'
 									}}>
 									<CarouselContent className='bg-transparent'>
-										{item.dishes.map((dish) => (
-											<CarouselItem className='basis-1/2 @[800px]:basis-1/3 @[1200px]:basis-1/4'>
+										{sortBy(item.dishes, ['is_new', 'is_featured']).map((dish) => (
+											<CarouselItem className='basis-1/2 @[920px]:basis-1/3 @[1200px]:basis-1/4'>
 												<div className='h-full p-1'>
 													<DishCard data={dish} />
 												</div>
@@ -98,7 +118,9 @@ const DishList = () => {
 									</EmptyDescription>
 								</EmptyHeader>
 								<EmptyContent className='flex-row justify-center gap-2'>
-									<Button variant='outline'>Thêm món</Button>
+									<Button variant='outline' onClick={() => handleOpenCreateDishDialog(item.id, item.name)}>
+										Thêm món
+									</Button>
 								</EmptyContent>
 							</Empty>
 						)}

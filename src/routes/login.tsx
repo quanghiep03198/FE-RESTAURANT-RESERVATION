@@ -1,5 +1,6 @@
 import useAuth from '@/apis/auth/hooks/use-auth-request'
 import { LoginForm } from '@/components/@login/login-form'
+import { Icon } from '@/components/ui/icon'
 import { Typography } from '@/components/ui/typography'
 import { createFileRoute, Navigate, redirect } from '@tanstack/react-router'
 
@@ -23,8 +24,8 @@ function RouteComponent() {
 	return (
 		<div className='bg-muted flex min-h-screen items-center justify-center p-4'>
 			<div className='mx-auto w-full max-w-lg space-y-6'>
-				<div className='text-center'>
-					<img src='/logo.png' alt='logo' className='mx-auto max-w-40' />
+				<div className='flex flex-col items-center'>
+					<Icon name='ChefHat' size={80} strokeWidth={1} className='mb-6' />
 					<Typography variant='h3' className='mb-1'>
 						Nhà hàng HPU
 					</Typography>

@@ -12,11 +12,13 @@ export interface IDish extends IBaseEntity {
 	category_id: number
 	slug: string
 	name: string
+	kitchen_name: string
 	description: string
 	price: number
-	is_featured: boolean
 	original_price: number | null
 	cost_price: number | null
 	image_url: string | null
 	unit: string
+	is_featured: boolean
+	is_new: boolean
 }

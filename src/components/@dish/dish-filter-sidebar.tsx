@@ -45,7 +45,6 @@ const DishFilterSidebar: React.FC = () => {
 		}
 		return ranges
 	}, [roundedMin, roundedMax])
-	console.log(priceRanges)
 
 	return (
 		<Sidebar side='right' collapsible='offcanvas' className='h-screen'>
@@ -113,7 +112,7 @@ const DishFilterSidebar: React.FC = () => {
 							</SidebarMenuButton>
 						</SidebarMenuItem>
 						{priceRanges.map((range) => (
-							<SidebarMenuItem>
+							<SidebarMenuItem key={`${range.min}-${range.max}`}>
 								<SidebarMenuButton onClick={() => setFilterValues((prev) => ({ ...prev, price: range }))}>
 									{formatCurrency(range.min)} - {formatCurrency(range.max)}
 									<SidebarMenuBadge

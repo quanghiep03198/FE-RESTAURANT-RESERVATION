@@ -3,9 +3,9 @@ import { useEventEmitter } from 'ahooks'
 import { type EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { createContext, use } from 'react'
 
-type EventEmitterValue<D extends IBaseEntity> =
+export type EventEmitterValue<D extends IBaseEntity> =
 	| { action: CommonActions.CREATE; payload?: never }
-	| { action: CommonActions; payload: Partial<D> }
+	| { action: CommonActions; payload: D }
 
 type TPageContext<T = EventEmitterValue<any>> = {
 	event$: EventEmitter<T>

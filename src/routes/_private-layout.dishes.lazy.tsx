@@ -1,10 +1,12 @@
 import DishFilterSidebar from '@/components/@dish/dish-filter-sidebar'
+import DishFormDialog from '@/components/@dish/dish-form-dialog'
 import DishList from '@/components/@dish/dish-list'
 import DishListSearchBar from '@/components/@dish/dish-list-seach-bar'
 import { PageHeader, PageWrapper } from '@/components/private-layout-partials/app-page'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { PageContextProvider } from '@/contexts/event-context'
 import { createLazyFileRoute } from '@tanstack/react-router'
+import tw from 'tailwind-styled-components'
 
 export const Route = createLazyFileRoute('/_private-layout/dishes')({
 	component: RouteComponent
@@ -22,13 +24,16 @@ function RouteComponent() {
 						<PageHeader className='sticky top-0 z-20! px-6 py-3 backdrop-blur'>
 							<DishListSearchBar />
 						</PageHeader>
-						<div className='px-6 pb-6'>
+						<PageContent>
 							<DishList />
-						</div>
+						</PageContent>
 					</PageWrapper>
 					<DishFilterSidebar />
 				</SidebarProvider>
+				<DishFormDialog />
 			</PageContextProvider>
 		</>
 	)
 }
+
+const PageContent = tw.div`px-6 pb-6`

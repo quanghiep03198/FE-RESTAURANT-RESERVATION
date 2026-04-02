@@ -1,8 +1,9 @@
 import { useCreateOrUpdateCategoryMutation } from '@/apis/menu/hooks/use-category-request'
 import { createCategorySchema, type TCreateCategorySchema } from '@/apis/menu/schemas/create-category.schema'
 import { updateCategorySchema, type TUpdateCategorySchema } from '@/apis/menu/schemas/update-category.schema'
+import type { ICategory } from '@/apis/menu/types'
 import { CommonActions } from '@/common/constants/enums'
-import { usePageContext } from '@/contexts/event-context'
+import { usePageContext, type EventEmitterValue } from '@/contexts/event-context'
 import { useForm } from '@tanstack/react-form'
 import { useRef, useState } from 'react'
 import { Button } from '../ui/button'
@@ -10,6 +11,10 @@ import { Dialog, DialogClose, DialogContent } from '../ui/dialog'
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '../ui/field'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
+
+type TEventData =
+	| { action: CommonActions.CREATE; payload: never }
+	| { action: CommonActions.UPDATE; payload: ICategory }
 
 const CategoryFormDialog: React.FC = () => {
 	const { event$ } = usePageContext()
@@ -29,10 +34,10 @@ const CategoryFormDialog: React.FC = () => {
 			await mutation.mutateAsync(value)
 			setOpen(false)
 		},
-		validators: { onSubmit: formSchemaRef.current } as FirstParameter<typeof useForm>['validators']
+		validators: { onSubmit: formSchemaRef.current as any }
 	})
 
-	event$.useSubscription((e) => {
+	event$.useSubscription((e: EventEmitterValue<ICategory>) => {
 		if (e.action !== CommonActions.CREATE && e.action !== CommonActions.UPDATE) return
 		setAction(e.action)
 		setOpen(true)
@@ -93,11 +98,12 @@ const CategoryFormDialog: React.FC = () => {
 												<Textarea
 													id={field.name}
 													name={field.name}
-													value={field.state.value as string}
+													value={field.state.value}
 													onBlur={field.handleBlur}
 													onChange={(e) => field.handleChange(e.target.value)}
 													aria-invalid={isInvalid}
 													rows={5}
+													className='field-sizing-fixed'
 													placeholder='Mô tả chung về danh mục ...'
 													autoComplete='off'
 												/>

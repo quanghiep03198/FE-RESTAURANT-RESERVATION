@@ -2,9 +2,7 @@ import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { SidebarTrigger } from '../ui/sidebar'
 
-type Props = {}
-
-const DishFilterSidebarTrigger = (props: Props) => {
+const DishFilterSidebarTrigger: React.FC = () => {
 	return (
 		<SidebarTrigger
 			render={
