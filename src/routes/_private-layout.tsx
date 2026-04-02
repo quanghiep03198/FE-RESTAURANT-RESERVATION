@@ -25,17 +25,8 @@ function RouteComponent() {
 		<AuthGuard>
 			<SidebarProvider>
 				<AppSidebar />
-				<LayoutWrapper
-					style={
-						{
-							'--outlet-padding': '12px',
-							'--header-height': '56px',
-							'--outlet-wrapper-height':
-								'calc(var(--screen-height,100dvh)*1px - var(--header-height) - 2*var(--outlet-padding))',
-							'--scrollbar-thickness': '10px'
-						} as React.CSSProperties
-					}>
-					<OutletWrapper>
+				<LayoutWrapper data-slot='layout-wrapper'>
+					<OutletWrapper data-slot='outlet-wrapper'>
 						<ErrorBoundary
 							fallbackRender={({ error, resetErrorBoundary }) => {
 								return (
@@ -49,24 +40,35 @@ function RouteComponent() {
 							}}>
 							<Outlet />
 						</ErrorBoundary>
-					</OutletWrapper>
+					</OutletWrapper>{' '}
 					<AppNavbar />
 				</LayoutWrapper>
-			</SidebarProvider>
+			</SidebarProvider>{' '}
 		</AuthGuard>
 	)
 }
 
 const LayoutWrapper: React.FC<React.ComponentProps<'div'>> = tw.div`
-	relative bg-secondary min-h-screen max-h-full flex-1 overflow-y-scroll @container/layout-wrapper flex flex-col justify-between
+	relative bg-secondary h-screen max-h-full flex-1 w-full overflow-y-scroll @container/layout-wrapper flex flex-col justify-between
 	[counter-reset:h_var(--screen-height)_w_var(--screen-width)]
-	(--scrollbar-thickness:10px) 
-	[--outlet-padding:12px] 
-	[--header-height:56px] 
-	[--outlet-wrapper-height:calc(var(--screen-height,100dvh)*1px-var(--header-height)-2*var(--outlet-padding))]
+	
 	xxl:[--header-height:80px]
+	sm:[--outlet-padding-x:4px] 
+	md:[--outlet-padding-x:4px] 
+	xl:[--outlet-padding-x:16px] 
+	xxl:[--outlet-padding-x:24px] 
+	[&:has(*[data-outlet-padding=none])]:[--outlet-padding-x:0px]
+	[&:has(*[data-outlet-padding=none])]:[--outlet-padding-y:0px]
+	[--scrollbar-thickness:10px] 
+	[--outlet-padding-y:12px] 
+	[--header-height:56px] 
+	[--outlet-wrapper-width:calc(var(--screen-width,100dvw)*1px-var(--sidebar-width)-2*var(--outlet-padding-x)-var(--scrollbar-thickness))]
+	[--outlet-wrapper-height:calc(var(--screen-height,100dvh)*1px-var(--header-height)-2*var(--outlet-padding-x))]
 `
 
 const OutletWrapper: React.FC<React.ComponentProps<'main'>> = tw.main`
-	relative flex-1 basis-full py-(--outlet-padding) xxl:px-6 xl:px-4 lg:px-4 md:px-2 sm:px-2 min-h-(--outlet-wrapper-height)
+	relative flex-1 basis-full 
+	py-(--outlet-padding-y) px-(--outlet-padding-x) 
+	min-h-(--outlet-wrapper-height) max-w-(--outlet-wrapper-width)
+	
 `

@@ -1,4 +1,4 @@
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { Separator } from '../ui/separator'
 import { Typography, type TypographyProps } from '../ui/typography'
 

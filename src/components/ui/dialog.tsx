@@ -1,7 +1,7 @@
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
 import * as React from 'react'
 
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { Button } from '@/components/ui/button'
 import { XIcon } from 'lucide-react'
 

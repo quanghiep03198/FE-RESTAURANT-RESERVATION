@@ -1,4 +1,4 @@
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import useScrollToFn from '@/hooks/use-scroll-fn'
 import useVirtualScrollPadding from '@/hooks/use-virtual-scroll-padding'
 import { useVirtualizer } from '@tanstack/react-virtual'

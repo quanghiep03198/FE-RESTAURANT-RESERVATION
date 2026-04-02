@@ -26,7 +26,7 @@ function RouteComponent() {
 				<div className='text-center'>
 					<img src='/logo.png' alt='logo' className='mx-auto max-w-40' />
 					<Typography variant='h3' className='mb-1'>
-						The Knives
+						Nhà hàng HPU
 					</Typography>
 					<Typography color='muted'>Hệ thống quản lý đặt bàn</Typography>
 				</div>

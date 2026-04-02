@@ -1,4 +1,4 @@
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { Separator } from '@/components/ui/separator'
 import { Fragment, memo } from 'react'
 import { useTableContext } from '../context/table.context'

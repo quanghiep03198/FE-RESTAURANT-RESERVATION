@@ -3,7 +3,7 @@
 import type { IUser } from '@/apis/user/types'
 import { RecordStatus } from '@/common/constants/enums'
 
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import type { Table } from '@tanstack/react-table'
 import React, { useMemo } from 'react'
 import { Badge } from '../ui/badge'

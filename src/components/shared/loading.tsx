@@ -1,4 +1,4 @@
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { Spinner } from '../ui/spinner'
 import { Typography } from '../ui/typography'
 

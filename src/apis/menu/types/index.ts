@@ -14,6 +14,7 @@ export interface IDish extends IBaseEntity {
 	name: string
 	description: string
 	price: number
+	is_featured: boolean
 	original_price: number | null
 	cost_price: number | null
 	image_url: string | null

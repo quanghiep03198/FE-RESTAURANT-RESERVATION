@@ -1,4 +1,4 @@
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { addMonths, format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { Button } from './button'

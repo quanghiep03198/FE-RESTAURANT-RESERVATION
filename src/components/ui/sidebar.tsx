@@ -1,17 +1,16 @@
-import { mergeProps } from '@base-ui/react/merge-props'
-import { useRender } from '@base-ui/react/use-render'
-import { cva, type VariantProps } from 'class-variance-authority'
-import * as React from 'react'
-
-import { useIsMobile } from '@/common/hooks/use-mobile'
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { useIsMobile } from '@/hooks/use-mobile'
+import { mergeProps } from '@base-ui/react/merge-props'
+import { useRender } from '@base-ui/react/use-render'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { PanelLeftIcon } from 'lucide-react'
+import * as React from 'react'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -22,6 +21,7 @@ const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
 
 type SidebarContextProps = {
 	state: 'expanded' | 'collapsed'
+	cookieName: string
 	open: boolean
 	setOpen: (open: boolean) => void
 	openMobile: boolean
@@ -47,10 +47,12 @@ function SidebarProvider({
 	onOpenChange: setOpenProp,
 	className,
 	style,
+	cookieName = SIDEBAR_COOKIE_NAME,
 	children,
 	...props
 }: React.ComponentProps<'div'> & {
 	defaultOpen?: boolean
+	cookieName?: string
 	open?: boolean
 	onOpenChange?: (open: boolean) => void
 }) {
@@ -71,7 +73,7 @@ function SidebarProvider({
 			}
 
 			// This sets the cookie to keep the sidebar state.
-			document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+			document.cookie = `${cookieName}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
 		},
 		[setOpenProp, open]
 	)
@@ -102,6 +104,7 @@ function SidebarProvider({
 		() => ({
 			state,
 			open,
+			cookieName,
 			setOpen,
 			isMobile,
 			openMobile,
@@ -318,12 +321,14 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<'div'>) {
 
 function SidebarSeparator({ className, ...props }: React.ComponentProps<typeof Separator>) {
 	return (
-		<Separator
-			data-slot='sidebar-separator'
-			data-sidebar='separator'
-			className={cn('bg-sidebar-border mx-2 w-auto', className)}
-			{...props}
-		/>
+		<div className='px-2'>
+			<Separator
+				data-slot='sidebar-separator'
+				data-sidebar='separator'
+				className={cn('bg-sidebar-border max-w-full', className)}
+				{...props}
+			/>
+		</div>
 	)
 }
 

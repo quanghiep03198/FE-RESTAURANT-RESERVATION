@@ -1,5 +1,5 @@
 import type { IUser, TUserRoleCode } from '@/apis/user/types'
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { type Column } from '@tanstack/react-table'
 import { CheckIcon } from 'lucide-react'
 import { Fragment } from 'react'

@@ -1,4 +1,4 @@
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { uniqueId } from 'lodash-es'
 import React, { useId, useMemo, useRef, useState } from 'react'

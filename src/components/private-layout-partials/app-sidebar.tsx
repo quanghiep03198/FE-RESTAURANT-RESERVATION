@@ -42,11 +42,11 @@ const AppSidebar: React.FC = () => {
 	return (
 		<Sidebar variant='inset' side='left' collapsible={isMobile ? 'offcanvas' : 'none'} className='h-screen'>
 			<SidebarHeader>
-				<div className='flex items-center'>
-					<img src='/logo.png' className='max-w-16 object-contain' />
+				<div className='flex items-center gap-2'>
+					<Icon name='ChefHat' size={44} strokeWidth={1} />
 					<div>
 						<Typography variant='h4' className='leading-none'>
-							The Knives
+							Nhà hàng HPU
 						</Typography>
 						<Typography variant='small' color='muted' className='text-xs'>
 							Hệ thống quản lý Đặt bàn

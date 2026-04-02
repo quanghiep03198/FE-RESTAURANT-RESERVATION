@@ -1,4 +1,4 @@
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { useLayoutEffectOnce } from '@/hooks/use-effect-once'
 import { useRafState, useScroll } from 'ahooks'
 import { debounce } from 'lodash-es'

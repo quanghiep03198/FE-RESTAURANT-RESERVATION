@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 
 function Label({ className, ...props }: React.ComponentProps<'label'>) {
 	return (

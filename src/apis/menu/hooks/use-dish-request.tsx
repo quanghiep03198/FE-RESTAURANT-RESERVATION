@@ -1,5 +1,5 @@
 import { CommonActions } from '@/common/constants/enums'
-import { useMutation, useQueryClient, type MutationFunction } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, type MutationFunction } from '@tanstack/react-query'
 import { useRef } from 'react'
 import { toast } from 'sonner'
 import type { TCreateDishValues } from '../schemas/create-dish.schema'
@@ -9,6 +9,14 @@ import type { IDish } from '../types'
 import { GET_CATEGORY_QUERY } from './use-category-request'
 
 export const GET_DISHES_QUERY_KEY = 'DISHES'
+
+export const useGetDishesQuery = () => {
+	return useQuery({
+		queryKey: [GET_DISHES_QUERY_KEY],
+		queryFn: DishService.getAll,
+		select: (response) => (Array.isArray(response.metadata) ? response.metadata : [])
+	})
+}
 
 export const useCreateOrUpdateDish = (action: CommonActions.CREATE | CommonActions.UPDATE) => {
 	const toastRef = useRef<string | number | null>(null)

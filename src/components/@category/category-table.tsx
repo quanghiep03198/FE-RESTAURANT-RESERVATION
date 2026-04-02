@@ -13,8 +13,6 @@ import CategoryTableToolbar from './category-table-toolbar'
 const CategoryTable: React.FC = () => {
 	const { data, isLoading } = useGetCategoriesQuery()
 
-	console.log('data', data)
-
 	const columnHelper = createColumnHelper<ICategory>()
 
 	const columns = useMemo(

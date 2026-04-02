@@ -1,4 +1,4 @@
-import { cn } from '@/common/libs/utils'
+import { cn } from '@/common/utils/cn'
 import { Tooltip } from '@/components/customs/tooltip'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
