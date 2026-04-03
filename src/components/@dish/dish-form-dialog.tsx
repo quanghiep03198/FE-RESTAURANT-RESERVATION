@@ -12,6 +12,8 @@ import {
 import type { ICategory, IDish } from '@/apis/menu/types'
 import { CommonActions } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/utils/format-currency'
+import { formatTime } from '@/common/utils/format-time'
+import { getStorageUrl } from '@/common/utils/get-storage-url'
 import { usePageContext } from '@/contexts/event-context'
 import { useForm } from '@tanstack/react-form'
 import { useRef, useState } from 'react'
@@ -34,7 +36,7 @@ import { Textarea } from '../ui/textarea'
 
 export type EventEmitterValue =
 	| { action: CommonActions.CREATE; payload: { category_id: number } }
-	| { action: CommonActions; payload: Partial<IDish> }
+	| { action: CommonActions; payload: Partial<IDish> & { category_name: string } }
 
 const DishFormDialog: React.FC = () => {
 	const { event$ } = usePageContext()
@@ -48,7 +50,7 @@ const DishFormDialog: React.FC = () => {
 		defaultValues: {
 			name: '',
 			kitchen_name: '',
-			image_url: null,
+			image: null,
 			description: '',
 			price: 0,
 			cost_price: 0,
@@ -62,7 +64,7 @@ const DishFormDialog: React.FC = () => {
 			const payload = {
 				...value,
 				category_id: currentCategory.current.id,
-				image_url: value.image_url.file
+				image: value.image.file
 			} as TCreateDishValues | TUpdateDishValues
 			console.log('submitted payload', payload)
 
@@ -77,12 +79,21 @@ const DishFormDialog: React.FC = () => {
 		if (e.action !== CommonActions.CREATE && e.action !== CommonActions.UPDATE) return
 		setAction(e.action)
 		setOpen(true)
-		console.log('e.payload', e.payload)
 		if (e.action === CommonActions.CREATE) {
 			currentCategory.current = e.payload as Pick<ICategory, 'id' | 'name'>
 			formSchemaRef.current = createDishSchema
 		} else {
-			form.reset(e.payload as any, { keepDefaultValues: true })
+			form.reset(
+				{
+					...e.payload,
+					available_from: formatTime(e.payload.available_from),
+					available_to: formatTime(e.payload.available_to)
+				} as any,
+				{
+					keepDefaultValues: true
+				}
+			)
+			currentCategory.current = { id: e.payload.category_id, name: e.payload.category_name }
 			formSchemaRef.current = updateDishSchema
 		}
 	})
@@ -92,8 +103,15 @@ const DishFormDialog: React.FC = () => {
 		form.handleSubmit()
 	}
 
+	console.log(typeof form.getFieldValue('price'))
+
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
+		<Dialog
+			open={open}
+			onOpenChange={setOpen}
+			onOpenChangeComplete={(open) => {
+				if (!open) form.reset()
+			}}>
 			<DialogContent className='max-w-4xl'>
 				<form onSubmit={handleSubmit}>
 					<div className='scrollbar-none! mb-6 max-h-[80vh] overflow-y-auto'>
@@ -134,10 +152,26 @@ const DishFormDialog: React.FC = () => {
 									<Input readOnly value={currentCategory.current?.name} />
 								</Field>
 								<form.Field
-									name='image_url'
-									children={(field) => (
-										<GallaryUpload multiple={false} onFilesChange={(files) => field.handleChange(files[0])} />
-									)}
+									name='image'
+									children={(field) => {
+										return (
+											<GallaryUpload
+												multiple={false}
+												{...(field.state.value && {
+													defaultImages: [
+														{
+															name: field.state.value?.['name'],
+															id: field.state.value?.['name'],
+															url: getStorageUrl(field.state.value?.['url']),
+															size: field.state.value?.['size'],
+															type: 'image/webp'
+														}
+													]
+												})}
+												onFilesChange={(files) => field.handleChange(files[0])}
+											/>
+										)
+									}}
 								/>
 								<form.Field
 									name='description'

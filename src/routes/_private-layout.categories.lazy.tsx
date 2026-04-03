@@ -8,7 +8,7 @@ import {
 	PageSeparator,
 	PageTitle,
 	PageWrapper
-} from '@/components/private-layout-partials/app-page'
+} from '@/components/layouts/@private/app-page'
 import { PageContextProvider } from '@/contexts/event-context'
 import { createLazyFileRoute } from '@tanstack/react-router'
 

@@ -2,7 +2,7 @@ import DishFilterSidebar from '@/components/@dish/dish-filter-sidebar'
 import DishFormDialog from '@/components/@dish/dish-form-dialog'
 import DishList from '@/components/@dish/dish-list'
 import DishListSearchBar from '@/components/@dish/dish-list-seach-bar'
-import { PageHeader, PageWrapper } from '@/components/private-layout-partials/app-page'
+import { PageHeader, PageWrapper } from '@/components/layouts/@private/app-page'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { PageContextProvider } from '@/contexts/event-context'
 import { createLazyFileRoute } from '@tanstack/react-router'
@@ -20,7 +20,7 @@ function RouteComponent() {
 
 			<PageContextProvider>
 				<SidebarProvider data-outlet-padding='none' className='w-full' cookieName='dish_filter_sidebar'>
-					<PageWrapper className='bg-secondary basis-full'>
+					<PageWrapper className='basis-full'>
 						<PageHeader className='sticky top-0 z-20! px-6 py-3 backdrop-blur'>
 							<DishListSearchBar />
 						</PageHeader>

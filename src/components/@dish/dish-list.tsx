@@ -10,18 +10,22 @@ import { Button } from '../ui/button'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '../ui/empty'
 import { Icon } from '../ui/icon'
+import { Skeleton } from '../ui/skeleton'
 import { Typography } from '../ui/typography'
 import DishCard from './dish-card'
 
 const DishList = () => {
 	const { event$ } = usePageContext()
-	const { data } = useGetCategoriesQuery()
+	const { data, isLoading } = useGetCategoriesQuery()
 	const { filterValues, resetFilterValues } = useStoredDishFilter()
 
 	const filteredData = useMemo(() => {
 		if (!Array.isArray(data)) return []
 
-		let _data = data
+		let _data = data.map((item) => {
+			item.dishes = item.dishes.filter((dish) => dish.is_active)
+			return item
+		})
 
 		if (filterValues.category) _data = _data.filter((item) => item.slug === filterValues.category)
 
@@ -58,6 +62,15 @@ const DishList = () => {
 			payload: { id, name }
 		})
 	}
+
+	if (isLoading)
+		return (
+			<div className='grid grid-cols-2 gap-x-4 gap-y-10 @[920px]:grid-cols-3 @[1200px]:grid-cols-4'>
+				{Array.from({ length: 12 }, (_, index) => (
+					<Skeleton key={index} className='h-64' />
+				))}
+			</div>
+		)
 
 	return (
 		<div className='@container space-y-10'>
@@ -97,7 +110,7 @@ const DishList = () => {
 										{sortBy(item.dishes, ['is_new', 'is_featured']).map((dish) => (
 											<CarouselItem className='basis-1/2 @[920px]:basis-1/3 @[1200px]:basis-1/4'>
 												<div className='h-full p-1'>
-													<DishCard data={dish} />
+													<DishCard data={{ ...dish, category_name: item.name }} />
 												</div>
 											</CarouselItem>
 										))}

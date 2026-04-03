@@ -11,6 +11,8 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig(({ mode }) => {
 	process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
+	const API_BASE_URL = process.env.VITE_API_BASE_URL
+
 	return {
 		plugins: [
 			devtools(),
@@ -19,6 +21,15 @@ export default defineConfig(({ mode }) => {
 			tanstackRouter({ target: 'react', autoCodeSplitting: true }),
 			viteReact()
 		],
+		server: {
+			proxy: {
+				'/storage': {
+					target: API_BASE_URL,
+					changeOrigin: true,
+					rewrite: (path) => path
+				}
+			}
+		},
 		build: {
 			emptyOutDir: true,
 			sourcemap: true,

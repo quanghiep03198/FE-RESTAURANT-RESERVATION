@@ -1,5 +1,5 @@
 import useAuth from '@/apis/auth/hooks/use-auth-request'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -8,9 +8,9 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
-} from '../ui/dropdown-menu'
-import { Icon } from '../ui/icon'
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '../ui/sidebar'
+} from '../../ui/dropdown-menu'
+import { Icon } from '../../ui/icon'
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '../../ui/sidebar'
 
 const NavUser: React.FC = () => {
 	const { user, logout } = useAuth()

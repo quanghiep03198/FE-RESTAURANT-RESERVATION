@@ -10,6 +10,17 @@
 
 @theme {
 	--font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+	@keyframes shimmer {
+		from {
+			background-position: 0 0;
+		}
+		to {
+			background-position: -200% 0;
+		}
+	}
+
+	--animate-shimmer: shimmer 1.5s linear infinite;
 }
 
 :root {

@@ -21,9 +21,9 @@ import useMediaQuery from '@/hooks/use-media-query'
 import { Link, useRouterState } from '@tanstack/react-router'
 import { Fragment, useEffect, useLayoutEffect, useRef } from 'react'
 import tw from 'tailwind-styled-components'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible'
-import { Icon } from '../ui/icon'
-import { Typography } from '../ui/typography'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../ui/collapsible'
+import { Icon } from '../../ui/icon'
+import { Typography } from '../../ui/typography'
 import NavUser from './nav-user'
 
 type NavLinkProps = Pick<TNavigationConfig, 'url' | 'title' | 'icon' | 'authorizedRoles'> & {
@@ -40,7 +40,7 @@ const AppSidebar: React.FC = () => {
 	}, [isMobile])
 
 	return (
-		<Sidebar variant='inset' side='left' collapsible={isMobile ? 'offcanvas' : 'none'} className='h-screen'>
+		<Sidebar variant='inset' side='left' collapsible={isMobile ? 'offcanvas' : 'none'} className='h-screen border-r'>
 			<SidebarHeader>
 				<div className='flex items-center gap-2'>
 					<Icon name='ChefHat' size={44} strokeWidth={1} />

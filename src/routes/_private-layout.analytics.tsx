@@ -1,4 +1,4 @@
-import { PageDescription, PageHeader, PageTitle } from '@/components/private-layout-partials/app-page'
+import { PageDescription, PageHeader, PageTitle } from '@/components/layouts/@private/app-page'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_private-layout/analytics')({

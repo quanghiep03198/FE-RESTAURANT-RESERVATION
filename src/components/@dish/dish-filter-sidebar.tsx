@@ -14,20 +14,18 @@ import {
 	SidebarMenuBadge,
 	SidebarMenuButton,
 	SidebarMenuItem,
+	SidebarMenuSkeleton,
 	SidebarSeparator
 } from '../ui/sidebar'
-import { Skeleton } from '../ui/skeleton'
 import { Typography } from '../ui/typography'
 
 const DishFilterSidebar: React.FC = () => {
-	const { data: categories, isLoading } = useGetCategoriesQuery()
+	const { data: categories, isLoading: isLoadingCategories } = useGetCategoriesQuery()
 	const { filterValues, setFilterValues } = useStoredDishFilter()
-	const { data: dishes } = useGetDishesQuery()
+	const { data: dishes, isLoading: isLoadingDishes } = useGetDishesQuery()
 
-	if (!Array.isArray(categories) || categories.length === 0) return null
-
-	const maxPrice = useMemo(() => Math.max(...dishes.map((item) => item.price)), [categories])
-	const minPrice = useMemo(() => Math.min(...dishes.map((item) => item.price)), [categories])
+	const maxPrice = useMemo(() => (Array.isArray(dishes) ? Math.max(...dishes.map((item) => item.price)) : 0), [dishes])
+	const minPrice = useMemo(() => (Array.isArray(dishes) ? Math.min(...dishes.map((item) => item.price)) : 0), [dishes])
 
 	const roundDown = (value: number, step: number) => Math.floor(value / step) * step
 	const roundUp = (value: number, step: number) => Math.ceil(value / step) * step
@@ -37,7 +35,7 @@ const DishFilterSidebar: React.FC = () => {
 	const roundedMax = roundUp(maxPrice, STEP)
 
 	const priceRanges = useMemo(() => {
-		if (!dishes.length) return []
+		if (!Array.isArray(dishes) || dishes.length === 0) return []
 		const ranges = []
 		for (let start = roundedMin; start < roundedMax; start += STEP) {
 			const end = Math.min(start + STEP, roundedMax)
@@ -57,12 +55,8 @@ const DishFilterSidebar: React.FC = () => {
 						<Icon name='FileText' /> Danh mục
 					</SidebarGroupLabel>
 					<SidebarMenu>
-						{isLoading ? (
-							Array.from({ length: 10 }, (_, index) => (
-								<SidebarMenuItem key={index}>
-									<Skeleton className='h-9 w-full' />
-								</SidebarMenuItem>
-							))
+						{isLoadingCategories ? (
+							Array.from({ length: 5 }, (_, index) => <SidebarMenuSkeleton key={index} />)
 						) : (
 							<>
 								<SidebarMenuButton onClick={() => setFilterValues((prev) => ({ ...prev, category: null }))}>
@@ -101,30 +95,36 @@ const DishFilterSidebar: React.FC = () => {
 						<Icon name='DollarSign' /> Khoảng giá
 					</SidebarGroupLabel>
 					<SidebarMenu>
-						<SidebarMenuItem>
-							<SidebarMenuButton onClick={() => setFilterValues((prev) => ({ ...prev, price: null }))}>
-								Tất cả
-								<SidebarMenuBadge
-									aria-current={!filterValues.price}
-									className='opacity-0 transition-opacity duration-100 aria-current:opacity-100'>
-									<Icon name='Check' size={12} />
-								</SidebarMenuBadge>
-							</SidebarMenuButton>
-						</SidebarMenuItem>
-						{priceRanges.map((range) => (
-							<SidebarMenuItem key={`${range.min}-${range.max}`}>
-								<SidebarMenuButton onClick={() => setFilterValues((prev) => ({ ...prev, price: range }))}>
-									{formatCurrency(range.min)} - {formatCurrency(range.max)}
-									<SidebarMenuBadge
-										aria-current={
-											range.min === filterValues.price?.min && range.max === filterValues.price?.max
-										}
-										className='opacity-0 transition-opacity duration-100 aria-current:opacity-100'>
-										<Icon name='Check' size={12} />
-									</SidebarMenuBadge>
-								</SidebarMenuButton>
-							</SidebarMenuItem>
-						))}
+						{isLoadingDishes ? (
+							Array.from({ length: 5 }, (_, index) => <SidebarMenuSkeleton key={index} />)
+						) : (
+							<>
+								<SidebarMenuItem>
+									<SidebarMenuButton onClick={() => setFilterValues((prev) => ({ ...prev, price: null }))}>
+										Tất cả
+										<SidebarMenuBadge
+											aria-current={!filterValues.price}
+											className='opacity-0 transition-opacity duration-100 aria-current:opacity-100'>
+											<Icon name='Check' size={12} />
+										</SidebarMenuBadge>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+								{priceRanges.map((range) => (
+									<SidebarMenuItem key={`${range.min}-${range.max}`}>
+										<SidebarMenuButton onClick={() => setFilterValues((prev) => ({ ...prev, price: range }))}>
+											{formatCurrency(range.min)} - {formatCurrency(range.max)}
+											<SidebarMenuBadge
+												aria-current={
+													range.min === filterValues.price?.min && range.max === filterValues.price?.max
+												}
+												className='opacity-0 transition-opacity duration-100 aria-current:opacity-100'>
+												<Icon name='Check' size={12} />
+											</SidebarMenuBadge>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
+								))}
+							</>
+						)}
 					</SidebarMenu>
 				</SidebarGroup>
 				<SidebarSeparator />

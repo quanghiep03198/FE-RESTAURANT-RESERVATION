@@ -51,11 +51,32 @@ export const useCreateOrUpdateDish = (action: CommonActions.CREATE | CommonActio
 			toastRef.current = toast.loading('Đang xử lý ...')
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [GET_CATEGORY_QUERY] })
+			queryClient.invalidateQueries({
+				predicate: (query) =>
+					query.queryKey.some((key) => key === GET_CATEGORY_QUERY || key === GET_DISHES_QUERY_KEY)
+			})
 			toast.success(currentConfig?.message, { id: toastRef.current })
 		},
 		onError: () => {
 			toast.error('Đã có lỗi xảy ra !', { id: toastRef.current })
+		}
+	})
+}
+
+export const useDeleteDishMutation = () => {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: DishService.deleteOneBySlug,
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				predicate: (query) =>
+					query.queryKey.some((key) => key === GET_CATEGORY_QUERY || key === GET_DISHES_QUERY_KEY)
+			})
+			toast.success('Món ăn đã được xóa')
+		},
+		onError: () => {
+			toast.error('Đã xảy ra lỗi')
 		}
 	})
 }

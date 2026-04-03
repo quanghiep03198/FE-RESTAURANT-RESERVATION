@@ -8,6 +8,8 @@ function toFormData(payload: Record<string, unknown>): FormData {
 	for (const [key, value] of Object.entries(payload)) {
 		if (value instanceof File) {
 			formData.append(key, value)
+		} else if (key === '_method' && typeof value === 'string') {
+			formData.append(key, value)
 		} else if (value instanceof Blob) {
 			formData.append(key, value)
 		} else {
@@ -15,7 +17,7 @@ function toFormData(payload: Record<string, unknown>): FormData {
 		}
 	}
 
-	formData.append('data', new Blob([JSON.stringify(jsonFields)], { type: 'application/json' }))
+	formData.append('data', JSON.stringify(jsonFields))
 
 	return formData
 }
@@ -36,9 +38,9 @@ export class DishService {
 	}
 
 	public static async updateOneBySlug(slug: string, payload: any) {
-		return await axiosInstance.put<unknown, ResponseBody<IDish>>(
+		return await axiosInstance.post<unknown, ResponseBody<IDish>>(
 			`/menu/dishes/${slug}`,
-			toFormData(payload),
+			toFormData({ ...payload, _method: 'PUT' }),
 			MULTIPART_CONFIG
 		)
 	}

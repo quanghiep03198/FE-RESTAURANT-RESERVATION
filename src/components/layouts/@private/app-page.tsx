@@ -1,6 +1,6 @@
 import { cn } from '@/common/utils/cn'
-import { Separator } from '../ui/separator'
-import { Typography, type TypographyProps } from '../ui/typography'
+import { Separator } from '../../ui/separator'
+import { Typography, type TypographyProps } from '../../ui/typography'
 
 type PageTitleProps = React.PropsWithChildren &
 	React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
