@@ -5,10 +5,10 @@ import DishListSearchBar from '@/components/@dish/dish-list-seach-bar'
 import { PageHeader, PageWrapper } from '@/components/layouts/@private/app-page'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { PageContextProvider } from '@/contexts/event-context'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import tw from 'tailwind-styled-components'
 
-export const Route = createLazyFileRoute('/_private-layout/dishes')({
+export const Route = createFileRoute('/_private-layout/dishes')({
 	component: RouteComponent
 })
 

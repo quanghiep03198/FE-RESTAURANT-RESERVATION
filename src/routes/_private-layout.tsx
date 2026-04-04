@@ -62,13 +62,14 @@ const LayoutWrapper: React.FC<React.ComponentProps<'div'>> = tw.div`
 	[--scrollbar-thickness:10px] 
 	[--outlet-padding-y:12px] 
 	[--header-height:56px] 
-	[--outlet-wrapper-width:calc(var(--screen-width,100dvw)*1px-var(--sidebar-width)-2*var(--outlet-padding-x)-var(--scrollbar-thickness))]
+	xxl:[--outlet-wrapper-width:calc(var(--screen-width,100dvw)*1px-var(--sidebar-width)-2*var(--outlet-padding-x)-var(--scrollbar-thickness))]
+	[--outlet-wrapper-width:calc(var(--screen-width,100dvw)*1px-2*var(--outlet-padding-x)-var(--scrollbar-thickness))]
 	[--outlet-wrapper-height:calc(var(--screen-height,100dvh)*1px-var(--header-height)-2*var(--outlet-padding-x))]
 `
 
 const OutletWrapper: React.FC<React.ComponentProps<'main'>> = tw.main`
 	relative flex-1 basis-full 
 	py-(--outlet-padding-y) px-(--outlet-padding-x) 
-	min-h-(--outlet-wrapper-height) max-w-(--outlet-wrapper-width)
+	min-h-(--outlet-wrapper-height) max-w-[calc(var(--outlet-wrapper-width)+2*var(--outlet-padding-x))]
 	
 `

@@ -17,11 +17,25 @@ export interface IDish extends IBaseEntity {
 	price: number
 	original_price: number | null
 	cost_price: number | null
-	image: { size: number; name: string; url: string } | null
+	image: IImageMetadata | null
 	unit: string
 	is_featured: boolean
 	is_new: boolean
 	discounted_price: number
-	available_from: `${number}:${number}`
-	available_to: `${number}:${number}`
+	available_from: TTime
+	available_to: TTime
+}
+
+export interface ICombo extends IBaseEntity {
+	name: string
+	combo_image: IImageMetadata
+	combo_price: number
+	selling_price: number
+	dishes: Array<IDish & { pivot: { combo_id: number; dish_id: number; quantity: number } }>
+	days_in_week: Array<TDayInWeek> // * Ngày áp dụng trong tuần
+	start_time: TTime
+	end_time: TTime
+	start_at: Date
+	end_at: Date
+	max_use_times: number
 }

@@ -60,7 +60,7 @@ export class AxiosClient {
 			(response) => response.data,
 			async (error: AxiosError<ResponseBody<null>>) => {
 				if (error.code === AxiosError.ETIMEDOUT || error.code === AxiosError.ECONNABORTED) {
-					toast.error('Request timeout')
+					toast.error('Không có phản hồi')
 					return Promise.reject(new Error('Request timeout'))
 				}
 				if (this.NOTIFIABLE_ERROR_CODES.includes(error.response?.status)) {

@@ -10,9 +10,9 @@ import {
 	PageWrapper
 } from '@/components/layouts/@private/app-page'
 import { PageContextProvider } from '@/contexts/event-context'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createLazyFileRoute('/_private-layout/categories')({
+export const Route = createFileRoute('/_private-layout/categories')({
 	component: RouteComponent
 })
 

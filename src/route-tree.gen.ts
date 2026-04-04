@@ -16,7 +16,9 @@ import { Route as PublicLayoutRouteImport } from './routes/_public-layout'
 import { Route as PrivateLayoutRouteImport } from './routes/_private-layout'
 import { Route as PublicLayoutIndexRouteImport } from './routes/_public-layout.index'
 import { Route as PrivateLayoutInvoicesRouteImport } from './routes/_private-layout.invoices'
+import { Route as PrivateLayoutDishesRouteImport } from './routes/_private-layout.dishes'
 import { Route as PrivateLayoutCombosRouteImport } from './routes/_private-layout.combos'
+import { Route as PrivateLayoutCategoriesRouteImport } from './routes/_private-layout.categories'
 import { Route as PrivateLayoutAnalyticsRouteImport } from './routes/_private-layout.analytics'
 
 const PrivateLayoutUsersLazyRouteImport = createFileRoute(
@@ -27,12 +29,6 @@ const PrivateLayoutTablesMapLazyRouteImport = createFileRoute(
 )()
 const PrivateLayoutReservationsLazyRouteImport = createFileRoute(
   '/_private-layout/reservations',
-)()
-const PrivateLayoutDishesLazyRouteImport = createFileRoute(
-  '/_private-layout/dishes',
-)()
-const PrivateLayoutCategoriesLazyRouteImport = createFileRoute(
-  '/_private-layout/categories',
 )()
 
 const LoginRoute = LoginRouteImport.update({
@@ -76,29 +72,24 @@ const PrivateLayoutReservationsLazyRoute =
   } as any).lazy(() =>
     import('./routes/_private-layout.reservations.lazy').then((d) => d.Route),
   )
-const PrivateLayoutDishesLazyRoute = PrivateLayoutDishesLazyRouteImport.update({
-  id: '/dishes',
-  path: '/dishes',
-  getParentRoute: () => PrivateLayoutRoute,
-} as any).lazy(() =>
-  import('./routes/_private-layout.dishes.lazy').then((d) => d.Route),
-)
-const PrivateLayoutCategoriesLazyRoute =
-  PrivateLayoutCategoriesLazyRouteImport.update({
-    id: '/categories',
-    path: '/categories',
-    getParentRoute: () => PrivateLayoutRoute,
-  } as any).lazy(() =>
-    import('./routes/_private-layout.categories.lazy').then((d) => d.Route),
-  )
 const PrivateLayoutInvoicesRoute = PrivateLayoutInvoicesRouteImport.update({
   id: '/invoices',
   path: '/invoices',
   getParentRoute: () => PrivateLayoutRoute,
 } as any)
+const PrivateLayoutDishesRoute = PrivateLayoutDishesRouteImport.update({
+  id: '/dishes',
+  path: '/dishes',
+  getParentRoute: () => PrivateLayoutRoute,
+} as any)
 const PrivateLayoutCombosRoute = PrivateLayoutCombosRouteImport.update({
   id: '/combos',
   path: '/combos',
+  getParentRoute: () => PrivateLayoutRoute,
+} as any)
+const PrivateLayoutCategoriesRoute = PrivateLayoutCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
   getParentRoute: () => PrivateLayoutRoute,
 } as any)
 const PrivateLayoutAnalyticsRoute = PrivateLayoutAnalyticsRouteImport.update({
@@ -111,10 +102,10 @@ export interface FileRoutesByFullPath {
   '/': typeof PublicLayoutIndexRoute
   '/login': typeof LoginRoute
   '/analytics': typeof PrivateLayoutAnalyticsRoute
+  '/categories': typeof PrivateLayoutCategoriesRoute
   '/combos': typeof PrivateLayoutCombosRoute
+  '/dishes': typeof PrivateLayoutDishesRoute
   '/invoices': typeof PrivateLayoutInvoicesRoute
-  '/categories': typeof PrivateLayoutCategoriesLazyRoute
-  '/dishes': typeof PrivateLayoutDishesLazyRoute
   '/reservations': typeof PrivateLayoutReservationsLazyRoute
   '/tables-map': typeof PrivateLayoutTablesMapLazyRoute
   '/users': typeof PrivateLayoutUsersLazyRoute
@@ -123,10 +114,10 @@ export interface FileRoutesByTo {
   '/': typeof PublicLayoutIndexRoute
   '/login': typeof LoginRoute
   '/analytics': typeof PrivateLayoutAnalyticsRoute
+  '/categories': typeof PrivateLayoutCategoriesRoute
   '/combos': typeof PrivateLayoutCombosRoute
+  '/dishes': typeof PrivateLayoutDishesRoute
   '/invoices': typeof PrivateLayoutInvoicesRoute
-  '/categories': typeof PrivateLayoutCategoriesLazyRoute
-  '/dishes': typeof PrivateLayoutDishesLazyRoute
   '/reservations': typeof PrivateLayoutReservationsLazyRoute
   '/tables-map': typeof PrivateLayoutTablesMapLazyRoute
   '/users': typeof PrivateLayoutUsersLazyRoute
@@ -137,10 +128,10 @@ export interface FileRoutesById {
   '/_public-layout': typeof PublicLayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/_private-layout/analytics': typeof PrivateLayoutAnalyticsRoute
+  '/_private-layout/categories': typeof PrivateLayoutCategoriesRoute
   '/_private-layout/combos': typeof PrivateLayoutCombosRoute
+  '/_private-layout/dishes': typeof PrivateLayoutDishesRoute
   '/_private-layout/invoices': typeof PrivateLayoutInvoicesRoute
-  '/_private-layout/categories': typeof PrivateLayoutCategoriesLazyRoute
-  '/_private-layout/dishes': typeof PrivateLayoutDishesLazyRoute
   '/_private-layout/reservations': typeof PrivateLayoutReservationsLazyRoute
   '/_private-layout/tables-map': typeof PrivateLayoutTablesMapLazyRoute
   '/_private-layout/users': typeof PrivateLayoutUsersLazyRoute
@@ -152,10 +143,10 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/analytics'
-    | '/combos'
-    | '/invoices'
     | '/categories'
+    | '/combos'
     | '/dishes'
+    | '/invoices'
     | '/reservations'
     | '/tables-map'
     | '/users'
@@ -164,10 +155,10 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/analytics'
-    | '/combos'
-    | '/invoices'
     | '/categories'
+    | '/combos'
     | '/dishes'
+    | '/invoices'
     | '/reservations'
     | '/tables-map'
     | '/users'
@@ -177,10 +168,10 @@ export interface FileRouteTypes {
     | '/_public-layout'
     | '/login'
     | '/_private-layout/analytics'
-    | '/_private-layout/combos'
-    | '/_private-layout/invoices'
     | '/_private-layout/categories'
+    | '/_private-layout/combos'
     | '/_private-layout/dishes'
+    | '/_private-layout/invoices'
     | '/_private-layout/reservations'
     | '/_private-layout/tables-map'
     | '/_private-layout/users'
@@ -244,20 +235,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateLayoutReservationsLazyRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
-    '/_private-layout/dishes': {
-      id: '/_private-layout/dishes'
-      path: '/dishes'
-      fullPath: '/dishes'
-      preLoaderRoute: typeof PrivateLayoutDishesLazyRouteImport
-      parentRoute: typeof PrivateLayoutRoute
-    }
-    '/_private-layout/categories': {
-      id: '/_private-layout/categories'
-      path: '/categories'
-      fullPath: '/categories'
-      preLoaderRoute: typeof PrivateLayoutCategoriesLazyRouteImport
-      parentRoute: typeof PrivateLayoutRoute
-    }
     '/_private-layout/invoices': {
       id: '/_private-layout/invoices'
       path: '/invoices'
@@ -265,11 +242,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateLayoutInvoicesRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
+    '/_private-layout/dishes': {
+      id: '/_private-layout/dishes'
+      path: '/dishes'
+      fullPath: '/dishes'
+      preLoaderRoute: typeof PrivateLayoutDishesRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
     '/_private-layout/combos': {
       id: '/_private-layout/combos'
       path: '/combos'
       fullPath: '/combos'
       preLoaderRoute: typeof PrivateLayoutCombosRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
+    '/_private-layout/categories': {
+      id: '/_private-layout/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof PrivateLayoutCategoriesRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
     '/_private-layout/analytics': {
@@ -284,10 +275,10 @@ declare module '@tanstack/react-router' {
 
 interface PrivateLayoutRouteChildren {
   PrivateLayoutAnalyticsRoute: typeof PrivateLayoutAnalyticsRoute
+  PrivateLayoutCategoriesRoute: typeof PrivateLayoutCategoriesRoute
   PrivateLayoutCombosRoute: typeof PrivateLayoutCombosRoute
+  PrivateLayoutDishesRoute: typeof PrivateLayoutDishesRoute
   PrivateLayoutInvoicesRoute: typeof PrivateLayoutInvoicesRoute
-  PrivateLayoutCategoriesLazyRoute: typeof PrivateLayoutCategoriesLazyRoute
-  PrivateLayoutDishesLazyRoute: typeof PrivateLayoutDishesLazyRoute
   PrivateLayoutReservationsLazyRoute: typeof PrivateLayoutReservationsLazyRoute
   PrivateLayoutTablesMapLazyRoute: typeof PrivateLayoutTablesMapLazyRoute
   PrivateLayoutUsersLazyRoute: typeof PrivateLayoutUsersLazyRoute
@@ -295,10 +286,10 @@ interface PrivateLayoutRouteChildren {
 
 const PrivateLayoutRouteChildren: PrivateLayoutRouteChildren = {
   PrivateLayoutAnalyticsRoute: PrivateLayoutAnalyticsRoute,
+  PrivateLayoutCategoriesRoute: PrivateLayoutCategoriesRoute,
   PrivateLayoutCombosRoute: PrivateLayoutCombosRoute,
+  PrivateLayoutDishesRoute: PrivateLayoutDishesRoute,
   PrivateLayoutInvoicesRoute: PrivateLayoutInvoicesRoute,
-  PrivateLayoutCategoriesLazyRoute: PrivateLayoutCategoriesLazyRoute,
-  PrivateLayoutDishesLazyRoute: PrivateLayoutDishesLazyRoute,
   PrivateLayoutReservationsLazyRoute: PrivateLayoutReservationsLazyRoute,
   PrivateLayoutTablesMapLazyRoute: PrivateLayoutTablesMapLazyRoute,
   PrivateLayoutUsersLazyRoute: PrivateLayoutUsersLazyRoute,

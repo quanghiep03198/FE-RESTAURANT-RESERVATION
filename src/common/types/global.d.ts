@@ -21,6 +21,21 @@ export declare global {
 		code?: string
 		created_at?: Date
 		updated_at?: Date
+		remark: string
+	}
+
+	type TTime = `${number}${number}:${number}${number}`
+
+	type TDayInWeek = 'CN' | 'T2' | 'T3' | 'T4' | 'T5' | 'T6' | 'T7'
+
+	type TImageExtension = 'webp' | 'png' | 'jpg' | 'jpeg' | 'avif' | 'svg'
+
+	type TImageMimeType = `image/${TImageExtension}`
+
+	interface IImageMetadata {
+		name: `${string}.${TImageExtension}`
+		url: string
+		size: number
 	}
 
 	interface ResponseBody<T> {
