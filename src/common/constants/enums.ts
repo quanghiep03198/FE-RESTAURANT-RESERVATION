@@ -22,3 +22,13 @@ export enum CommonActions {
 	IMPORT = 'IMPORT',
 	EXPORT = 'EXPORT'
 }
+
+export enum DayInWeek {
+	SUNDAY = 'CN',
+	MONDAY = 'T2',
+	TUESDAY = 'T3',
+	WEDNESDAY = 'T4',
+	THURSDAY = 'T5',
+	FRIDAY = 'T6',
+	SATURDAY = 'T7'
+}

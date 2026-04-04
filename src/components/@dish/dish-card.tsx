@@ -30,6 +30,7 @@ const DishCard: React.FC<{ data: IDish & { category_name: string } }> = ({ data 
 			<Image
 				src={getStorageUrl(data.image?.url)}
 				alt={data.name}
+				loading='lazy'
 				className='relative aspect-video h-40 w-full object-cover duration-200 ease-in-out group-hover/card:brightness-50'
 			/>
 			{data.is_new && (
