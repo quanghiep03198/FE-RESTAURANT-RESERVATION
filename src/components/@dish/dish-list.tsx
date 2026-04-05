@@ -31,9 +31,15 @@ const DishList = () => {
 		if (filterValues.category) _data = _data.filter((item) => item.slug === filterValues.category)
 
 		if (filterValues.name)
-			_data = _data.filter((item) =>
-				item.dishes.some((dish) => dish.name.toLowerCase().trim().includes(filterValues.name.trim().toLowerCase()))
-			)
+			_data = _data
+				.map((item) => {
+					item.dishes = item.dishes.filter((item) =>
+						item.name.toLowerCase().trim().includes(filterValues.name.trim().toLowerCase())
+					)
+
+					return item
+				})
+				.filter((item) => item.dishes.length > 0)
 
 		if (
 			filterValues.price &&
@@ -109,7 +115,7 @@ const DishList = () => {
 									}}>
 									<CarouselContent className='bg-transparent'>
 										{sortBy(item.dishes, ['is_new', 'is_featured']).map((dish) => (
-											<CarouselItem className='basis-1/2 @[920px]:basis-1/3 @[1200px]:basis-1/4'>
+											<CarouselItem className='basis-1/2 @[920px]:basis-1/3 @[1200px]:basis-1/4 @[1400px]:basis-1/5'>
 												<div className='h-full p-1'>
 													<DishCard
 														data={{
