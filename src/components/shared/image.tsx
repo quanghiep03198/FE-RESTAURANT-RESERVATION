@@ -17,7 +17,7 @@ const FallbackIcon: React.FC<React.ComponentProps<'div'>> = ({ className, ...pro
 	</div>
 )
 
-const Image: React.FC<ImageProps> = ({ src, alt = '', className, ...props }) => {
+const Image: React.FC<ImageProps> = ({ src, alt = '', className, loading = 'lazy', ...props }) => {
 	if (!src) {
 		return <FallbackIcon {...{ className, ...props }} />
 	}

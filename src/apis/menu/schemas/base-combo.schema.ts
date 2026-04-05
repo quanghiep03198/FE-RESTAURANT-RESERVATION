@@ -13,8 +13,10 @@ export const baseComboSchema = object({
 	}),
 	max_use_times: number({ message: 'Vui lòng nhập số lượng mở bán' }).min(10, 'Số lượng mở bán tối thiểu là 10'),
 	tag: nativeEnum(ComboTag).optional(),
-	start_at: coerce.date({ message: 'Vui long chọn thời gian bắt đầu' }),
-	end_at: coerce.date({ message: 'Vui long chọn thời thời gian kết thúc' }),
+	promotion_validity_dates: object({
+		from: coerce.date({ message: 'Vui lòng chọn thời gian bắt đầu' }),
+		to: coerce.date({ message: 'Vui lòng chọn thời gian kết thúc' })
+	}),
 	day_in_week: array(nativeEnum(DayInWeek)).min(1),
 	start_time: string().refine((val) => /^([0-1]\d|2[0-3]):([0-5]\d)$/.test(val), {
 		message: 'Thời gian phải ở định dạng HH:mm (24 giờ)'
@@ -24,7 +26,9 @@ export const baseComboSchema = object({
 	}),
 	dishes: array(
 		object({
-			dish_slug: string().nonempty(),
+			dish_slug: string({ message: 'Vui lòng chọn 1 món ăn có trong Combo' }).nonempty({
+				message: 'Vui lòng chọn 1 món ăn có trong Combo'
+			}),
 			quantity: number({ message: 'Vui lòng nhập số lượng món' }).min(1, 'Số lượng tối thiểu là 1')
 		})
 	)

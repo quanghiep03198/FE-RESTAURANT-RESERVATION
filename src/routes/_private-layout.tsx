@@ -51,7 +51,6 @@ function RouteComponent() {
 const LayoutWrapper: React.FC<React.ComponentProps<'div'>> = tw.div`
 	relative h-screen max-h-full flex-1 w-full overflow-y-scroll @container/layout-wrapper flex flex-col justify-between
 	[counter-reset:h_var(--screen-height)_w_var(--screen-width)]
-	
 	xxl:[--header-height:80px]
 	sm:[--outlet-padding-x:4px] 
 	md:[--outlet-padding-x:4px] 
@@ -68,7 +67,7 @@ const LayoutWrapper: React.FC<React.ComponentProps<'div'>> = tw.div`
 `
 
 const OutletWrapper: React.FC<React.ComponentProps<'main'>> = tw.main`
-	relative flex-1 basis-full 
+	relative flex-1 basis-full
 	py-(--outlet-padding-y) px-(--outlet-padding-x) 
 	min-h-(--outlet-wrapper-height) max-w-[calc(var(--outlet-wrapper-width)+2*var(--outlet-padding-x))]
 	

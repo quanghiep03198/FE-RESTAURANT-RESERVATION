@@ -12,16 +12,16 @@ export type TNavigationConfig = {
 const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> = {
 	main: [
 		{
-			title: 'Sơ đồ chỗ ngồi',
-			url: '/tables-map',
-			icon: 'LayoutGrid',
-			authorizedRoles: '*'
-		},
-		{
 			title: 'Đặt bàn',
 			url: '/reservations',
 			icon: 'CalendarCheck',
 			authorizedRoles: ['OWNER', 'MANAGER', 'CASHIER', 'WAITER']
+		},
+		{
+			title: 'Thống kê',
+			url: '/reservations',
+			icon: 'ChartArea',
+			authorizedRoles: ['OWNER', 'MANAGER', 'CASHIER']
 		},
 		{
 			title: 'Quản lý thực đơn',

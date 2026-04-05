@@ -46,7 +46,7 @@ const AppSidebar: React.FC = () => {
 					<Icon name='ChefHat' size={44} strokeWidth={1} />
 					<div>
 						<Typography variant='h4' className='leading-none'>
-							Nhà hàng HPU
+							Foodholic
 						</Typography>
 						<Typography variant='small' color='muted' className='text-xs'>
 							Hệ thống quản lý Đặt bàn

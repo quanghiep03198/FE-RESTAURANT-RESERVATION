@@ -1,14 +1,15 @@
 import { cn } from '@/common/utils/cn'
 import { addMonths, format } from 'date-fns'
 import { vi } from 'date-fns/locale'
-import { Button } from './button'
+import type { PropsRange } from 'react-day-picker'
+import { Button, type ButtonProps } from './button'
 import { Calendar } from './calendar'
 import { Icon } from './icon'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 export type DateRangePickerProps = {
-	calendarProps?: React.ComponentProps<typeof Calendar.prototype>
-	triggerProps?: React.ComponentProps<typeof Button.prototype>
+	calendarProps?: Partial<PropsRange>
+	triggerProps?: ButtonProps
 }
 
 export const DateRangePicker: React.FC<DateRangePickerProps> = ({
@@ -54,9 +55,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 							to: new Date()
 						}
 					}
-					onSelect={(value) => {
-						if (typeof calendarProps?.onSelect === 'function') calendarProps.onSelect(value)
-					}}
+					onSelect={calendarProps.onSelect}
 				/>
 			</PopoverContent>
 		</Popover>

@@ -4,7 +4,7 @@ import type { IDish } from '../types'
 
 export class DishService extends BaseService {
 	public static async getAll() {
-		return await axiosInstance.get<unknown, ResponseBody<IDish>>('/menu/dishes')
+		return await axiosInstance.get<unknown, ResponseBody<IDish[]>>('/menu/dishes')
 	}
 
 	public static async insertOne(payload: any) {

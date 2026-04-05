@@ -1,4 +1,5 @@
 import { CommonActions } from '@/common/constants/enums'
+import { getStorageUrl } from '@/common/utils/get-storage-url'
 import { useMutation, useQuery, useQueryClient, type MutationFunction } from '@tanstack/react-query'
 import { useRef } from 'react'
 import { toast } from 'sonner'
@@ -14,7 +15,13 @@ export const useGetDishesQuery = () => {
 	return useQuery({
 		queryKey: [GET_DISHES_QUERY_KEY],
 		queryFn: DishService.getAll,
-		select: (response) => (Array.isArray(response.metadata) ? response.metadata : [])
+		select: (response) =>
+			Array.isArray(response.metadata)
+				? response.metadata.map((dish) => ({
+						...dish,
+						...(dish.image && { image: { ...dish.image, url: getStorageUrl(dish.image.url) } })
+					}))
+				: ([] as IDish[])
 	})
 }
 

@@ -13,7 +13,6 @@ import type { ICategory, IDish } from '@/apis/menu/types'
 import { CommonActions } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/utils/format-currency'
 import { formatTime } from '@/common/utils/format-time'
-import { getStorageUrl } from '@/common/utils/get-storage-url'
 import { usePageContext } from '@/contexts/event-context'
 import { useForm } from '@tanstack/react-form'
 import { useRef, useState } from 'react'
@@ -66,8 +65,6 @@ const DishFormDialog: React.FC = () => {
 				category_id: currentCategory.current.id,
 				image: value.image.file
 			} as TCreateDishValues | TUpdateDishValues
-			console.log('submitted payload', payload)
-
 			if (typeof mutation?.mutateAsync !== 'function') return
 			await mutation.mutateAsync(payload)
 			setOpen(false)
@@ -102,8 +99,6 @@ const DishFormDialog: React.FC = () => {
 		e.preventDefault()
 		form.handleSubmit()
 	}
-
-	console.log(typeof form.getFieldValue('price'))
 
 	return (
 		<Dialog
@@ -162,7 +157,7 @@ const DishFormDialog: React.FC = () => {
 														{
 															name: field.state.value?.['name'],
 															id: field.state.value?.['name'],
-															url: getStorageUrl(field.state.value?.['url']),
+															url: field.state.value?.['url'],
 															size: field.state.value?.['size'],
 															type: 'image/webp'
 														}

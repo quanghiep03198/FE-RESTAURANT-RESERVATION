@@ -27,7 +27,7 @@ function RouteComponent() {
 				<div className='flex flex-col items-center'>
 					<Icon name='ChefHat' size={80} strokeWidth={1} className='mb-6' />
 					<Typography variant='h3' className='mb-1'>
-						Nhà hàng HPU
+						Foodholic
 					</Typography>
 					<Typography color='muted'>Hệ thống quản lý đặt bàn</Typography>
 				</div>

@@ -1,6 +1,7 @@
 import { useGetCategoriesQuery } from '@/apis/menu/hooks/use-category-request'
 import { useStoredDishFilter } from '@/apis/menu/hooks/use-stored-dish-filter'
 import { CommonActions } from '@/common/constants/enums'
+import { getStorageUrl } from '@/common/utils/get-storage-url'
 import { usePageContext } from '@/contexts/event-context'
 import { sortBy } from 'lodash-es'
 import { useMemo } from 'react'
@@ -110,7 +111,18 @@ const DishList = () => {
 										{sortBy(item.dishes, ['is_new', 'is_featured']).map((dish) => (
 											<CarouselItem className='basis-1/2 @[920px]:basis-1/3 @[1200px]:basis-1/4'>
 												<div className='h-full p-1'>
-													<DishCard data={{ ...dish, category_name: item.name }} />
+													<DishCard
+														data={{
+															...dish,
+															category_name: item.name,
+															...(dish.image && {
+																image: {
+																	...dish.image,
+																	url: getStorageUrl(dish.image.url)
+																} satisfies IImageMetadata
+															})
+														}}
+													/>
 												</div>
 											</CarouselItem>
 										))}

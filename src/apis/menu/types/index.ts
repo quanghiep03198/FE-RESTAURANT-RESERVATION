@@ -1,3 +1,5 @@
+import type { ComboTag } from '../constants'
+
 export interface ICategory extends IBaseEntity {
 	code: string
 	name: string
@@ -32,6 +34,7 @@ export interface ICombo extends IBaseEntity {
 	combo_price: number
 	selling_price: number
 	dishes: Array<IDish & { pivot: { combo_id: number; dish_id: number; quantity: number } }>
+	tag: ComboTag
 	days_in_week: Array<TDayInWeek> // * Ngày áp dụng trong tuần
 	start_time: TTime
 	end_time: TTime

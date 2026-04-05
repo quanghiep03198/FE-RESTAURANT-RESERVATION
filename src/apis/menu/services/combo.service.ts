@@ -4,7 +4,7 @@ import type { ICombo } from '../types'
 
 export class ComboService extends BaseService {
 	public static async getAll() {
-		return await axiosInstance.get<unknown, ResponseBody<ICombo>>('/menu/combos')
+		return await axiosInstance.get<unknown, ResponseBody<ICombo[]>>('/menu/combos')
 	}
 
 	public static async insertOne(payload: any) {

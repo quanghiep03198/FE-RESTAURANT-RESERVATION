@@ -2,7 +2,8 @@ import { isAfter, parse } from 'date-fns'
 import { type infer as Infer } from 'zod'
 import { baseComboSchema } from './base-combo.schema'
 
-export const createComboSchema = baseComboSchema
+export const updateComboSchema = baseComboSchema
+	.partial()
 	.superRefine((values, ctx) => {
 		const fromTime = parse(values.start_time, 'HH:mm', new Date())
 		const toTime = parse(values.end_time, 'HH:mm', new Date())
@@ -28,6 +29,6 @@ export const createComboSchema = baseComboSchema
 		end_at: values.promotion_validity_dates.to
 	}))
 
-export type TCreateComboSchema = typeof createComboSchema
+export type TUpdateComboSchema = typeof updateComboSchema
 
-export type TCreateComboValues = Infer<typeof createComboSchema>
+export type TUpdateComboValues = Infer<typeof updateComboSchema>
