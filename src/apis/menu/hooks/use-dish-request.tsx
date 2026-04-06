@@ -17,10 +17,12 @@ export const useGetDishesQuery = () => {
 		queryFn: DishService.getAll,
 		select: (response) =>
 			Array.isArray(response.metadata)
-				? response.metadata.map((dish) => ({
-						...dish,
-						...(dish.image && { image: { ...dish.image, url: getStorageUrl(dish.image.url) } })
-					}))
+				? response.metadata
+						.filter((item) => item.is_active)
+						.map((dish) => ({
+							...dish,
+							...(dish.image && { image: { ...dish.image, url: getStorageUrl(dish.image.url) } })
+						}))
 				: ([] as IDish[])
 	})
 }

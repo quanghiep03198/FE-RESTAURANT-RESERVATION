@@ -1,5 +1,7 @@
 import { BaseService } from '@/apis/base/base.service'
 import { axiosInstance } from '@/configs/axios.config'
+import type { TCreateComboValues } from '../schemas/create-combo.schema.ts'
+import type { TUpdateComboValues } from '../schemas/update-combo.schema.ts'
 import type { ICombo } from '../types'
 
 export class ComboService extends BaseService {
@@ -7,23 +9,23 @@ export class ComboService extends BaseService {
 		return await axiosInstance.get<unknown, ResponseBody<ICombo[]>>('/menu/combos')
 	}
 
-	public static async insertOne(payload: any) {
-		return await axiosInstance.post<unknown, ResponseBody<ICombo>, typeof payload>('/menu/combos', payload)
-	}
-
-	public static async updateOneBySlug(slug: string, payload: any) {
+	public static async insertOne(payload: TCreateComboValues) {
 		return await axiosInstance.post<unknown, ResponseBody<ICombo>>(
-			`/menu/combos/${slug}`,
-			this.createFormData({ ...payload, _method: 'PUT' }),
-			this.MULTIPART_CONFIG
+			'/menu/combos',
+			ComboService.createFormData(payload),
+			ComboService.MULTIPART_CONFIG
 		)
 	}
 
-	public static async deleteOneBySlug(slug: string, payload: any) {
+	public static async updateOneBySlug(slug: string, payload: TUpdateComboValues) {
 		return await axiosInstance.post<unknown, ResponseBody<ICombo>>(
 			`/menu/combos/${slug}`,
-			this.createFormData({ ...payload, _method: 'PUT' }),
-			this.MULTIPART_CONFIG
+			ComboService.createFormData({ ...payload, _method: 'PATCH' }),
+			ComboService.MULTIPART_CONFIG
 		)
+	}
+
+	public static async deleteOneBySlug(slug: string) {
+		return await axiosInstance.delete<unknown, ResponseBody<ICombo>>(`/menu/combos/${slug}`)
 	}
 }

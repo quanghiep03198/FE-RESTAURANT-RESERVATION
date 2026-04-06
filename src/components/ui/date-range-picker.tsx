@@ -47,7 +47,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 			<PopoverContent className='scrollbar-none w-auto overflow-auto p-0 sm:max-h-1/2' align='center'>
 				<Calendar
 					{...calendarProps}
-					initialFocus
+					autoFocus
 					mode='range'
 					selected={
 						calendarProps?.selected ?? {

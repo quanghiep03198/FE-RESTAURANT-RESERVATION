@@ -24,15 +24,17 @@ const DishCard: React.FC<{ data: IDish & { category_name: string } }> = ({ data 
 	return (
 		<Card
 			// size='sm'
-			className='relative mx-auto h-full w-full max-w-sm pt-0 [&:has(button[data-slot=dropdown-menu-trigger][aria-expanded=true])_*[role=img]]:brightness-50 [&:has(button[data-slot=dropdown-menu-trigger][aria-expanded=true])_img]:brightness-50'
+			className='relative mx-auto h-full w-full max-w-sm pt-0 [&:has(button[data-slot=dropdown-menu-trigger][aria-expanded=true])_picture:after]:bg-black/50'
 			title={data.name}>
 			<CardDropdownMenu data={data} />
-			<Image
-				src={data.image?.url}
-				alt={data.name}
-				loading='lazy'
-				className='relative aspect-video h-40 w-full object-cover duration-200 ease-in-out group-hover/card:brightness-50'
-			/>
+			<picture className='relative after:absolute after:inset-0 after:bg-transparent group-hover/card:after:bg-black/50'>
+				<Image
+					src={data.image?.url}
+					alt={data.name}
+					loading='lazy'
+					className='aspect-video h-48 w-full object-cover duration-200 ease-in-out'
+				/>
+			</picture>
 			{data.is_new && (
 				<Badge className='absolute top-2 left-2 z-10 [&>svg]:size-3!'>
 					<Icon name='Sparkles' /> Món mới

@@ -12,7 +12,7 @@ import {
 import type { ICategory, IDish } from '@/apis/menu/types'
 import { CommonActions } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/utils/format-currency'
-import { formatTime } from '@/common/utils/format-time'
+import { formatTime } from '@/common/utils/format-date-time'
 import { usePageContext } from '@/contexts/event-context'
 import { useForm } from '@tanstack/react-form'
 import { useRef, useState } from 'react'
@@ -149,22 +149,27 @@ const DishFormDialog: React.FC = () => {
 								<form.Field
 									name='image'
 									children={(field) => {
+										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
-											<GallaryUpload
-												multiple={false}
-												{...(field.state.value && {
-													defaultImages: [
-														{
-															name: field.state.value?.['name'],
-															id: field.state.value?.['name'],
-															url: field.state.value?.['url'],
-															size: field.state.value?.['size'],
-															type: 'image/webp'
-														}
-													]
-												})}
-												onFilesChange={(files) => field.handleChange(files[0])}
-											/>
+											<Field>
+												<FieldLabel>Hình ảnh</FieldLabel>
+												<GallaryUpload
+													multiple={false}
+													{...(field.state.value && {
+														defaultImages: [
+															{
+																name: field.state.value?.['name'],
+																id: field.state.value?.['name'],
+																url: field.state.value?.['url'],
+																size: field.state.value?.['size'],
+																type: 'image/webp'
+															}
+														]
+													})}
+													onFilesChange={(files) => field.handleChange(files[0])}
+												/>
+												{isInvalid && <FieldError errors={field.state.meta.errors} />}
+											</Field>
 										)
 									}}
 								/>
@@ -275,7 +280,6 @@ const DishFormDialog: React.FC = () => {
 										}}
 									/>
 								</div>
-
 								<form.Field
 									name='is_featured'
 									children={(field) => {

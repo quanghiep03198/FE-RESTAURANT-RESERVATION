@@ -23,10 +23,12 @@ const DishList = () => {
 	const filteredData = useMemo(() => {
 		if (!Array.isArray(data)) return []
 
-		let _data = data.map((item) => {
-			item.dishes = item.dishes.filter((dish) => dish.is_active)
-			return item
-		})
+		let _data = data
+			.filter((item) => item.is_active)
+			.map((item) => {
+				item.dishes = item.dishes.filter((dish) => dish.is_active)
+				return item
+			})
 
 		if (filterValues.category) _data = _data.filter((item) => item.slug === filterValues.category)
 

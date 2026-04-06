@@ -68,23 +68,25 @@ const DishFilterSidebar: React.FC = () => {
 									</SidebarMenuBadge>
 								</SidebarMenuButton>
 								{Array.isArray(categories) &&
-									categories.map((category) => (
-										<SidebarMenuItem key={category.id}>
-											<SidebarMenuItem>
-												<SidebarMenuButton
-													onClick={() =>
-														setFilterValues((prev) => ({ ...prev, category: category.slug }))
-													}>
-													{category.name}
-												</SidebarMenuButton>
-												<SidebarMenuBadge
-													aria-current={filterValues.category === category.slug}
-													className='opacity-0 transition-opacity duration-100 aria-current:opacity-100'>
-													<Icon name='Check' size={12} />
-												</SidebarMenuBadge>
+									categories
+										.filter((cate) => cate.is_active)
+										.map((category) => (
+											<SidebarMenuItem key={category.id}>
+												<SidebarMenuItem>
+													<SidebarMenuButton
+														onClick={() =>
+															setFilterValues((prev) => ({ ...prev, category: category.slug }))
+														}>
+														{category.name}
+													</SidebarMenuButton>
+													<SidebarMenuBadge
+														aria-current={filterValues.category === category.slug}
+														className='opacity-0 transition-opacity duration-100 aria-current:opacity-100'>
+														<Icon name='Check' size={12} />
+													</SidebarMenuBadge>
+												</SidebarMenuItem>
 											</SidebarMenuItem>
-										</SidebarMenuItem>
-									))}
+										))}
 							</>
 						)}
 					</SidebarMenu>

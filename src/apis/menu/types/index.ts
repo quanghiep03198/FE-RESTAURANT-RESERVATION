@@ -1,3 +1,4 @@
+import type { DayInWeek } from '@/common/constants/enums'
 import type { ComboTag } from '../constants'
 
 export interface ICategory extends IBaseEntity {
@@ -35,7 +36,7 @@ export interface ICombo extends IBaseEntity {
 	selling_price: number
 	dishes: Array<IDish & { pivot: { combo_id: number; dish_id: number; quantity: number } }>
 	tag: ComboTag
-	days_in_week: Array<TDayInWeek> // * Ngày áp dụng trong tuần
+	days_in_week: Array<DayInWeek> // * Ngày áp dụng trong tuần
 	start_time: TTime
 	end_time: TTime
 	start_at: Date

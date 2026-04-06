@@ -1,18 +1,32 @@
-import { useCreateOrUpdateCombo } from '@/apis/menu/hooks/use-combo-request'
-import { useGetDishesQuery } from '@/apis/menu/hooks/use-dish-request'
+import { useGetCategoriesQuery } from '@/apis/menu/hooks/use-category-request'
+import { useCreateOrUpdateComboMutation } from '@/apis/menu/hooks/use-combo-request'
+import type { TComboFormValues } from '@/apis/menu/schemas/base-combo.schema'
 import { createComboSchema, type TCreateComboSchema } from '@/apis/menu/schemas/create-combo.schema'
 import { updateComboSchema, type TUpdateComboSchema } from '@/apis/menu/schemas/update-combo.schema.ts'
 import type { ICombo, IDish } from '@/apis/menu/types'
 import { CommonActions, DayInWeek } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/utils/format-currency'
-import { formatDayInWeek, formatStreakDaysInWeek, formatTime } from '@/common/utils/format-time'
+import { formatDayInWeek, formatStreakDaysInWeek } from '@/common/utils/format-date-time'
+import { getStorageUrl } from '@/common/utils/get-storage-url'
 import { usePageContext } from '@/contexts/event-context'
 import { useForm } from '@tanstack/react-form'
-import { useRef, useState } from 'react'
+import { omit, pick } from 'lodash-es'
+import { Fragment, useMemo, useRef, useState } from 'react'
 import { GallaryUpload } from '../customs/gallary-upload'
 import Image from '../shared/image'
 import { Button } from '../ui/button'
-import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from '../ui/combobox'
+import {
+	Combobox,
+	ComboboxCollection,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxGroup,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxLabel,
+	ComboboxList,
+	ComboboxSeparator
+} from '../ui/combobox'
 import { DateRangePicker } from '../ui/date-range-picker'
 import { Dialog, DialogClose, DialogContent, DialogFooter } from '../ui/dialog'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '../ui/empty'
@@ -41,8 +55,8 @@ const ComboFormDialog: React.FC = () => {
 	const [action, setAction] = useState<CommonActions.CREATE | CommonActions.UPDATE | null>(null)
 	const [open, setOpen] = useState<boolean>(!!action)
 	const formSchemaRef = useRef<TCreateComboSchema | TUpdateComboSchema | undefined>(undefined)
-	const mutation = useCreateOrUpdateCombo(action ?? CommonActions.CREATE)
-	const { data: dishes, isLoading } = useGetDishesQuery()
+	const mutation = useCreateOrUpdateComboMutation(action ?? CommonActions.CREATE)
+	const { data: categories, isLoading } = useGetCategoriesQuery()
 	const dayOptions = Object.values(DayInWeek).map((day) => ({
 		label: formatDayInWeek(day),
 		value: day
@@ -56,7 +70,7 @@ const ComboFormDialog: React.FC = () => {
 			combo_image: null,
 			remark: '',
 			// * Thời gian áp dụng chương trình cho Combo
-			promotion_validity_dates: null,
+			period: null,
 			// * Thời gian mở bán Combo trong tuần
 			days_in_week: Object.values(DayInWeek),
 			start_time: '07:00',
@@ -64,15 +78,26 @@ const ComboFormDialog: React.FC = () => {
 			max_use_times: 100,
 			dishes: []
 		},
+		onSubmitInvalid: ({ value }) => {
+			console.log('value', value)
+		},
 		onSubmit: async ({ value }) => {
-			const payload = {
-				...value,
-				combo_image: value.combo_image.file
-			}
-			console.log('submitted payload', payload)
+			console.log('value', value)
 
-			// if (typeof mutation?.mutateAsync !== 'function') return
-			// await mutation.mutateAsync(payload)
+			const payload = omit(
+				{
+					...value,
+					combo_image: value.combo_image.file,
+					dishes: value.dishes.map((item) => ({ dish_slug: item.dish.slug, quantity: item.quantity })),
+					...(value.period &&
+						value.period?.from &&
+						value.period?.to && { start_at: value.period.from, end_at: value.period.to })
+				},
+				['period']
+			) as TComboFormValues
+
+			if (typeof mutation?.mutateAsync !== 'function') return
+			await mutation.mutateAsync(payload as any)
 			setOpen(false)
 		},
 		validators: { onSubmit: formSchemaRef.current as any }
@@ -85,11 +110,16 @@ const ComboFormDialog: React.FC = () => {
 		if (e.action === CommonActions.CREATE) {
 			formSchemaRef.current = createComboSchema
 		} else {
+			console.log(e)
 			form.reset(
 				{
 					...e.payload,
-					start_time: formatTime(e.payload.start_time),
-					end_time: formatTime(e.payload.end_time)
+					dishes: e.payload.dishes.map((dish) => ({
+						dish: pick(dish, ['slug', 'name', 'image', 'price']),
+						quantity: dish.pivot.quantity
+					})),
+					...(e.payload.start_at &&
+						e.payload.end_at && { period: { from: e.payload.start_at, to: e.payload.end_at } })
 				} as any,
 				{
 					keepDefaultValues: true
@@ -98,6 +128,27 @@ const ComboFormDialog: React.FC = () => {
 			formSchemaRef.current = updateComboSchema
 		}
 	})
+
+	const categoryOptions = useMemo(
+		() =>
+			Array.isArray(categories)
+				? categories
+						.filter((category) => category.dishes.length > 0)
+						.map((category) => ({
+							name: category.name,
+							items: category.dishes.map((dish) => ({
+								...dish,
+								...(dish.image && {
+									image: {
+										...dish.image,
+										url: getStorageUrl(dish.image.url)
+									} satisfies IImageMetadata
+								})
+							}))
+						}))
+				: [],
+		[categories]
+	)
 
 	const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault()
@@ -127,7 +178,7 @@ const ComboFormDialog: React.FC = () => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
 											<Field>
-												<FieldLabel>Tên Combo</FieldLabel>
+												<FieldLabel aria-required>Tên Combo</FieldLabel>
 												<Input
 													id={field.name}
 													name={field.name}
@@ -148,7 +199,7 @@ const ComboFormDialog: React.FC = () => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
 											<Field>
-												<FieldLabel>Giá Combo</FieldLabel>
+												<FieldLabel aria-required>Giá Combo</FieldLabel>
 												<Input
 													id={field.name}
 													name={field.name}
@@ -167,12 +218,36 @@ const ComboFormDialog: React.FC = () => {
 									}}
 								/>
 								<form.Field
+									name='max_use_times'
+									children={(field) => {
+										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+										return (
+											<Field>
+												<FieldLabel>Số lượng bán ra</FieldLabel>
+												<Input
+													id={field.name}
+													name={field.name}
+													value={field.state.value ?? ''}
+													onBlur={field.handleBlur}
+													onChange={(e) => field.handleChange(+e.target.value || null)}
+													placeholder='Số lượng giới hạn bán ra cho khách hàng'
+													type='number'
+												/>
+												<FieldDescription>
+													Bỏ qua nếu không giới hạn số lượng bán ra cho Combo
+												</FieldDescription>
+												{isInvalid && <FieldError errors={field.state.meta.errors} />}
+											</Field>
+										)
+									}}
+								/>
+								<form.Field
 									name='tag'
 									children={(field) => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
 											<Field>
-												<FieldLabel>Tag Combo</FieldLabel>
+												<FieldLabel aria-required>Tag Combo</FieldLabel>
 												<Input
 													id={field.name}
 													name={field.name}
@@ -219,22 +294,27 @@ const ComboFormDialog: React.FC = () => {
 								<form.Field
 									name='combo_image'
 									children={(field) => {
+										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
-											<GallaryUpload
-												multiple={false}
-												{...(field.state.value && {
-													defaultImages: [
-														{
-															name: field.state.value?.['name'],
-															id: field.state.value?.['name'],
-															url: field.state.value?.['url'],
-															size: field.state.value?.['size'],
-															type: 'image/webp'
-														}
-													]
-												})}
-												onFilesChange={(files) => field.handleChange(files[0])}
-											/>
+											<Field>
+												<FieldLabel aria-required>Hình ảnh</FieldLabel>
+												<GallaryUpload
+													multiple={false}
+													{...(field.state.value && {
+														defaultImages: [
+															{
+																name: field.state.value?.['name'],
+																id: field.state.value?.['name'],
+																url: field.state.value?.['url'],
+																size: field.state.value?.['size'],
+																type: 'image/webp'
+															}
+														]
+													})}
+													onFilesChange={(files) => field.handleChange(files[0])}
+												/>
+												{isInvalid && <FieldError errors={field.state.meta.errors} />}
+											</Field>
 										)
 									}}
 								/>
@@ -243,72 +323,123 @@ const ComboFormDialog: React.FC = () => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
 											<Field>
-												<FieldLabel>Món ăn trong Combo</FieldLabel>
+												<FieldLabel aria-required>Món ăn trong Combo</FieldLabel>
 												{field.state.value.length > 0 ? (
 													<FieldContent className='space-y-6 rounded-lg border border-dashed p-4'>
 														<div className='grid grid-cols-[1fr_1fr_auto] gap-x-4 gap-y-2'>
 															{field.state.value.map((_, i) => {
 																return (
-																	<>
-																		<form.Field key={i} name={`dishes[${i}].dish_slug`}>
+																	<Fragment key={i}>
+																		<form.Field name={`dishes[${i}].slug`}>
 																			{(subField) => {
+																				const isInvalid =
+																					subField.state.meta.isTouched &&
+																					!subField.state.meta.isValid
 																				return (
-																					<Combobox
-																						items={dishes}
-																						value={subField.state.value as IDish}
-																						onValueChange={subField.handleChange}
-																						itemToStringLabel={(itemValue: IDish) =>
-																							itemValue.name
-																						}
-																						itemToStringValue={(itemValue: IDish) =>
-																							itemValue.slug
-																						}>
-																						<ComboboxInput
-																							placeholder='Chọn một món ăn'
-																							showClear
-																						/>
-																						<ComboboxContent>
-																							<ComboboxEmpty>
-																								Không có kết quả phù hợp
-																							</ComboboxEmpty>
-																							<ComboboxList>
-																								{(item: IDish) => (
-																									<ComboboxItem key={item.slug} value={item}>
-																										<Item>
-																											<ItemMedia variant='image'>
-																												<Image
-																													src={item.image?.url}
-																													alt={item.name}
-																												/>
-																											</ItemMedia>
-																											<ItemContent>
-																												<ItemTitle className='line-clamp-1'>
-																													{item.name}
-																												</ItemTitle>
-																												<ItemDescription>
-																													{formatCurrency(item.price)}
-																												</ItemDescription>
-																											</ItemContent>
-																										</Item>
-																									</ComboboxItem>
-																								)}
-																							</ComboboxList>
-																						</ComboboxContent>
-																					</Combobox>
+																					<Field>
+																						<Combobox
+																							items={categoryOptions}
+																							value={subField.state.value as any}
+																							onValueChange={(value) =>
+																								subField.handleChange(value)
+																							}
+																							itemToStringLabel={(itemValue: IDish) =>
+																								itemValue.name
+																							}
+																							itemToStringValue={(itemValue: IDish) =>
+																								itemValue.slug
+																							}
+																							isItemEqualToValue={(itemValues, value) =>
+																								itemValues.slug === value.slug
+																							}>
+																							<ComboboxInput
+																								placeholder='Chọn một món ăn'
+																								showClear
+																							/>
+																							<ComboboxContent>
+																								<ComboboxEmpty>
+																									Không có kết quả phù hợp
+																								</ComboboxEmpty>
+																								<ComboboxList className='space-y-0.5'>
+																									{(
+																										category: {
+																											name: string
+																											items: IDish[]
+																										},
+																										index: number
+																									) => (
+																										<ComboboxGroup
+																											key={category.name}
+																											items={category.items}>
+																											<ComboboxLabel>
+																												{category.name}
+																											</ComboboxLabel>
+																											<ComboboxCollection
+																												key={category.name}>
+																												{(dish: IDish) => {
+																													return (
+																														<ComboboxItem
+																															key={dish.slug}
+																															value={dish}>
+																															<Item className='p-0'>
+																																<ItemMedia variant='image'>
+																																	<Image
+																																		src={
+																																			dish.image?.url
+																																		}
+																																		alt={dish.name}
+																																		className='size-20'
+																																	/>
+																																</ItemMedia>
+																																<ItemContent>
+																																	<ItemTitle className='line-clamp-1'>
+																																		{dish.name}
+																																	</ItemTitle>
+																																	<ItemDescription>
+																																		{formatCurrency(
+																																			dish.price
+																																		)}
+																																	</ItemDescription>
+																																</ItemContent>
+																															</Item>
+																														</ComboboxItem>
+																													)
+																												}}
+																											</ComboboxCollection>
+																											{index < categories.length - 1 && (
+																												<ComboboxSeparator />
+																											)}
+																										</ComboboxGroup>
+																									)}
+																								</ComboboxList>
+																							</ComboboxContent>
+																						</Combobox>
+																						{isInvalid && (
+																							<FieldError errors={subField.state.meta.errors} />
+																						)}
+																					</Field>
 																				)
 																			}}
 																		</form.Field>
-																		<form.Field key={i} name={`dishes[${i}].quantity`}>
+																		<form.Field name={`dishes[${i}].quantity`}>
 																			{(subField) => {
+																				const isInvalid =
+																					subField.state.meta.isTouched &&
+																					!subField.state.meta.isValid
 																				return (
-																					<Input
-																						value={subField.state.value as string}
-																						onChange={(e) =>
-																							subField.handleChange(e.target.value)
-																						}
-																						type='number'
-																						placeholder='Số lượng'
-																					/>
+																					<Field>
+																						<Input
+																							value={subField.state.value as string}
+																							onChange={(e) =>
+																								subField.handleChange(+e.target.value)
+																							}
+																							type='number'
+																							placeholder='Số lượng'
+																						/>{' '}
+																						{isInvalid && (
+																							<FieldError errors={subField.state.meta.errors} />
+																						)}
+																					</Field>
 																				)
 																			}}
 																		</form.Field>
@@ -319,7 +450,7 @@ const ComboFormDialog: React.FC = () => {
 																			onClick={() => field.removeValue(i)}>
 																			<Icon name='X' />
 																		</Button>
-																	</>
+																	</Fragment>
 																)
 															})}
 														</div>
@@ -327,7 +458,7 @@ const ComboFormDialog: React.FC = () => {
 														<Button
 															type='button'
 															className='w-fit! self-center'
-															onClick={() => field.pushValue({ name: '', age: 0 })}>
+															onClick={() => field.pushValue({ dish_slug: null, quantity: 1 })}>
 															<Icon name='Plus' /> Thêm món
 														</Button>
 													</FieldContent>
@@ -347,7 +478,7 @@ const ComboFormDialog: React.FC = () => {
 															<Button
 																type='button'
 																className='w-fit!'
-																onClick={() => field.pushValue({ name: '', age: 0 })}>
+																onClick={() => field.pushValue({ dish_slug: null, quantity: 1 })}>
 																<Icon name='Plus' /> Thêm món
 															</Button>
 														</EmptyContent>
@@ -360,7 +491,7 @@ const ComboFormDialog: React.FC = () => {
 								</form.Field>
 								<div className='grid gap-x-4 gap-y-6 xl:grid-cols-2'>
 									<form.Field
-										name='promotion_validity_dates'
+										name='period'
 										children={(field) => {
 											const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 											return (
@@ -368,8 +499,8 @@ const ComboFormDialog: React.FC = () => {
 													<FieldLabel>Thời gian áp dụng chương trình</FieldLabel>
 													<DateRangePicker
 														triggerProps={{
-															'aria-invalid': isInvalid,
-															'aria-describedby': isInvalid ? `${field.name}-error` : undefined
+															className: 'max-w-full',
+															'aria-invalid': isInvalid
 														}}
 														calendarProps={{
 															selected: field.state.value,

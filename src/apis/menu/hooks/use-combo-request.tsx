@@ -23,18 +23,20 @@ export const getCombosQueryOptions = () =>
 		queryFn: ComboService.getAll,
 		select: (response) =>
 			Array.isArray(response.metadata)
-				? response.metadata.map((item) => ({
-						...item,
-						...(item.combo_image &&
-							({
-								combo_image: {
-									...item.combo_image,
-									url: getStorageUrl(item.combo_image.url)
-								} satisfies IImageMetadata
-							} satisfies Pick<ICombo, 'combo_image'>)),
-						start_time: format(parse(item.start_time, 'HH:mm:ss', new Date()), 'HH:mm') as TTime,
-						end_time: format(parse(item.end_time, 'HH:mm:ss', new Date()), 'HH:mm') as TTime
-					}))
+				? response.metadata
+						.filter((item) => item.is_active)
+						.map((item) => ({
+							...item,
+							...(item.combo_image &&
+								({
+									combo_image: {
+										...item.combo_image,
+										url: getStorageUrl(item.combo_image.url)
+									} satisfies IImageMetadata
+								} satisfies Pick<ICombo, 'combo_image'>)),
+							start_time: format(parse(item.start_time, 'HH:mm:ss', new Date()), 'HH:mm') as TTime,
+							end_time: format(parse(item.end_time, 'HH:mm:ss', new Date()), 'HH:mm') as TTime
+						}))
 				: []
 	})
 
@@ -42,7 +44,7 @@ export const useGetCombosQuery = () => {
 	return useSuspenseQuery(getCombosQueryOptions())
 }
 
-export const useCreateOrUpdateCombo = (action: CommonActions.CREATE | CommonActions.UPDATE) => {
+export const useCreateOrUpdateComboMutation = (action: CommonActions.CREATE | CommonActions.UPDATE) => {
 	const toastRef = useRef<string | number | null>(null)
 	const queryClient = useQueryClient()
 
@@ -83,5 +85,20 @@ export const useCreateOrUpdateCombo = (action: CommonActions.CREATE | CommonActi
 		onError: () => {
 			toast.error('Đã có lỗi xảy ra !', { id: toastRef.current })
 		}
+	})
+}
+
+export const useDeleteComboMutation = () => {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: ComboService.deleteOneBySlug,
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				predicate: (query) => query.queryKey.some((key) => key === GET_COMBO_QUERY_KEY)
+			})
+			return toast.success('Combo đã được xóa')
+		},
+		onError: () => toast.error('Đã có lỗi xảy ra!')
 	})
 }

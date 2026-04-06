@@ -19,9 +19,9 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 		},
 		{
 			title: 'Thống kê',
-			url: '/reservations',
+			url: '/analytics',
 			icon: 'ChartArea',
-			authorizedRoles: ['OWNER', 'MANAGER', 'CASHIER']
+			authorizedRoles: ['OWNER', 'MANAGER']
 		},
 		{
 			title: 'Quản lý thực đơn',

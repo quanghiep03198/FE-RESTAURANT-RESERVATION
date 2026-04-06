@@ -32,7 +32,7 @@ export function formatDayInWeek(day: TDayInWeek): string {
  * @example formatDaysInWeek(['T2', 'T4', 'T6']) // 'T2, T4, T6'
  * @example formatDaysInWeek(['T2', 'T3', 'T4', 'T5', 'T6']) // 'T2 - T6'
  */
-export function formatStreakDaysInWeek(days: DayInWeek[]): string {
+export function formatStreakDaysInWeek(days: DayInWeek[], minimal: boolean = false): string {
 	if (!days.length) return ''
 
 	const indices = [...new Set(days.map((d) => WEEKDAY_ORDER.indexOf(d)).filter((i) => i !== -1))]
@@ -53,10 +53,11 @@ export function formatStreakDaysInWeek(days: DayInWeek[]): string {
 	}
 
 	return groups
-		.map((group) =>
-			group.length > 1
-				? `${formatDayInWeek(WEEKDAY_ORDER[group[0]])} - ${formatDayInWeek(WEEKDAY_ORDER[group.at(-1)!])}`
-				: formatDayInWeek(WEEKDAY_ORDER[group[0]])
-		)
+		.map((group) => {
+			const startDay = minimal ? WEEKDAY_ORDER[group[0]] : formatDayInWeek(WEEKDAY_ORDER[group[0]])
+			const endDay = minimal ? WEEKDAY_ORDER[group.at(-1)!] : formatDayInWeek(WEEKDAY_ORDER[group.at(-1)!])
+			const day = minimal ? WEEKDAY_ORDER[group[0]] : formatDayInWeek(WEEKDAY_ORDER[group[0]])
+			return group.length > 1 ? `${startDay} - ${endDay}` : day
+		})
 		.join(', ')
 }

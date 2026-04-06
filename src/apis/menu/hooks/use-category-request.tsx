@@ -15,10 +15,12 @@ export const useGetCategoriesQuery = () => {
 		queryFn: CategoryService.getAll,
 		select: (response) =>
 			Array.isArray(response.metadata)
-				? response.metadata.map((item) => ({
-						...item,
-						total_dishes_qty: item.dishes.filter((item) => item.is_active).length
-					}))
+				? response.metadata
+						.filter((item) => item.is_active)
+						.map((item) => ({
+							...item,
+							total_dishes_qty: item.dishes.filter((item) => item.is_active).length
+						}))
 				: []
 	})
 }

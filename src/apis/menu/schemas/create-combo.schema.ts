@@ -2,31 +2,38 @@ import { isAfter, parse } from 'date-fns'
 import { type infer as Infer } from 'zod'
 import { baseComboSchema } from './base-combo.schema'
 
-export const createComboSchema = baseComboSchema
-	.superRefine((values, ctx) => {
-		const fromTime = parse(values.start_time, 'HH:mm', new Date())
-		const toTime = parse(values.end_time, 'HH:mm', new Date())
+export const createComboSchema = baseComboSchema.superRefine((values, ctx) => {
+	const fromTime = parse(values.start_time, 'HH:mm', new Date())
+	const toTime = parse(values.end_time, 'HH:mm', new Date())
 
-		if (!isAfter(toTime, fromTime)) {
-			ctx.addIssue({
-				code: 'custom',
-				path: ['end_time'],
-				message: 'Thời gian kết thúc bán trong ngày phải sau thời gian bắt đầu'
-			})
-		}
+	if (!(values.combo_image?.file instanceof File)) {
+		ctx.addIssue({
+			code: 'custom',
+			path: ['combo_image'],
+			message: 'Vui lòng chọn 1 ảnh'
+		})
+	}
 
-		// if (!isAfter(values.end_at, values.start_at))
-		// 	ctx.addIssue({
-		// 		code: 'custom',
-		// 		path: ['end_at'],
-		// 		message: 'Thời gian kết thúc mở bán phải lớn hơn thời gian bắt đầu'
-		// 	})
-	})
-	.transform((values) => ({
-		...values,
-		start_at: values.promotion_validity_dates.from,
-		end_at: values.promotion_validity_dates.to
-	}))
+	if (!isAfter(toTime, fromTime)) {
+		ctx.addIssue({
+			code: 'custom',
+			path: ['end_time'],
+			message: 'Thời gian kết thúc bán trong ngày phải sau thời gian bắt đầu'
+		})
+	}
+
+	const totalPrice = values.dishes.reduce((acc, curr) => acc + curr.dish.price * curr.quantity, 0)
+	if (values.combo_price > totalPrice)
+		ctx.addIssue({
+			code: 'too_big',
+			path: ['combo_price'],
+			fatal: true,
+			type: 'number',
+			maximum: totalPrice,
+			inclusive: true,
+			message: 'Giá bán không được vượt quá tổng giá các món trong Combo'
+		})
+})
 
 export type TCreateComboSchema = typeof createComboSchema
 
