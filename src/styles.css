@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Italianno&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
@@ -240,8 +241,10 @@ body,
 	}
 }
 
-.italianno-regular {
-	font-family: 'Italianno', cursive;
-	font-weight: 500;
+.sour-gummy {
+	font-family: 'Sour Gummy', sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 900;
 	font-style: normal;
+	font-variation-settings: 'wdth' 100;
 }

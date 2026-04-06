@@ -27,12 +27,12 @@ const DishCard: React.FC<{ data: IDish & { category_name: string } }> = ({ data 
 			className='relative mx-auto h-full w-full max-w-sm pt-0 [&:has(button[data-slot=dropdown-menu-trigger][aria-expanded=true])_picture:after]:bg-black/50'
 			title={data.name}>
 			<CardDropdownMenu data={data} />
-			<picture className='relative after:absolute after:inset-0 after:bg-transparent group-hover/card:after:bg-black/50'>
+			<picture className='relative after:absolute after:inset-0 after:bg-transparent after:duration-200 group-hover/card:after:bg-black/50'>
 				<Image
 					src={data.image?.url}
 					alt={data.name}
 					loading='lazy'
-					className='aspect-video h-48 w-full object-cover duration-200 ease-in-out'
+					className='aspect-video h-48 w-full object-contain duration-200 ease-in-out'
 				/>
 			</picture>
 			{data.is_new && (

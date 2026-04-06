@@ -11,6 +11,8 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 const FallbackIcon: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
 	<div
 		role='img'
+		aria-label='Image not available'
+		title={props['alt']}
 		className={cn('bg-muted/80 text-muted-foreground place-content-center place-items-center', className)}
 		{...props}>
 		<Icon name='Image' size={28} strokeWidth={1.5} />

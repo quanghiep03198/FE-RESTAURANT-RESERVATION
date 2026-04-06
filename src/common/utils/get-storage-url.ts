@@ -18,7 +18,5 @@ export function getStorageUrl(path: string | null | undefined): string {
 	// Production: prepend API base URL
 	const baseUrl = env('VITE_BASE_URL')?.replace(/\/$/, '') ?? ''
 
-	console.log('url', `${baseUrl}${normalizedPath}`)
-
 	return `${baseUrl}${normalizedPath}`
 }

@@ -10,7 +10,7 @@ import { formatDayInWeek, formatStreakDaysInWeek } from '@/common/utils/format-d
 import { getStorageUrl } from '@/common/utils/get-storage-url'
 import { usePageContext } from '@/contexts/event-context'
 import { useForm } from '@tanstack/react-form'
-import { omit, pick } from 'lodash-es'
+import { omit } from 'lodash-es'
 import { Fragment, useMemo, useRef, useState } from 'react'
 import { GallaryUpload } from '../customs/gallary-upload'
 import Image from '../shared/image'
@@ -38,6 +38,7 @@ import {
 	FieldGroup,
 	FieldLabel,
 	FieldLegend,
+	FieldSeparator,
 	FieldSet
 } from '../ui/field'
 import { Icon } from '../ui/icon'
@@ -45,6 +46,7 @@ import { Input } from '../ui/input'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '../ui/item'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Textarea } from '../ui/textarea'
+import { Typography } from '../ui/typography'
 
 export type EventEmitterValue =
 	| { action: CommonActions.CREATE; payload: { category_id: number } }
@@ -61,6 +63,7 @@ const ComboFormDialog: React.FC = () => {
 		label: formatDayInWeek(day),
 		value: day
 	}))
+	const [totalPrice, setTotalPrice] = useState<number>(0)
 
 	const form = useForm({
 		defaultValues: {
@@ -78,8 +81,17 @@ const ComboFormDialog: React.FC = () => {
 			max_use_times: 100,
 			dishes: []
 		},
-		onSubmitInvalid: ({ value }) => {
-			console.log('value', value)
+
+		listeners: {
+			onChangeDebounceMs: 200,
+			onChange: ({ formApi }) => {
+				const currentComboDishes = formApi.getFieldValue('dishes')
+				const total = currentComboDishes.reduce((acc, curr) => {
+					if (!curr.dish || !curr.quantity) return acc
+					return acc + curr.dish.price * curr.quantity
+				}, 0)
+				setTotalPrice(total)
+			}
 		},
 		onSubmit: async ({ value }) => {
 			const payload = omit(
@@ -108,20 +120,11 @@ const ComboFormDialog: React.FC = () => {
 		if (e.action === CommonActions.CREATE) {
 			formSchemaRef.current = createComboSchema
 		} else {
-			console.log({
-				...e.payload,
-				dishes: e.payload.dishes.map((dish) => ({
-					dish: pick(dish, ['slug', 'price']),
-					quantity: dish.pivot.quantity
-				})),
-				...(e.payload.start_at &&
-					e.payload.end_at && { period: { from: e.payload.start_at, to: e.payload.end_at } })
-			})
 			form.reset(
 				{
 					...e.payload,
 					dishes: e.payload.dishes.map((dish) => ({
-						dish: pick(dish, ['slug', 'price']),
+						dish: dish,
 						quantity: dish.pivot.quantity
 					})),
 					...(e.payload.start_at &&
@@ -331,14 +334,13 @@ const ComboFormDialog: React.FC = () => {
 											<Field>
 												<FieldLabel aria-required>Món ăn trong Combo</FieldLabel>
 												{field.state.value.length > 0 ? (
-													<FieldContent className='space-y-6 rounded-lg border border-dashed p-4'>
+													<FieldContent className='flex flex-col gap-y-6 rounded-lg border border-dashed p-4'>
 														<div className='grid grid-cols-[1fr_1fr_auto] gap-x-4 gap-y-2'>
 															{field.state.value.map((_, i) => {
 																return (
 																	<Fragment key={i}>
 																		<form.Field name={`dishes[${i}].dish`}>
 																			{(subField) => {
-																				console.log(subField.state.value)
 																				const isInvalid =
 																					subField.state.meta.isTouched &&
 																					!subField.state.meta.isValid
@@ -347,19 +349,15 @@ const ComboFormDialog: React.FC = () => {
 																						<Combobox
 																							items={categoryOptions}
 																							value={subField.state.value as any}
-																							onValueChange={(value) =>
-																								subField.handleChange(value)
-																							}
+																							onValueChange={subField.handleChange}
 																							itemToStringLabel={(itemValue: IDish) =>
 																								itemValue.name
 																							}
 																							itemToStringValue={(itemValue: IDish) =>
 																								itemValue.slug
 																							}
-																							isItemEqualToValue={(itemValues, value) => {
-																								console.log('itemValues', itemValues)
-																								console.log('value', value)
-																								return itemValues.slug === value.slug
+																							isItemEqualToValue={(itemValue, value) => {
+																								return itemValue.slug === value.slug
 																							}}>
 																							<ComboboxInput
 																								placeholder='Chọn một món ăn'
@@ -463,13 +461,19 @@ const ComboFormDialog: React.FC = () => {
 																)
 															})}
 														</div>
-
 														<Button
 															type='button'
 															className='w-fit! self-center'
 															onClick={() => field.pushValue({ dish_slug: null, quantity: 1 })}>
 															<Icon name='Plus' /> Thêm món
 														</Button>
+														<FieldSeparator />
+														<div className='bg-accent text-accent-foreground col-span-full grid grid-cols-[1fr_1fr_auto] rounded-lg p-4'>
+															<Typography className='font-medium'>Tổng tiền</Typography>
+															<Typography className='col-span-2 font-medium'>
+																{formatCurrency(totalPrice)}
+															</Typography>
+														</div>
 													</FieldContent>
 												) : (
 													<Empty className='border border-dashed'>

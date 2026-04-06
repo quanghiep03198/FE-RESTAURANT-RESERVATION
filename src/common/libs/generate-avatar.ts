@@ -10,7 +10,7 @@ type TAvatarGenOptions = {
 }
 
 export default function generateAvatar({
-	background = '#525252',
+	background = '#24335c',
 	color = '#fafafa',
 	length = 1,
 	bold = true,

@@ -15,7 +15,7 @@ import type { TUpdateComboValues } from '../schemas/update-combo.schema.ts'
 import { ComboService } from '../services'
 import type { ICombo } from '../types'
 
-export const GET_COMBO_QUERY_KEY = 'COMBO'
+export const GET_COMBO_QUERY_KEY = 'COMBOS'
 
 export const getCombosQueryOptions = () =>
 	queryOptions({

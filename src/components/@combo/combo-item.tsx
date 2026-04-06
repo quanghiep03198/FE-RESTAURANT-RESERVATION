@@ -12,7 +12,6 @@ import {
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { Icon } from '../ui/icon'
@@ -69,8 +68,6 @@ const ItemDropdownMenu: React.FC<{ data: ICombo & { start_time: string; end_time
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='w-40'>
 				<DropdownMenuGroup>
-					<DropdownMenuItem>Đưa vào kinh doanh</DropdownMenuItem>
-					<DropdownMenuSeparator />
 					<DropdownMenuItem onClick={() => event$.emit({ action: CommonActions.UPDATE, payload: data })}>
 						Chỉnh sửa
 					</DropdownMenuItem>

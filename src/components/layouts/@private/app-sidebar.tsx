@@ -41,18 +41,13 @@ const AppSidebar: React.FC = () => {
 
 	return (
 		<Sidebar variant='inset' side='left' collapsible={isMobile ? 'offcanvas' : 'none'} className='h-screen border-r'>
-			<SidebarHeader>
-				<div className='flex items-center gap-2'>
-					<Icon name='ChefHat' size={44} strokeWidth={1} />
-					<div>
-						<Typography variant='h4' className='leading-none'>
-							Foodholic
-						</Typography>
-						<Typography variant='small' color='muted' className='text-xs'>
-							Hệ thống quản lý Đặt bàn
-						</Typography>
-					</div>
-				</div>
+			<SidebarHeader className='px-4 py-6'>
+				<Typography variant='h3' className='text-primary sour-gummy leading-none tracking-wide'>
+					Jolly Fast Food
+				</Typography>
+				<Typography variant='small' color='muted' className='text-xs'>
+					Hệ thống quản lý Đặt bàn
+				</Typography>
 			</SidebarHeader>
 			<SidebarContent className='overflow-x-hidden'>
 				<SidebarGroup>
@@ -154,7 +149,7 @@ const SidebarMenuLink: React.FC<NavLinkProps> = ({ url, title, icon, viewTransit
 						activeProps={{
 							className: 'text-primary hover:text-primary bg-primary/10 '
 						}}>
-						<Icon name={icon} size={18} />
+						<Icon name={icon} size={20} />
 						<SidebarMenuTitle>{title}</SidebarMenuTitle>
 						{!isLinkActive && <Icon name='Lock' size={14} className='stroke-muted-foreground ml-auto size-3.5' />}
 					</Link>

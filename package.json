@@ -57,6 +57,7 @@
 		"zustand": "^5.0.12"
 	},
 	"devDependencies": {
+		"@faker-js/faker": "^10.4.0",
 		"@tailwindcss/typography": "^0.5.16",
 		"@tanstack/devtools-vite": "latest",
 		"@tanstack/react-query-devtools": "^5.95.2",

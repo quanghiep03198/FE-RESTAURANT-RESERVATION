@@ -85,7 +85,7 @@ const DishList = () => {
 		<div className='@container space-y-10'>
 			{Array.isArray(filteredData) && filteredData.length > 0 ? (
 				filteredData.map((item) => (
-					<div className='group max-w-(--outlet-wrapper-width) space-y-3'>
+					<div className='group/card-group max-w-(--outlet-wrapper-width) space-y-3'>
 						<div className='flex items-center justify-between gap-x-2'>
 							<Typography variant='h3' className='inline-flex items-center gap-x-2' id={item.slug}>
 								<Icon name='Link' /> {item.name} <Badge>{item.dishes.length} món</Badge>
@@ -96,9 +96,9 @@ const DishList = () => {
 									triggerProps={{
 										render: (
 											<Button
-												variant='outline'
+												variant='default'
 												size='icon'
-												className='bg-background rounded-full opacity-0 transition-opacity duration-200 ease-linear group-hover:opacity-100'
+												className='bg-background rounded-full opacity-0 transition-opacity duration-200 ease-linear group-hover/card-group:opacity-100'
 												onClick={() => handleOpenCreateDishDialog(item.id, item.name)}>
 												<Icon name='Plus' />
 											</Button>
