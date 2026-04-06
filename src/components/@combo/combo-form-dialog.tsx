@@ -82,8 +82,6 @@ const ComboFormDialog: React.FC = () => {
 			console.log('value', value)
 		},
 		onSubmit: async ({ value }) => {
-			console.log('value', value)
-
 			const payload = omit(
 				{
 					...value,
@@ -110,12 +108,20 @@ const ComboFormDialog: React.FC = () => {
 		if (e.action === CommonActions.CREATE) {
 			formSchemaRef.current = createComboSchema
 		} else {
-			console.log(e)
+			console.log({
+				...e.payload,
+				dishes: e.payload.dishes.map((dish) => ({
+					dish: pick(dish, ['slug', 'price']),
+					quantity: dish.pivot.quantity
+				})),
+				...(e.payload.start_at &&
+					e.payload.end_at && { period: { from: e.payload.start_at, to: e.payload.end_at } })
+			})
 			form.reset(
 				{
 					...e.payload,
 					dishes: e.payload.dishes.map((dish) => ({
-						dish: pick(dish, ['slug', 'name', 'image', 'price']),
+						dish: pick(dish, ['slug', 'price']),
 						quantity: dish.pivot.quantity
 					})),
 					...(e.payload.start_at &&
@@ -330,8 +336,9 @@ const ComboFormDialog: React.FC = () => {
 															{field.state.value.map((_, i) => {
 																return (
 																	<Fragment key={i}>
-																		<form.Field name={`dishes[${i}].slug`}>
+																		<form.Field name={`dishes[${i}].dish`}>
 																			{(subField) => {
+																				console.log(subField.state.value)
 																				const isInvalid =
 																					subField.state.meta.isTouched &&
 																					!subField.state.meta.isValid
@@ -349,9 +356,11 @@ const ComboFormDialog: React.FC = () => {
 																							itemToStringValue={(itemValue: IDish) =>
 																								itemValue.slug
 																							}
-																							isItemEqualToValue={(itemValues, value) =>
-																								itemValues.slug === value.slug
-																							}>
+																							isItemEqualToValue={(itemValues, value) => {
+																								console.log('itemValues', itemValues)
+																								console.log('value', value)
+																								return itemValues.slug === value.slug
+																							}}>
 																							<ComboboxInput
 																								placeholder='Chọn một món ăn'
 																								showClear
