@@ -5,9 +5,9 @@ import { typographyVariants } from '@/components/ui/typography'
 import { Link } from '@tanstack/react-router'
 import { MenuIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import MenuDropdown from './menu-dropdown'
-import type { NavigationSection } from './menu-navigation'
-import MenuNavigation from './menu-navigation'
+import MenuDropdown from '../../@landing/menu-dropdown'
+import type { NavigationSection } from '../../@landing/menu-navigation'
+import MenuNavigation from '../../@landing/menu-navigation'
 
 // Active section hook based on which section is closest to the top of the
 // viewport (accounts for header offset). This is more deterministic than

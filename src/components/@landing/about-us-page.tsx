@@ -46,7 +46,7 @@ const AboutUs = ({ stats }: { stats: Stat[] }) => {
 					/>
 
 					{/* Stats card overlapping the video section */}
-					<div className='bg-background grid gap-10 rounded-lg border p-8 sm:max-lg:grid-cols-2 lg:absolute lg:-bottom-25 lg:left-1/2 lg:w-3/4 lg:-translate-x-1/2 lg:grid-cols-4 lg:px-10'>
+					<div className='bg-background grid gap-10 rounded-lg border p-8 sm:max-lg:grid-cols-2 lg:absolute lg:-bottom-25 lg:left-1/2 lg:w-4/5 lg:-translate-x-1/2 lg:grid-cols-4 lg:px-10'>
 						{stats.map((stat, index) => (
 							<div key={index} className='flex flex-col items-center justify-center gap-2.5 text-center'>
 								<div className='flex size-7 items-center justify-center [&>svg]:size-7'>

@@ -1,4 +1,4 @@
-import type { TestimonialItem } from '@/components/layouts/@public/testimonials-section'
+import type { TestimonialItem } from '@/components/@landing/testimonials-section'
 
 export const testimonials: TestimonialItem[] = [
 	{

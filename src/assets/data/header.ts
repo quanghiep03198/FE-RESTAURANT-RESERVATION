@@ -1,4 +1,4 @@
-import type { NavigationSection } from '@/components/layouts/@public/menu-dropdown'
+import type { NavigationSection } from '@/components/@landing/menu-dropdown'
 
 export const navigationData: NavigationSection[] = [
 	{
