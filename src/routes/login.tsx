@@ -9,7 +9,7 @@ export const Route = createFileRoute('/login')({
 	beforeLoad: ({ context: { isAuthenticated } }) => {
 		if (isAuthenticated)
 			throw redirect({
-				to: '/tables-map'
+				to: '/table-map'
 			})
 	}
 })
@@ -18,7 +18,7 @@ function RouteComponent() {
 	const { isAuthenticated } = useAuth()
 
 	if (isAuthenticated) {
-		return <Navigate to='/tables-map' />
+		return <Navigate to='/table-map' />
 	}
 
 	return (

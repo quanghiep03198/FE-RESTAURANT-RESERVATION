@@ -17,12 +17,7 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 			icon: 'Grid2x2Check',
 			authorizedRoles: ['OWNER', 'MANAGER', 'CASHIER', 'WAITER']
 		},
-		{
-			title: 'Thống kê',
-			url: '/analytics',
-			icon: 'ChartColumnBig',
-			authorizedRoles: ['OWNER', 'MANAGER']
-		},
+
 		{
 			title: 'Quản lý thực đơn',
 			icon: 'UtensilsCrossed',
@@ -52,6 +47,12 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 		}
 	],
 	administration: [
+		{
+			title: 'Thống kê',
+			url: '/analytics',
+			icon: 'ChartColumnBig',
+			authorizedRoles: ['OWNER', 'MANAGER']
+		},
 		{
 			title: 'Quản lý nhân viên',
 			url: '/users',

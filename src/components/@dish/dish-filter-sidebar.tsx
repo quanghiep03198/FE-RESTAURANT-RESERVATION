@@ -47,7 +47,9 @@ const DishFilterSidebar: React.FC = () => {
 	return (
 		<Sidebar side='right' collapsible='offcanvas' className='h-screen'>
 			<SidebarHeader className='px-4'>
-				<Typography className='font-medium'>Tìm kiếm nâng cao</Typography>
+				<Typography className='font-medium' color='primary'>
+					Tìm kiếm nâng cao
+				</Typography>
 			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>
@@ -63,7 +65,7 @@ const DishFilterSidebar: React.FC = () => {
 									Tất cả
 									<SidebarMenuBadge
 										aria-current={filterValues.category === null}
-										className='opacity-0 transition-opacity duration-100 aria-current:opacity-100'>
+										className='aria-current:text-primary opacity-0 transition-opacity duration-100 aria-current:opacity-100'>
 										<Icon name='Check' size={12} />
 									</SidebarMenuBadge>
 								</SidebarMenuButton>
@@ -74,6 +76,8 @@ const DishFilterSidebar: React.FC = () => {
 											<SidebarMenuItem key={category.id}>
 												<SidebarMenuItem>
 													<SidebarMenuButton
+														aria-current={filterValues.category === category.slug}
+														className='aria-current:text-primary aria-current:bg-primary/10'
 														onClick={() =>
 															setFilterValues((prev) => ({ ...prev, category: category.slug }))
 														}>
@@ -81,7 +85,7 @@ const DishFilterSidebar: React.FC = () => {
 													</SidebarMenuButton>
 													<SidebarMenuBadge
 														aria-current={filterValues.category === category.slug}
-														className='opacity-0 transition-opacity duration-100 aria-current:opacity-100'>
+														className='aria-current:text-primary opacity-0 transition-opacity duration-100 aria-current:opacity-100'>
 														<Icon name='Check' size={12} />
 													</SidebarMenuBadge>
 												</SidebarMenuItem>

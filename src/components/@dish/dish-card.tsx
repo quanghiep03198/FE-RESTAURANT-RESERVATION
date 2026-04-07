@@ -1,4 +1,5 @@
-import { useDeleteDishMutation } from '@/apis/menu/hooks/use-dish-request'
+import { useCreateOrUpdateDish, useDeleteDishMutation } from '@/apis/menu/hooks/use-dish-request'
+import type { TUpdateDishValues } from '@/apis/menu/schemas/update-dish.schema'
 import type { IDish } from '@/apis/menu/types'
 import { CommonActions } from '@/common/constants/enums'
 import { formatCurrency } from '@/common/utils/format-currency'
@@ -16,6 +17,7 @@ import {
 	DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { Icon } from '../ui/icon'
+import { Separator } from '../ui/separator'
 import { Spinner } from '../ui/spinner'
 
 const DishCard: React.FC<{ data: IDish & { category_name: string } }> = ({ data }) => {
@@ -51,7 +53,7 @@ const DishCard: React.FC<{ data: IDish & { category_name: string } }> = ({ data 
 				<CardDescription className='line-clamp-1' title={data.name}>
 					{data.name}
 				</CardDescription>
-				<div className='min-h-13'>
+				<div>
 					{isDiscounted ? (
 						<>
 							<CardTitle>
@@ -66,7 +68,10 @@ const DishCard: React.FC<{ data: IDish & { category_name: string } }> = ({ data 
 					)}
 				</div>
 			</CardHeader>
-			<CardFooter>
+			<div className='px-2'>
+				<Separator />
+			</div>
+			<CardFooter className='mt-auto'>
 				<CardDescription className='line-clamp-3'>{data.description}</CardDescription>
 			</CardFooter>
 		</Card>
@@ -76,6 +81,7 @@ const DishCard: React.FC<{ data: IDish & { category_name: string } }> = ({ data 
 const CardDropdownMenu: React.FC<{ data: IDish & { category_name: string } }> = ({ data }) => {
 	const { event$ } = usePageContext()
 	const { mutateAsync: deleteAsync, isPending: isDeleting } = useDeleteDishMutation()
+	const { mutateAsync: updateAsync, isPending: isUpdating } = useCreateOrUpdateDish(CommonActions.UPDATE)
 
 	const [open, setOpen] = useState<boolean>(false)
 
@@ -86,12 +92,17 @@ const CardDropdownMenu: React.FC<{ data: IDish & { category_name: string } }> = 
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='w-40'>
 				<DropdownMenuGroup>
-					<DropdownMenuItem>Đưa vào kinh doanh</DropdownMenuItem>
+					<DropdownMenuItem
+						disabled={isUpdating}
+						onClick={async () => await updateAsync({ slug: data.slug, is_new: true } as TUpdateDishValues)}>
+						{isUpdating && <Spinner />}
+						Đưa vào kinh doanh
+					</DropdownMenuItem>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem onClick={() => event$.emit({ action: CommonActions.UPDATE, payload: data })}>
 						Chỉnh sửa
 					</DropdownMenuItem>
-					<DropdownMenuItem onClick={async () => await deleteAsync(data.slug)}>
+					<DropdownMenuItem disabled={isDeleting} onClick={async () => await deleteAsync(data.slug)}>
 						{isDeleting && <Spinner />} Xóa
 					</DropdownMenuItem>
 				</DropdownMenuGroup>

@@ -1,5 +1,7 @@
-import PublicHeader from '@/components/layouts/@public/public-header'
-import { createFileRoute } from '@tanstack/react-router'
+import { navigationData } from '@/assets/data/header'
+import Footer from '@/components/layouts/@public/footer'
+import Header from '@/components/layouts/@public/header'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_public-layout')({
 	component: RouteComponent
@@ -7,8 +9,17 @@ export const Route = createFileRoute('/_public-layout')({
 
 function RouteComponent() {
 	return (
-		<>
-			<PublicHeader />
-		</>
+		<div className='flex flex-col'>
+			{/* Header Section */}
+			<Header navigationData={navigationData} />
+
+			{/* Main Content */}
+			<main className='flex flex-col pt-17.5 *:scroll-mt-16'>
+				<Outlet />
+			</main>
+
+			{/* Footer Section */}
+			<Footer />
+		</div>
 	)
 }

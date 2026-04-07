@@ -13,6 +13,7 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 	SidebarRail,
+	SidebarSeparator,
 	useSidebar
 } from '@/components/ui/sidebar'
 import type { TNavigationConfig } from '@/configs/navigation.config'
@@ -42,7 +43,7 @@ const AppSidebar: React.FC = () => {
 	return (
 		<Sidebar variant='inset' side='left' collapsible={isMobile ? 'offcanvas' : 'none'} className='h-screen border-r'>
 			<SidebarHeader className='px-4 py-6'>
-				<Typography variant='h3' className='text-primary sour-gummy leading-none tracking-wide'>
+				<Typography as='h1' variant='h2' className='text-primary sour-gummy leading-none tracking-wide'>
 					Jolly Fast Food
 				</Typography>
 				<Typography variant='small' color='muted' className='text-xs'>
@@ -89,9 +90,10 @@ const AppSidebar: React.FC = () => {
 						})}
 					</SidebarMenu>
 				</SidebarGroup>
+
 				{user?.role?.code === 'OWNER' && (
 					<Fragment>
-						{/* <SidebarSeparator className='max-w-full' /> */}
+						<SidebarSeparator className='max-w-full' />
 						<SidebarGroup>
 							<SidebarGroupLabel>Quản lý</SidebarGroupLabel>
 							<SidebarMenu role='menu' aria-label='Administration'>

@@ -27,6 +27,7 @@ export interface IDish extends IBaseEntity {
 	discounted_price: number
 	available_from: TTime
 	available_to: TTime
+	category: ICategory
 }
 
 export interface ICombo extends IBaseEntity {

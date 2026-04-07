@@ -85,7 +85,7 @@ const DishList = () => {
 		<div className='@container space-y-10'>
 			{Array.isArray(filteredData) && filteredData.length > 0 ? (
 				filteredData.map((item) => (
-					<div className='group/card-group max-w-(--outlet-wrapper-width) space-y-3'>
+					<div className='group max-w-(--outlet-wrapper-width) space-y-3'>
 						<div className='flex items-center justify-between gap-x-2'>
 							<Typography variant='h3' className='inline-flex items-center gap-x-2' id={item.slug}>
 								<Icon name='Link' /> {item.name} <Badge>{item.dishes.length} món</Badge>
@@ -94,13 +94,12 @@ const DishList = () => {
 								<Tooltip
 									message='Thêm món'
 									triggerProps={{
+										className:
+											'rounded-full opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0',
 										render: (
-											<Button
-												variant='default'
-												size='icon'
-												className='bg-background rounded-full opacity-0 transition-opacity duration-200 ease-linear group-hover/card-group:opacity-100'
-												onClick={() => handleOpenCreateDishDialog(item.id, item.name)}>
-												<Icon name='Plus' />
+											<Button size='icon-lg' onClick={() => handleOpenCreateDishDialog(item.id, item.name)}>
+												<Icon name='Plus' size={18} />
+												<span className='sr-only'>Thêm món</span>
 											</Button>
 										)
 									}}
@@ -151,7 +150,8 @@ const DishList = () => {
 									</EmptyDescription>
 								</EmptyHeader>
 								<EmptyContent className='flex-row justify-center gap-2'>
-									<Button variant='outline' onClick={() => handleOpenCreateDishDialog(item.id, item.name)}>
+									<Button onClick={() => handleOpenCreateDishDialog(item.id, item.name)}>
+										<Icon name='CircleFadingPlus' />
 										Thêm món
 									</Button>
 								</EmptyContent>

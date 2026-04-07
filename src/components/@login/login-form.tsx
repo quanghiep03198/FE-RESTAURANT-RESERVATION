@@ -31,7 +31,7 @@ export function LoginForm() {
 			toast.success('Đăng nhập thành công !', { id: loginToastRef.current })
 			const { metadata } = await queryClient.fetchQuery(getUserProfileQuery(!!accessToken))
 			setProfile(metadata)
-			router.invalidate({ filter: (d) => d.pathname === '/login' }).then(() => navigate({ to: '/tables-map' }))
+			router.invalidate({ filter: (d) => d.pathname === '/login' }).then(() => navigate({ to: '/table-map' }))
 		},
 		onError: () => {
 			toast.error('Đăng nhập thất bại', { id: loginToastRef.current })

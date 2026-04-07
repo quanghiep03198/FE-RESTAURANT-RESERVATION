@@ -62,7 +62,7 @@ const DishFormDialog: React.FC = () => {
 		onSubmit: async ({ value }) => {
 			const payload = {
 				...value,
-				category_id: currentCategory.current.id,
+				...(currentCategory.current?.id && { category_id: currentCategory.current.id }),
 				image: value.image.file
 			} as TCreateDishValues | TUpdateDishValues
 			if (typeof mutation?.mutateAsync !== 'function') return
