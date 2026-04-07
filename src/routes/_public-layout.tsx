@@ -1,3 +1,4 @@
+import PublicHeader from '@/components/layouts/@public/public-header'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_public-layout')({
@@ -5,5 +6,9 @@ export const Route = createFileRoute('/_public-layout')({
 })
 
 function RouteComponent() {
-	return <div>Hello "/_public-layout"!</div>
+	return (
+		<>
+			<PublicHeader />
+		</>
+	)
 }

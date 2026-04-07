@@ -23,10 +23,10 @@ export const createComboSchema = baseComboSchema.superRefine((values, ctx) => {
 	}
 
 	const totalPrice = values.dishes.reduce((acc, curr) => acc + curr.dish.price * curr.quantity, 0)
-	if (values.combo_price > totalPrice)
+	if (values.discount_price > totalPrice)
 		ctx.addIssue({
 			code: 'too_big',
-			path: ['combo_price'],
+			path: ['discount_price'],
 			fatal: true,
 			type: 'number',
 			maximum: totalPrice,

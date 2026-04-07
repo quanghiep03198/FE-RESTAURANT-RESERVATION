@@ -33,29 +33,31 @@ const ComboItemList: React.FC = () => {
 
 	return (
 		<section>
-			<ItemGroup className='xxl:grid-cols-3 grid grid-cols-1 xl:grid-cols-2'>
-				{Array.isArray(filteredData) && filteredData.length > 0 ? (
-					filteredData.map((combo) => <ComboItem key={combo.id} data={combo} />)
-				) : (
-					<Empty>
-						<EmptyHeader>
-							<EmptyMedia variant='icon'>
-								<Icon name='UtensilsCrossed' />
-							</EmptyMedia>
-							<EmptyTitle>Không có kết quả phù hợp</EmptyTitle>
-							<EmptyDescription>
-								Có vẻ như combo bạn đang tìm hiện không nằm trong thực đơn. Hãy thử tìm một combo khác hoặc dạo
-								quanh
-							</EmptyDescription>
-						</EmptyHeader>
-						<EmptyContent>
-							<Button size='sm' onClick={() => resetFilterValues()}>
-								Xem tất cả món ăn
-							</Button>
-						</EmptyContent>
-					</Empty>
-				)}
-			</ItemGroup>
+			{Array.isArray(filteredData) && filteredData.length > 0 ? (
+				<ItemGroup className='xxl:grid-cols-3 grid grid-cols-1 xl:grid-cols-2'>
+					{filteredData.map((combo) => (
+						<ComboItem key={combo.id} data={combo} />
+					))}
+				</ItemGroup>
+			) : (
+				<Empty>
+					<EmptyHeader>
+						<EmptyMedia variant='icon'>
+							<Icon name='UtensilsCrossed' />
+						</EmptyMedia>
+						<EmptyTitle>Không có kết quả phù hợp</EmptyTitle>
+						<EmptyDescription>
+							Có vẻ như combo bạn đang tìm hiện không nằm trong thực đơn. Hãy thử tìm một combo khác hoặc dạo
+							quanh
+						</EmptyDescription>
+					</EmptyHeader>
+					<EmptyContent>
+						<Button size='sm' onClick={() => resetFilterValues()}>
+							Xem tất cả món ăn
+						</Button>
+					</EmptyContent>
+				</Empty>
+			)}
 		</section>
 	)
 }

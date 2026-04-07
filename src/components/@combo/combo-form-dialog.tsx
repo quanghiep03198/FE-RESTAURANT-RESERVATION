@@ -68,7 +68,7 @@ const ComboFormDialog: React.FC = () => {
 	const form = useForm({
 		defaultValues: {
 			name: '',
-			combo_price: null,
+			discount_price: 0,
 			tag: '',
 			combo_image: null,
 			remark: '',
@@ -78,7 +78,7 @@ const ComboFormDialog: React.FC = () => {
 			days_in_week: Object.values(DayInWeek),
 			start_time: '07:00',
 			end_time: '22:00',
-			max_use_times: 100,
+			max_use_times: null,
 			dishes: []
 		},
 
@@ -203,12 +203,12 @@ const ComboFormDialog: React.FC = () => {
 									}}
 								/>
 								<form.Field
-									name='combo_price'
+									name='discount_price'
 									children={(field) => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
 											<Field>
-												<FieldLabel aria-required>Giá Combo</FieldLabel>
+												<FieldLabel aria-required>Trợ giá</FieldLabel>
 												<Input
 													id={field.name}
 													name={field.name}
@@ -219,7 +219,8 @@ const ComboFormDialog: React.FC = () => {
 													type='number'
 												/>
 												<FieldDescription>
-													Giá combo là giá bán ưu đãi khi khách hàng mua các món trong combo cùng nhau.
+													Giảm giá trên tổng tiền sản phẩm. Bỏ qua nếu không áp dụng triết khấu cho combo
+													này
 												</FieldDescription>
 												{isInvalid && <FieldError errors={field.state.meta.errors} />}
 											</Field>

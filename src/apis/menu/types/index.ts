@@ -32,7 +32,7 @@ export interface IDish extends IBaseEntity {
 export interface ICombo extends IBaseEntity {
 	name: string
 	combo_image: IImageMetadata
-	combo_price: number
+	discount_price: number
 	selling_price: number
 	dishes: Array<IDish & { pivot: { combo_id: number; dish_id: number; quantity: number } }>
 	tag: ComboTag

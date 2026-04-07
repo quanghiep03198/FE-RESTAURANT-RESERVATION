@@ -44,7 +44,7 @@ const ComboItem: React.FC<{ data: ICombo }> = ({ data }) => {
 						</Typography>
 					</div>
 					<Typography variant='small' color='muted' className='col-start-2 row-start-1 text-right line-through'>
-						{formatCurrency(data.combo_price)}
+						{formatCurrency(data.discount_price)}
 					</Typography>
 					<Typography variant='h4' className='col-start-2 row-start-2 text-right'>
 						{formatCurrency(data.selling_price)}
