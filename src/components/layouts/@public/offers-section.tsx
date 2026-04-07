@@ -68,14 +68,16 @@ const OfferSection = () => {
 												{data.start_time} - {data.end_time}
 											</Typography>
 										</div>
-										<Typography
-											variant='small'
-											color='muted'
-											className='col-start-2 row-start-1 text-right line-through'>
-											{formatCurrency(data.discount_price)}
-										</Typography>
+										{data.selling_price - data.discount_price !== data.selling_price && (
+											<Typography
+												variant='small'
+												color='muted'
+												className='col-start-2 row-start-1 text-right line-through'>
+												{formatCurrency(data.selling_price)}
+											</Typography>
+										)}
 										<Typography variant='h4' className='col-start-2 row-start-2 text-right'>
-											{formatCurrency(data.selling_price)}
+											{formatCurrency(data.selling_price - data.discount_price)}
 										</Typography>
 									</div>
 								</ItemContent>

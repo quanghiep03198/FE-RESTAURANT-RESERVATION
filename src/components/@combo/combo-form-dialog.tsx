@@ -90,7 +90,9 @@ const ComboFormDialog: React.FC = () => {
 					if (!curr.dish || !curr.quantity) return acc
 					return acc + curr.dish.price * curr.quantity
 				}, 0)
-				setTotalPrice(total)
+				const discount = formApi.getFieldValue('discount_price') ?? 0
+				const finalPrice = total - discount
+				setTotalPrice(finalPrice)
 			}
 		},
 		onSubmit: async ({ value }) => {
@@ -133,6 +135,9 @@ const ComboFormDialog: React.FC = () => {
 				{
 					keepDefaultValues: true
 				}
+			)
+			setTotalPrice(
+				e.payload.dishes.reduce((acc, curr) => acc + curr.price * curr.pivot.quantity, 0) - e.payload.discount_price
 			)
 			formSchemaRef.current = updateComboSchema
 		}
