@@ -11,7 +11,7 @@ function RouteComponent() {
 	return (
 		<div className='flex flex-col'>
 			{/* Header Section */}
-			<Header navigationData={navigationData} />
+			<Header navigationData={navigationData as any} />
 
 			{/* Main Content */}
 			<main className='flex flex-col pt-17.5 *:scroll-mt-16'>

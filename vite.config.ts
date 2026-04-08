@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
 			viteReact()
 		],
 		server: {
+			host: true,
 			proxy: {
 				'/storage': {
 					target: API_BASE_URL,

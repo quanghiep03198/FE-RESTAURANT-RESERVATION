@@ -9,24 +9,27 @@ import {
 	NavigationMenuTrigger,
 	navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
+import type { FileRouteTypes } from '@/route-tree.gen'
+import { Link, useMatchRoute } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 
 export type NavigationItem = {
 	title: string
-	href: string
+	hash: string
 }
 
 export type NavigationSection = {
 	title: string
 	icon?: ReactNode
+	to?: FileRouteTypes['to']
 } & (
 	| {
 			items: NavigationItem[]
-			href?: never
+			hash?: never
 	  }
 	| {
 			items?: never
-			href: string
+			hash: string
 	  }
 )
 
@@ -37,20 +40,22 @@ type MenuNavigationProps = {
 }
 
 const MenuNavigation = ({ navigationData, activeSection, className }: MenuNavigationProps) => {
+	const match = useMatchRoute()
+
 	return (
 		<NavigationMenu className={className}>
 			<NavigationMenuList className='flex-wrap justify-start gap-0'>
 				{navigationData.map((navItem) => {
-					if (navItem.href) {
+					if (navItem.hash) {
 						// Extract section ID from href
-						const sectionId = navItem.href.replace('#', '')
+						const sectionId = navItem.hash.replace('#', '')
 						const isActive = activeSection === sectionId && activeSection !== ''
 
 						// Root link item
 						return (
 							<NavigationMenuItem key={navItem.title}>
 								<NavigationMenuLink
-									href={navItem.href}
+									href={navItem.hash}
 									onClick={(e) => {
 										e.preventDefault()
 										scrollToSection(sectionId)
@@ -68,6 +73,25 @@ const MenuNavigation = ({ navigationData, activeSection, className }: MenuNaviga
 						)
 					}
 
+					if (navItem.to) {
+						return (
+							<NavigationMenuItem key={navItem.title}>
+								<NavigationMenuLink
+									className={cn(
+										navigationMenuTriggerStyle(),
+										'cursor-pointer rounded-full bg-transparent px-3 py-1.5 text-base! font-normal transition-colors duration-200',
+										'hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10',
+										'focus:text-primary focus:bg-primary/5 dark:focus:bg-primary/10',
+										match({ to: navItem.to })
+											? 'text-primary bg-primary/5 dark:bg-primary/10'
+											: 'text-muted-foreground'
+									)}
+									render={<Link to={navItem.to}>{navItem.title}</Link>}
+								/>
+							</NavigationMenuItem>
+						)
+					}
+
 					// Section with dropdown
 					return (
 						<NavigationMenuItem key={navItem.title}>
@@ -78,7 +102,7 @@ const MenuNavigation = ({ navigationData, activeSection, className }: MenuNaviga
 								<ul className='grid w-38 gap-4'>
 									<li>
 										{navItem.items?.map((item) => (
-											<NavigationMenuLink key={item.title} href={item.href}>
+											<NavigationMenuLink key={item.title} href={item.hash}>
 												{item.title}
 											</NavigationMenuLink>
 										))}

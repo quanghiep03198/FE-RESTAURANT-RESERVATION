@@ -73,7 +73,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
 	const [isScrolled, setIsScrolled] = useState(false)
 
 	// Extract section IDs from navigation data - only include valid sections
-	const sectionIds = navigationData.map((item) => item.href?.replace('#', '')).filter(Boolean) as string[]
+	const sectionIds = navigationData.map((item) => item.hash?.replace('#', '')).filter(Boolean) as string[]
 
 	// Only use active section if it's actually in our navigation list
 	const detectedActiveSection = useActiveSection(sectionIds)

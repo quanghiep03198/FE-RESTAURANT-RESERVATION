@@ -8,26 +8,31 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import type { FileRouteTypes } from '@/route-tree.gen'
 import { Link } from '@tanstack/react-router'
 import { ChevronRightIcon, CircleSmallIcon } from 'lucide-react'
 import type { ReactElement, ReactNode } from 'react'
 
 export type NavigationItem = {
 	title: string
-	href: string
+	href?: string
+	to?: FileRouteTypes['to']
 }
 
 export type NavigationSection = {
 	title: string
 	icon?: ReactNode
+	to?: FileRouteTypes['to']
 } & (
 	| {
 			items: NavigationItem[]
-			href?: never
+			hash?: never
+			to?: FileRouteTypes['to']
 	  }
 	| {
 			items?: never
-			href: string
+			hash?: string
+			to?: FileRouteTypes['to']
 	  }
 )
 
@@ -44,9 +49,9 @@ const MenuDropdown = ({ trigger, navigationData, activeSection, align = 'start' 
 			<DropdownMenuTrigger render={trigger} />
 			<DropdownMenuContent className='mt-1 w-[min(93vw,800px)]' align={align}>
 				{navigationData.map((navItem) => {
-					if (navItem.href) {
+					if (navItem.hash) {
 						// Extract section ID from href
-						const sectionId = navItem.href.replace('#', '')
+						const sectionId = navItem.hash.replace('#', '')
 						const isActive = activeSection === sectionId && activeSection !== ''
 
 						return (
@@ -54,7 +59,7 @@ const MenuDropdown = ({ trigger, navigationData, activeSection, align = 'start' 
 								key={navItem.title}
 								render={
 									<Link
-										to={navItem.href}
+										to={navItem.hash}
 										onClick={(e) => {
 											e.preventDefault()
 											scrollToSection(sectionId)
