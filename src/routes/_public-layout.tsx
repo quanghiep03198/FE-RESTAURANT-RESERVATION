@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_public-layout')({
 
 function RouteComponent() {
 	return (
-		<div className='flex flex-col'>
+		<div className='flex min-h-screen flex-col'>
 			{/* Header Section */}
 			<Header navigationData={navigationData as any} />
 

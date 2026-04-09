@@ -1,5 +1,17 @@
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
+import { CommonActions } from '@/common/constants/enums'
+import {
+	queryOptions,
+	useMutation,
+	useQueryClient,
+	useSuspenseQuery,
+	type MutationFunction
+} from '@tanstack/react-query'
+import { useRef } from 'react'
+import { toast } from 'sonner'
+import type { TCreateTableValues } from '../schemas/create-table.schema'
+import type { TUpdateTableValues } from '../schemas/update-table.schema.'
 import { TableService } from '../services'
+import type { ITable } from '../types'
 
 export const TABLE_QUERY_KEY = 'TABLES'
 
@@ -13,4 +25,61 @@ export const getTableQueryOptions = () =>
 
 export const useGetTableQuery = () => {
 	return useSuspenseQuery(getTableQueryOptions())
+}
+
+export const useCreateOrUpdateTableMutation = (action: CommonActions.CREATE | CommonActions.UPDATE) => {
+	const toastRef = useRef<string | number | null>(null)
+	const queryClient = useQueryClient()
+
+	const mutationConfigFactory: Map<
+		CommonActions.CREATE | CommonActions.UPDATE,
+		{ handler: MutationFunction<unknown, TCreateTableValues | TUpdateTableValues>; message: string }
+	> = new Map([
+		[
+			CommonActions.CREATE,
+			{
+				handler: async (payload: TUpdateTableValues) => await TableService.insertOne(payload),
+				message: 'Thêm danh mục thành công'
+			}
+		],
+		[
+			CommonActions.UPDATE,
+			{
+				handler: async ({ slug, ...payload }: TUpdateTableValues & Pick<ITable, 'slug'>) =>
+					await TableService.updateOneBySlug(slug, payload),
+				message: 'Đã cập nhật thành công'
+			}
+		]
+	])
+
+	const currentConfig = mutationConfigFactory.get(action)
+
+	return useMutation({
+		mutationFn: currentConfig?.handler,
+		onMutate: () => {
+			toastRef.current = toast.loading('Đang xử lý ...')
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [TABLE_QUERY_KEY] })
+			toast.success(currentConfig?.message, { id: toastRef.current })
+		},
+		onError: () => {
+			toast.error('Đã có lỗi xảy ra !', { id: toastRef.current })
+		}
+	})
+}
+
+export const useDeleteTableMutation = () => {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: (slug: string) => TableService.deleteOneBySlug(slug),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [TABLE_QUERY_KEY] })
+			toast.success('Đã xóa bàn ăn thành công', { id: 'delete-table' })
+		},
+		onError: () => {
+			toast.error('Đã có lỗi xảy ra !', { id: 'delete-table' })
+		}
+	})
 }

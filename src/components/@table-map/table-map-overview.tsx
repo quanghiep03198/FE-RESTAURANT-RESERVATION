@@ -25,41 +25,41 @@ const TablesMapOverview = () => {
 		)
 
 	return (
-		<ItemGroup className='[&>*[data-slot=item]]:bg-card grid gap-4 gap-x-4 md:grid-cols-2 xl:grid-cols-4 [&>*[data-slot=item]]:shadow'>
+		<ItemGroup className='[&>*[data-slot=item]]:bg-card grid gap-4 gap-x-4 sm:max-md:grid-cols-2 xl:grid-cols-4 [&>*[data-slot=item]]:shadow'>
 			<Item>
-				<ItemMedia variant='image' className='bg-accent size-16'>
-					<Icon name='CirclePlus' size={24} className='stroke-accent-foreground' />
+				<ItemMedia variant='image' className='bg-accent size-12 lg:size-16'>
+					<Icon name='CirclePlus' className='stroke-accent-foreground size-6 lg:size-8' />
 				</ItemMedia>
 				<ItemContent>
-					<ItemDescription>TỔNG SỐ BÀN</ItemDescription>
-					<ItemTitle className='text-2xl font-bold'>{totalTables}</ItemTitle>
+					<ItemDescription className='sm:max-md:text-xs'>TỔNG SỐ BÀN</ItemDescription>
+					<ItemTitle className='text-2xl font-bold sm:max-md:text-xl'>{totalTables}</ItemTitle>
 				</ItemContent>
 			</Item>
 			<Item>
-				<ItemMedia variant='image' className='bg-accent size-16'>
-					<Icon name='CircleDashed' size={24} className='stroke-accent-foreground' />
+				<ItemMedia variant='image' className='bg-accent size-12 lg:size-16'>
+					<Icon name='CircleDashed' className='stroke-accent-foreground size-6 lg:size-8' />
 				</ItemMedia>
 				<ItemContent>
-					<ItemDescription>BÀN TRỐNG</ItemDescription>
-					<ItemTitle className='text-2xl font-bold'>{availableTables}</ItemTitle>
+					<ItemDescription className='sm:max-md:text-xs'>BÀN TRỐNG</ItemDescription>
+					<ItemTitle className='text-2xl font-bold sm:max-md:text-xl'>{availableTables}</ItemTitle>
 				</ItemContent>
 			</Item>
 			<Item>
-				<ItemMedia variant='image' className='bg-accent size-16'>
-					<Icon name='Users' size={24} className='stroke-accent-foreground' />
+				<ItemMedia variant='image' className='bg-accent size-12 lg:size-16'>
+					<Icon name='Users' className='stroke-accent-foreground size-6 lg:size-8' />
 				</ItemMedia>
 				<ItemContent>
-					<ItemDescription>ĐANG DÙNG</ItemDescription>
-					<ItemTitle className='text-2xl font-bold'>{occupiedTables}</ItemTitle>
+					<ItemDescription className='sm:max-md:text-xs'>ĐANG DÙNG</ItemDescription>
+					<ItemTitle className='text-2xl font-bold sm:max-md:text-xl'>{occupiedTables}</ItemTitle>
 				</ItemContent>
 			</Item>
 			<Item>
-				<ItemMedia variant='image' className='bg-accent size-16'>
-					<Icon name='CalendarCheck' size={24} className='stroke-accent-foreground' />
+				<ItemMedia variant='image' className='bg-accent size-12 lg:size-16'>
+					<Icon name='CalendarCheck' className='stroke-accent-foreground size-6 lg:size-8' />
 				</ItemMedia>
 				<ItemContent>
 					<ItemDescription>ĐÃ ĐẶT</ItemDescription>
-					<ItemTitle className='text-2xl font-bold'>{reservedTables}</ItemTitle>
+					<ItemTitle className='text-2xl font-bold sm:max-md:text-lg'>{reservedTables}</ItemTitle>
 				</ItemContent>
 			</Item>
 		</ItemGroup>

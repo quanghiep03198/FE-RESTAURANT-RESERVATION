@@ -7,6 +7,7 @@ export interface IReservation extends IBaseEntity {
 	reservation_time: Date
 	table_code: string | null
 	status: ReservationStatus
+	guest_count: number
 	deposit_amount: number
 	created_by_employee?: string
 	confirmed_by_employee: string | null

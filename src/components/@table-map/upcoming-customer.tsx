@@ -21,7 +21,7 @@ const reservations = Array.from({ length: 5 }, (_, index) => ({
 
 const UpcommingCustomer: React.FC = () => {
 	return (
-		<section className='bg-sidebar col-start-2 row-span-2 flex max-h-full min-h-(--outlet-wrapper-height) w-sm flex-col justify-between space-y-6 rounded-lg p-4 shadow-lg'>
+		<section className='bg-sidebar sticky top-0 col-start-2 row-span-2 flex h-full w-sm flex-col justify-between space-y-6 rounded-lg p-4 shadow-lg'>
 			<div className='flex items-center justify-between gap-x-2'>
 				<Typography variant='h4'>Khách sắp đến</Typography>
 				<Badge variant='secondary'>
@@ -32,7 +32,7 @@ const UpcommingCustomer: React.FC = () => {
 			<ItemGroup className='max-h-full flex-1'>
 				{reservations.map((reservation) => (
 					<Item key={reservation.id} className='p-0'>
-						<ItemMedia variant='icon' className='bg-accent text-accent-foreground size-16 rounded-lg'>
+						<ItemMedia variant='icon' className='bg-secondary text-secondary-foreground size-16 rounded-lg'>
 							<time>{format(reservation.possible_arrive_at, 'HH:mm')}</time>
 						</ItemMedia>
 						<ItemContent>

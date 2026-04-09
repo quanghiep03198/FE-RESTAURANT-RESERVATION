@@ -46,7 +46,7 @@ const AppSidebar: React.FC = () => {
 				<Typography as='h1' variant='h2' className='text-primary sour-gummy leading-none tracking-wide'>
 					Jolly Fast Food
 				</Typography>
-				<Typography variant='small' color='muted' className='text-xs'>
+				<Typography variant='small' color='secondary' className='text-xs font-medium'>
 					Hệ thống quản lý Đặt bàn
 				</Typography>
 			</SidebarHeader>
@@ -122,7 +122,7 @@ const SidebarMenuLink: React.FC<NavLinkProps> = ({ url, title, icon, viewTransit
 
 	const isLinkActive = (user && authorizedRoles.includes(user?.role?.code)) || authorizedRoles === '*'
 
-	const isActive = location.pathname.match(new RegExp(`^${url}$`))
+	const isActive = location?.pathname?.match?.(new RegExp(`^${url}$`))
 
 	useEffect(() => {
 		if (open && isActive && ref.current) {
@@ -170,7 +170,7 @@ const SidebarMenuSubLink: React.FC<Omit<NavLinkProps, 'icon'>> = ({ url, title, 
 
 	const isAccessible = (user && user && authorizedRoles.includes(user?.role?.code)) || authorizedRoles === '*'
 
-	const isActive = location.pathname.match(new RegExp(`^${url}$`))
+	const isActive = location?.pathname?.match?.(new RegExp(`^${url}$`))
 
 	useEffect(() => {
 		if (open && isActive && ref.current) {

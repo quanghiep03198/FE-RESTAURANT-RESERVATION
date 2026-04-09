@@ -1,7 +1,9 @@
 import { getTableQueryOptions } from '@/apis/table/hooks/use-table-request'
+import TableFormDialog from '@/components/@table-map/table-form-dialog'
 import TableMap from '@/components/@table-map/table-map'
 import TablesMapOverview from '@/components/@table-map/table-map-overview'
 import UpcommingCustomer from '@/components/@table-map/upcoming-customer'
+import { PageContextProvider } from '@/contexts/event-context'
 import { QueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -18,13 +20,18 @@ function RouteComponent() {
 			<title>Sơ đồ bàn & Trạng thái</title>
 			<meta name='description' content='Quản lý bàn trạng thái sử dụng' />
 
-			<div className='flex w-full flex-1 items-stretch gap-6'>
-				<div className='flex flex-1 flex-col gap-y-6'>
-					<TablesMapOverview />
-					<TableMap />
+			<PageContextProvider>
+				<div className='relative flex h-full w-full flex-1 items-stretch gap-6'>
+					<div className='flex flex-1 flex-col gap-y-6'>
+						<TablesMapOverview />
+						<TableMap />
+					</div>
+					<div className='hidden lg:block xl:block'>
+						<UpcommingCustomer />
+					</div>
 				</div>
-				<UpcommingCustomer />
-			</div>
+				<TableFormDialog />
+			</PageContextProvider>
 		</>
 	)
 }

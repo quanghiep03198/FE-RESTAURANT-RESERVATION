@@ -23,6 +23,9 @@ export default defineConfig(({ mode }) => {
 		],
 		server: {
 			host: true,
+			watch: {
+				usePolling: true
+			},
 			proxy: {
 				'/storage': {
 					target: API_BASE_URL,

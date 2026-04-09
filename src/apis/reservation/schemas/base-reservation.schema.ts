@@ -8,7 +8,9 @@ export const baseReservationSchema = object({
 	customer_phone: string({ message: 'Vui lòng điền SĐT đặt bàn' }).refine((value) => PHONE_REGEX.test(value), {
 		message: 'Số điện thoại đặt bàn không hợp lệ'
 	}),
-	guest_count: number({ message: 'Vui lòng nhập số lượng người dự kiến' }),
+	guest_count: number({ message: 'Vui lòng nhập số lượng người dự kiến' }).min(1, {
+		message: 'Số lượng người dự kiến tối thiểu là 1'
+	}),
 	remark: string().nullish(),
 	reservation_time: date({ message: 'Vui lòng chọn thời gian dự kiến lấy bàn' }),
 	deposit_amount: number().nullish()

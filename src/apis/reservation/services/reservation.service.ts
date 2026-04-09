@@ -11,6 +11,10 @@ export class ReservationService {
 		)
 	}
 
+	public static async getOneByCode(code: string) {
+		return await axiosInstance.get<unknown, ResponseBody<IReservation>>(`/reservations/${code}`)
+	}
+
 	public static async insertOneByStaff(payload: TCreateReservationValues) {
 		return await axiosInstance.post<unknown, ResponseBody<IReservation>, TCreateReservationValues>(
 			'/reservations',

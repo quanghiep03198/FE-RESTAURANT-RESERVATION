@@ -1,93 +1,45 @@
-import { TableStatus } from '@/apis/table/constants'
 import { useGetTableQuery } from '@/apis/table/hooks/use-table-request'
-import tw from 'tailwind-styled-components'
-import { Button } from '../ui/button'
-import { Empty } from '../ui/empty'
-import { Icon, type IconProps } from '../ui/icon'
+import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '../ui/empty'
+import { Icon } from '../ui/icon'
 import { Skeleton } from '../ui/skeleton'
-
-const statusIcon: Record<TableStatus, IconProps['name']> = {
-	[TableStatus.AVAILABLE]: 'CircleDashed',
-	[TableStatus.OCCUPIED]: 'Users',
-	[TableStatus.RESERVED]: 'CalendarCheck',
-	[TableStatus.DISABLED]: 'CircleSlash2'
-}
+import TableCard from './table-card'
+import TableFormDialogTrigger from './table-form-dialog-trigger'
+import TableIndicators from './table-indicators'
 
 const TableMap: React.FC = () => {
 	const { data, isLoading } = useGetTableQuery()
 
 	return (
-		<section className='bg-card h-full flex-1 space-y-3 rounded-lg p-4 shadow-md xl:p-6'>
-			<div className='bg-background flex items-center gap-x-6 rounded-lg p-4'>
-				<TableStatusItem>
-					<TableStatusIndicator status={TableStatus.AVAILABLE} />
-					<TableStatusLabel>Còn trống</TableStatusLabel>
-				</TableStatusItem>
-				<TableStatusItem>
-					<TableStatusIndicator status={TableStatus.OCCUPIED} />
-					<TableStatusLabel>Đang dùng</TableStatusLabel>
-				</TableStatusItem>
-				<TableStatusItem>
-					<TableStatusIndicator status={TableStatus.RESERVED} />
-					<TableStatusLabel>Đã đặt</TableStatusLabel>
-				</TableStatusItem>
-				<Button className='ml-auto'>
-					<Icon name='Plus' /> Thêm bàn
-				</Button>
+		<section className='bg-card scrollbar-none! relative flex h-full flex-1 flex-col space-y-3 overflow-scroll rounded-lg shadow-md'>
+			<div className='bg-card sticky top-0 z-20 flex items-center gap-x-6 border-b p-4 xl:px-6'>
+				<TableIndicators />
+				<TableFormDialogTrigger />
 			</div>
 
-			<div className='grid h-full grid-cols-4 gap-4'>
+			<div className='grid h-full auto-rows-max grid-cols-4 gap-4 p-4 sm:max-lg:[zoom:0.8] xl:p-6'>
 				{isLoading ? (
 					Array.from({ length: 12 }, (_, index) => <Skeleton key={index} className='size-20' />)
 				) : Array.isArray(data) && data.length > 0 ? (
-					data.map((table) => (
-						<TableItem key={table.slug} status={table.status}>
-							<TableItemTitle>{table.name}</TableItemTitle>
-							<Icon name={statusIcon[table.status]} size={20} />
-							<TableItemDescription>{table.capacity} khách</TableItemDescription>
-						</TableItem>
-					))
+					data
+						.toSorted((a, b) => a.name.slice(1, -1).localeCompare(b.name.slice(1, -1)))
+						.map((table) => <TableCard key={table.slug} data={table} />)
 				) : (
-					<Empty></Empty>
+					<Empty>
+						<EmptyMedia variant='icon'>
+							<Icon name='Grid2x2' size={48} className='text-muted-foreground' />
+						</EmptyMedia>
+						<EmptyContent>
+							<EmptyTitle>Chưa có bàn nào</EmptyTitle>
+							<EmptyDescription>
+								Hiện tại chưa có bàn nào được thêm vào hệ thống. Vui lòng thêm bàn mới để bắt đầu quản lý đặt
+								bàn và tình trạng
+							</EmptyDescription>
+						</EmptyContent>
+					</Empty>
 				)}
 			</div>
 		</section>
 	)
 }
-
-const TableStatusItem: React.FC<React.ComponentProps<'div'>> = tw.div`flex items-center gap-x-2`
-const TableStatusIndicator: React.FC<React.ComponentProps<'div'> & { status: TableStatus }> = tw.div`
-	size-4 aspect-square rounded
-	${(props: { status: TableStatus }) => {
-		switch (props.status) {
-			case TableStatus.AVAILABLE:
-				return 'border-2 text-foreground bg-muted text-muted-foreground border-dashed'
-			case TableStatus.OCCUPIED:
-				return 'bg-primary text-primary-foreground'
-			case TableStatus.RESERVED:
-				return 'bg-secondary text-secondary-foreground'
-			case TableStatus.DISABLED:
-				return 'bg-muted text-muted-foregound cursor-not-allowed'
-		}
-	}}
-`
-const TableStatusLabel: React.FC<React.ComponentProps<'small'>> = tw.small`font-medium`
-const TableItem: React.FC<React.ComponentProps<'div'> & { status: TableStatus }> = tw.div`
-	h-40 flex flex-col items-center justify-center rounded-lg p-4 gap-3
-	${(props: { status: TableStatus }) => {
-		switch (props.status) {
-			case TableStatus.AVAILABLE:
-				return 'border-2 text-foreground bg-background border-dashed'
-			case TableStatus.OCCUPIED:
-				return 'bg-primary text-primary-foreground'
-			case TableStatus.RESERVED:
-				return 'bg-secondary text-secondary-foreground'
-			case TableStatus.DISABLED:
-				return 'bg-muted text-muted-foregound cursor-not-allowed border'
-		}
-	}}
-`
-const TableItemTitle = tw.span`font-medium uppercase`
-const TableItemDescription = tw.small`text-muted-foreground`
 
 export default TableMap
