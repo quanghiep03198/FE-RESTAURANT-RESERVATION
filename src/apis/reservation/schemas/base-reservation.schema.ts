@@ -1,5 +1,5 @@
 import { PHONE_REGEX } from '@/apis/user/constants'
-import { coerce, number, object, string } from 'zod'
+import { date, number, object, string } from 'zod'
 
 export const baseReservationSchema = object({
 	customer_name: string({ message: 'Vui lòng điền tên người đặt bàn' }).nonempty({
@@ -10,6 +10,6 @@ export const baseReservationSchema = object({
 	}),
 	guest_count: number({ message: 'Vui lòng nhập số lượng người dự kiến' }),
 	remark: string().nullish(),
-	reservation_time: coerce.date({ message: 'Vui lòng chọn thời gian dự kiến lấy bàn' }),
+	reservation_time: date({ message: 'Vui lòng chọn thời gian dự kiến lấy bàn' }),
 	deposit_amount: number().nullish()
 })

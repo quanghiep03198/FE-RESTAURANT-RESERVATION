@@ -1,26 +1,26 @@
 {
-  "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "base-vega",
-  "rsc": false,
-  "tsx": true,
-  "tailwind": {
-    "config": "",
-    "css": "src/styles.css",
-    "baseColor": "neutral",
-    "cssVariables": true,
-    "prefix": ""
-  },
-  "iconLibrary": "lucide",
-  "rtl": false,
-  "menuColor": "default",
-  "menuAccent": "subtle",
-  "aliases": {
-    "components": "@/components",
-    "utils": "@/common/utils/cn",
-    "ui": "@/components/ui",
-    "hooks": "@/common/hooks"
-  },
-  "registries": {
-    "@reui": "https://reui.io/r/{style}/{name}.json"
-  }
+	"$schema": "https://ui.shadcn.com/schema.json",
+	"style": "base-vega",
+	"rsc": false,
+	"tsx": true,
+	"tailwind": {
+		"config": "",
+		"css": "src/styles.css",
+		"baseColor": "neutral",
+		"cssVariables": true,
+		"prefix": ""
+	},
+	"iconLibrary": "lucide",
+	"rtl": false,
+	"menuColor": "default",
+	"menuAccent": "subtle",
+	"aliases": {
+		"components": "@/components",
+		"utils": "@/common/utils/cn",
+		"ui": "@/components/ui",
+		"hooks": "@/common/hooks"
+	},
+	"registries": {
+		"@reui": "https://reui.io/r/{style}/{name}.json"
+	}
 }

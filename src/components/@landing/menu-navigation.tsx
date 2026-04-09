@@ -1,5 +1,4 @@
 import { cn } from '@/common/utils/cn'
-import { scrollToSection } from '@/common/utils/scroll-to-section'
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -10,12 +9,13 @@ import {
 	navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
 import type { FileRouteTypes } from '@/route-tree.gen'
-import { Link, useMatchRoute } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 
 export type NavigationItem = {
 	title: string
 	hash: string
+	to: string
 }
 
 export type NavigationSection = {
@@ -40,53 +40,33 @@ type MenuNavigationProps = {
 }
 
 const MenuNavigation = ({ navigationData, activeSection, className }: MenuNavigationProps) => {
-	const match = useMatchRoute()
+	const location = useLocation({ structuralSharing: true })
 
 	return (
 		<NavigationMenu className={className}>
 			<NavigationMenuList className='flex-wrap justify-start gap-0'>
 				{navigationData.map((navItem) => {
-					if (navItem.hash) {
+					if (navItem.to) {
 						// Extract section ID from href
-						const sectionId = navItem.hash.replace('#', '')
-						const isActive = activeSection === sectionId && activeSection !== ''
+						const sectionId = navItem?.hash?.replace('#', '')
+						const isActive =
+							activeSection === sectionId && activeSection !== '' && location.pathname === navItem.to
 
-						// Root link item
 						return (
 							<NavigationMenuItem key={navItem.title}>
 								<NavigationMenuLink
-									href={navItem.hash}
-									onClick={(e) => {
-										e.preventDefault()
-										scrollToSection(sectionId)
-									}}
 									className={cn(
 										navigationMenuTriggerStyle(),
 										'cursor-pointer rounded-full bg-transparent px-3 py-1.5 text-base! font-normal transition-colors duration-200',
 										'hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10',
 										'focus:text-primary focus:bg-primary/5 dark:focus:bg-primary/10',
 										isActive ? 'text-primary bg-primary/5 dark:bg-primary/10' : 'text-muted-foreground'
-									)}>
-									{navItem.title}
-								</NavigationMenuLink>
-							</NavigationMenuItem>
-						)
-					}
-
-					if (navItem.to) {
-						return (
-							<NavigationMenuItem key={navItem.title}>
-								<NavigationMenuLink
-									className={cn(
-										navigationMenuTriggerStyle(),
-										'cursor-pointer rounded-full bg-transparent px-3 py-1.5 text-base! font-normal transition-colors duration-200',
-										'hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10',
-										'focus:text-primary focus:bg-primary/5 dark:focus:bg-primary/10',
-										match({ to: navItem.to })
-											? 'text-primary bg-primary/5 dark:bg-primary/10'
-											: 'text-muted-foreground'
 									)}
-									render={<Link to={navItem.to}>{navItem.title}</Link>}
+									render={
+										<Link to={navItem.to} hash={sectionId}>
+											{navItem.title}
+										</Link>
+									}
 								/>
 							</NavigationMenuItem>
 						)
