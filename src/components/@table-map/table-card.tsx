@@ -14,17 +14,17 @@ const statusIcon: Record<TableStatus, IconProps['name']> = {
 
 const TableCard: React.FC<{ data: ITable }> = ({ data }) => {
 	return (
-		<TableItem key={data.slug} status={data.status}>
+		<TableCardWrapper key={data.slug} status={data.status}>
 			<TableCardDropdownMenu data={data} />
-			<TableItemTitle>{data.name}</TableItemTitle>
+			<TableCardTitle>{data.name}</TableCardTitle>
 			<Icon name={statusIcon[data.status]} size={20} />
-			<TableItemDescription>{data.capacity} khách</TableItemDescription>
-		</TableItem>
+			<TableCardDescription>{data.capacity} khách</TableCardDescription>
+		</TableCardWrapper>
 	)
 }
 
-const TableItem: React.FC<React.ComponentProps<'div'> & { status: TableStatus }> = tw.div`
-	relative flex flex-col items-center justify-center rounded-lg p-4 gap-3 group
+const TableCardWrapper: React.FC<React.ComponentProps<'div'> & { status: TableStatus }> =
+	tw.div`relative flex flex-col items-center justify-center rounded-lg p-4 gap-3 group cursor-pointer
 	${(props: { status: TableStatus }) => {
 		switch (props.status) {
 			case TableStatus.AVAILABLE:
@@ -34,11 +34,10 @@ const TableItem: React.FC<React.ComponentProps<'div'> & { status: TableStatus }>
 			case TableStatus.RESERVED:
 				return 'bg-secondary text-secondary-foreground'
 			case TableStatus.DISABLED:
-				return 'bg-muted text-muted-foregound cursor-not-allowed border'
+				return 'bg-muted text-muted-foregound border'
 		}
-	}}
-`
-const TableItemTitle = tw.span`font-medium uppercase`
-const TableItemDescription = tw.small`text-muted-foreground`
+	}}`
+const TableCardTitle = tw.span`font-medium uppercase`
+const TableCardDescription = tw.small`text-muted-foreground`
 
 export default TableCard

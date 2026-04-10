@@ -34,6 +34,13 @@ const ReservationForm: React.FC<{
 	const { mutateAsync, isPending, isError } = useCreateCustomerReservation()
 
 	const form = useForm({
+		defaultValues: {
+			customer_name: '',
+			customer_phone: '',
+			guest_count: 1,
+			reservation_time: null,
+			remark: ''
+		},
 		onSubmit: async ({ value }) => await mutateAsync(value),
 		validators: {
 			onSubmit: createReservationSchema as any
@@ -41,7 +48,11 @@ const ReservationForm: React.FC<{
 	})
 
 	useEffect(() => {
-		form.reset(defaultValues, { keepDefaultValues: true })
+		console.log('defaultValues', defaultValues)
+		form.reset(
+			{ ...defaultValues, reservation_time: new Date(defaultValues.reservation_time) },
+			{ keepDefaultValues: true }
+		)
 	}, [defaultValues])
 
 	const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
@@ -127,22 +138,7 @@ const ReservationForm: React.FC<{
 							return (
 								<Field>
 									<FieldLabel htmlFor='date-picker-optional'>Thời gian đến dự kiến</FieldLabel>
-									<div className='grid grid-cols-[1fr_2fr] gap-x-2'>
-										<Input
-											type='time'
-											id='reservation_time.time'
-											step={60 * 30}
-											min='10:00'
-											max='21:00'
-											value={isValid(field.state.value) ? format(field.state.value as Date, 'HH:mm') : ''}
-											onChange={(e) => {
-												const [hours, minutes] = e.target.value.split(':').map(Number)
-												const newDate = field.state.value ? new Date(field.state.value) : new Date()
-												newDate.setHours(hours, minutes, 0, 0)
-												field.handleChange(newDate)
-											}}
-											className='bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
-										/>
+									<div className='grid grid-cols-[2fr_1fr] gap-x-2'>
 										<Popover>
 											<PopoverTrigger
 												className='flex-1 basis-full'
@@ -162,16 +158,16 @@ const ReservationForm: React.FC<{
 											<PopoverContent className='w-auto gap-0 overflow-hidden p-0' align='start'>
 												<Calendar
 													mode='single'
-													selected={field.state.value}
+													selected={new Date(field.state.value)}
 													captionLayout='dropdown'
 													defaultMonth={field.state.value}
 													disabled={(date) => isBefore(date, startOfDay(new Date()))}
 													onSelect={(date) => {
 														const newDate = new Date(date)
-														if (field.state.value) {
+														if (field.state.value && isValid(field.state.value)) {
 															newDate.setHours(
-																field.state.value.getHours(),
-																field.state.value.getMinutes() || 0,
+																field.state.value?.getMinutes?.(),
+																field.state.value?.getMinutes?.() || 0,
 																0,
 																0
 															)
@@ -182,6 +178,21 @@ const ReservationForm: React.FC<{
 												/>
 											</PopoverContent>
 										</Popover>
+										<Input
+											type='time'
+											id='reservation_time.time'
+											step={60 * 30}
+											min='10:00'
+											max='21:00'
+											value={field.state.value ? format(field.state.value, 'HH:mm', { locale: vi }) : ''}
+											onChange={(e) => {
+												const [hours, minutes] = e.target.value.split(':').map(Number)
+												const newDate = field.state.value ? new Date(field.state.value) : new Date()
+												newDate.setHours(hours, minutes, 0, 0)
+												field.handleChange(newDate)
+											}}
+											className='bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
+										/>
 									</div>
 									{isInvalid && <FieldError errors={field.state.meta.errors} />}
 								</Field>
