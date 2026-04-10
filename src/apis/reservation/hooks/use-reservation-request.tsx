@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { addHours } from 'date-fns'
 import { toast } from 'sonner'
 import { ReservationService } from '../services'
 import { useStoredReservation } from './use-stored-reservation'
@@ -6,13 +7,22 @@ import { useStoredReservation } from './use-stored-reservation'
 export const GET_MY_RESERVATION_KEY = 'MY_RESERVATION'
 
 export const useCreateCustomerReservation = () => {
-	const [, setStoredReservation] = useStoredReservation()
+	const { storedReservation, setStoredReservation } = useStoredReservation()
+
+	const queryClient = useQueryClient()
 
 	return useMutation({
 		mutationFn: ReservationService.insertOneByCustomer,
 		onSuccess: (data) => {
 			toast.success('Đặt bàn thành công')
-			setStoredReservation(data?.metadata?.reservation_code)
+			setStoredReservation({
+				code: data?.metadata?.reservation_code,
+				expired: addHours(data?.metadata?.reservation_time, 1)
+			})
+			queryClient.invalidateQueries({
+				predicate: (query) =>
+					query.queryKey.some((key) => key === GET_MY_RESERVATION_KEY || key === storedReservation)
+			})
 		},
 		onError() {
 			toast.error('Đã có lỗi xảy ra khi tạo yêu cầu đặt bàn. Vui lòng thử lại sau ít phút nữa.')
@@ -21,12 +31,32 @@ export const useCreateCustomerReservation = () => {
 }
 
 export const useGetMyReservationQuery = () => {
-	const [storedReservationCode] = useStoredReservation()
+	const { storedReservation } = useStoredReservation()
 
 	return useQuery({
-		queryKey: [GET_MY_RESERVATION_KEY],
-		queryFn: () => ReservationService.getOneByCode(storedReservationCode),
-		enabled: !!storedReservationCode,
+		queryKey: [GET_MY_RESERVATION_KEY, storedReservation?.code],
+		queryFn: () => ReservationService.getOneByCode(storedReservation?.code),
+		enabled: !!storedReservation?.code,
 		select: (response) => response?.metadata
+	})
+}
+
+export const useDeleteReservationMutation = () => {
+	const { storedReservation, setStoredReservation } = useStoredReservation()
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: () => ReservationService.deleteOne(storedReservation.code),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				predicate: (query) =>
+					query.queryKey.some((key) => key === GET_MY_RESERVATION_KEY || key === storedReservation)
+			})
+			toast.success('Hủy đặt bàn thành công')
+			setStoredReservation(null)
+		},
+		onError: () => {
+			toast.error('Hủy đặt bàn thất bại')
+		}
 	})
 }

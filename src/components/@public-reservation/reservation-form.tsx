@@ -23,7 +23,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { useForm } from '@tanstack/react-form'
 import { format, isBefore, isValid, startOfDay } from 'date-fns'
 import { vi } from 'date-fns/locale'
-import { useState, type SubmitEventHandler } from 'react'
+import { useEffect, useState, type SubmitEventHandler } from 'react'
 
 const ReservationForm: React.FC<{
 	defaultValues:
@@ -34,22 +34,15 @@ const ReservationForm: React.FC<{
 	const { mutateAsync, isPending, isError } = useCreateCustomerReservation()
 
 	const form = useForm({
-		defaultValues: defaultValues ?? {
-			customer_name: '',
-			customer_phone: '',
-			guest_count: null,
-			reservation_time: null,
-			remark: ''
-		},
-		onSubmitInvalid(props) {
-			console.log(props.formApi.getAllErrors())
-			console.log(props.value)
-		},
 		onSubmit: async ({ value }) => await mutateAsync(value),
 		validators: {
 			onSubmit: createReservationSchema as any
 		}
 	})
+
+	useEffect(() => {
+		form.reset(defaultValues, { keepDefaultValues: true })
+	}, [defaultValues])
 
 	const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault()
@@ -57,7 +50,7 @@ const ReservationForm: React.FC<{
 	}
 
 	return (
-		<form className='mx-auto my-10 w-full max-w-3xl rounded-lg p-6 shadow-lg' onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit}>
 			<FieldSet>
 				<FieldLegend>Thông tin của bạn</FieldLegend>
 				<FieldDescription>
@@ -73,6 +66,7 @@ const ReservationForm: React.FC<{
 									<Input
 										name={field.name}
 										id={field.name}
+										value={field.state.value}
 										onBlur={field.handleBlur}
 										onChange={(e) => field.handleChange(e.target.value)}
 										aria-invalid={isInvalid}
@@ -93,6 +87,7 @@ const ReservationForm: React.FC<{
 									<Input
 										name={field.name}
 										id={field.name}
+										value={field.state.value}
 										onBlur={field.handleBlur}
 										onChange={(e) => field.handleChange(e.target.value)}
 										aria-invalid={isInvalid}
@@ -114,6 +109,7 @@ const ReservationForm: React.FC<{
 										name={field.name}
 										id={field.name}
 										onBlur={field.handleBlur}
+										value={field.state.value}
 										onChange={(e) => field.handleChange(+e.target.value)}
 										aria-invalid={isInvalid}
 										type='number'
@@ -138,7 +134,7 @@ const ReservationForm: React.FC<{
 											step={60 * 30}
 											min='10:00'
 											max='21:00'
-											value={isValid(field.state.value) ? format(field.state.value, 'HH:mm') : ''}
+											value={isValid(field.state.value) ? format(field.state.value as Date, 'HH:mm') : ''}
 											onChange={(e) => {
 												const [hours, minutes] = e.target.value.split(':').map(Number)
 												const newDate = field.state.value ? new Date(field.state.value) : new Date()
@@ -233,7 +229,7 @@ const ReservationForm: React.FC<{
 					<Field orientation='horizontal'>
 						<Button type='submit' size='lg' disabled={!isAgreed || isPending} className='w-full'>
 							{isPending && <Spinner />}
-							Xác nhận thông tin đặt bàn
+							{isError ? 'Thử lại' : 'Xác nhận thông tin đặt bàn'}
 						</Button>
 					</Field>
 				</FieldGroup>

@@ -28,7 +28,9 @@ function RouteComponent() {
 				) : myReservation ? (
 					<MyReservation data={myReservation} />
 				) : (
-					<ReservationForm defaultValues={myReservation} />
+					<div className='mx-auto my-10 w-full max-w-3xl rounded-lg p-6 shadow-lg'>
+						<ReservationForm defaultValues={myReservation} />
+					</div>
 				)}
 			</section>
 		</>

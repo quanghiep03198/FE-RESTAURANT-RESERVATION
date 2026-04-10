@@ -1,3 +1,5 @@
+import { ReservationStatus } from '@/apis/reservation/constants'
+import { useDeleteReservationMutation } from '@/apis/reservation/hooks/use-reservation-request'
 import type { IReservation } from '@/apis/reservation/types'
 import { formatCurrency } from '@/common/utils/format-currency'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -8,32 +10,62 @@ import { Typography } from '@/components/ui/typography'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { padStart } from 'lodash-es'
-import React from 'react'
+import React, { useState } from 'react'
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogMedia,
+	AlertDialogTitle,
+	AlertDialogTrigger
+} from '../ui/alert-dialog'
+import { Spinner } from '../ui/spinner'
+import ReservationForm from './reservation-form'
+
+const RESERVATION_STATUS_TEXT = new Map<ReservationStatus, string>([
+	[ReservationStatus.PENDING, 'Đang xử lý'],
+	[ReservationStatus.COMPLETED, 'Đã hoàn thành'],
+	[ReservationStatus.CONFIRMED, 'Đã xác nhận'],
+	[ReservationStatus.CANCELED, 'Đã hủy']
+])
 
 const MyReservation: React.FC<{ data: IReservation }> = ({ data }) => {
+	if (!data) return null
+
+	const [isEditting, setIsEditting] = useState<boolean>(false)
+
 	return (
-		<div className='bg-card mx-auto my-10 grid w-full max-w-7xl grid-cols-1 gap-6 rounded-lg p-4 shadow-lg lg:grid-cols-2'>
+		<div className='bg-card mx-auto my-10 grid w-full max-w-360 grid-cols-1 gap-6 rounded-lg p-4 shadow-lg lg:grid-cols-2'>
 			<div className='grid place-content-center place-items-center py-10'>
-				<div className='before:bg-success/20 relative mb-6 aspect-square before:absolute before:aspect-square before:size-20 before:rounded-full'>
+				<div className='animate-in zoom-in-0 fade-in-0 before:bg-success/20 relative mb-6 aspect-square before:absolute before:aspect-square before:size-20 before:rounded-full'>
 					<Icon name='CircleCheck' size={80} className='fill-success stroke-white stroke-2' />
 				</div>
-				<div className='mb-14 space-y-1 text-center'>
+				<div className='animate-in slide-in-from-bottom-10 fade-in-0 mb-14 space-y-1 text-center duration-300'>
 					<Typography variant='h4'>Đặt bàn thành công</Typography>
 					<Typography variant='small' className='text-pretty'>
-						Chúng tôi đã nhận được yêu cầu đặt bàn của bạn với mã đặt bàn <strong>{data.customer_phone}</strong>.{' '}
-						<br /> Vui lòng giữ mã đặt bàn này để kiểm tra trạng thái đặt bàn hoặc chỉnh sửa thông tin đặt bàn nếu
-						cần thiết. Cảm ơn bạn đã sử dụng dịch vụ đặt bàn online của chúng tôi!
+						Chúng tôi đã nhận được yêu cầu đặt bàn của bạn với mã đặt bàn{' '}
+						<strong className='uppercase'>{data.reservation_code}</strong>. <br /> Vui lòng giữ mã đặt bàn này để
+						kiểm tra trạng thái đặt bàn hoặc chỉnh sửa thông tin đặt bàn nếu cần thiết. Cảm ơn bạn đã sử dụng dịch
+						vụ đặt bàn online của chúng tôi!
 					</Typography>
 				</div>
 				<div className='space-x-2'>
-					<Button variant='secondary' className='capitalize'>
-						Chỉnh sửa thông tin
+					<CancelReservationDialog />
+					<Button variant='outline' className='capitalize' onClick={() => setIsEditting(!isEditting)}>
+						{isEditting ? 'Hủy thay đổi' : 'Chỉnh sửa thông tin'}
 					</Button>
-					<Button className='destructive'>Hủy đặt bàn</Button>
 				</div>
 			</div>
+
 			{/* Reservation details card */}
-			<div className='bg-background space-y-6 rounded-[inherit] border-none p-6 ring-0'>
+
+			<div
+				className='bg-background animate-in fade-in-0 slide-in-from-right-4 space-y-6 rounded-[inherit] border-none p-6 ring-0 aria-hidden:hidden'
+				aria-hidden={isEditting}>
 				<Typography variant='h4' className='mb-6'>
 					Thông tin đặt bàn của bạn
 				</Typography>
@@ -73,10 +105,12 @@ const MyReservation: React.FC<{ data: IReservation }> = ({ data }) => {
 				<Separator />
 				<div className='space-y-3'>
 					<Typography className='font-semibold'>Tóm tắt dịch vụ</Typography>
-					<div className='space-y-2'>
+					<div className='space-y-3'>
 						<div className='flex items-center justify-between'>
-							<Typography color='muted'>Phí giữ chỗ</Typography>
-							<Typography className='font-semibold'>{formatCurrency(data.deposit_amount)}</Typography>
+							<Typography color='muted'>Trạng thái</Typography>
+							<Typography className='font-semibold lowercase first-letter:uppercase'>
+								{RESERVATION_STATUS_TEXT.get(data.status)}
+							</Typography>
 						</div>
 						<div className='flex items-center justify-between'>
 							<Typography color='muted'>Bàn chọn trước</Typography>
@@ -85,6 +119,10 @@ const MyReservation: React.FC<{ data: IReservation }> = ({ data }) => {
 								aria-invalid={!data.table_code}>
 								{data.table_code ?? 'Chưa chọn'}
 							</Typography>
+						</div>
+						<div className='flex items-center justify-between'>
+							<Typography color='muted'>Phí giữ chỗ</Typography>
+							<Typography className='font-semibold'>{formatCurrency(data.deposit_amount)}</Typography>
 						</div>
 					</div>
 				</div>
@@ -103,7 +141,49 @@ const MyReservation: React.FC<{ data: IReservation }> = ({ data }) => {
 					</AlertDescription>
 				</Alert>
 			</div>
+			<div
+				aria-hidden={!isEditting}
+				className='bg-background animate-in fade-in-0 slide-in-from-left-4 relative space-y-6 rounded-[inherit] border-none p-6 ring-0 aria-hidden:hidden'>
+				<Button
+					variant='ghost'
+					size='icon'
+					className='absolute top-2 right-2 z-10'
+					onClick={() => setIsEditting(false)}>
+					<Icon name='X' />
+				</Button>
+				<ReservationForm defaultValues={data} />
+			</div>
 		</div>
+	)
+}
+
+const CancelReservationDialog: React.FC = () => {
+	const { mutateAsync, isPending } = useDeleteReservationMutation()
+	const [open, setOpen] = useState<boolean>(false)
+
+	return (
+		<AlertDialog open={open || isPending} onOpenChange={setOpen}>
+			<AlertDialogTrigger render={<Button className='destructive'>Hủy đặt bàn</Button>} />
+			<AlertDialogContent>
+				<AlertDialogHeader>
+					<AlertDialogMedia className='bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive'>
+						<Icon name='Trash2' />
+					</AlertDialogMedia>
+					<AlertDialogTitle>Hủy đặt bàn?</AlertDialogTitle>
+					<AlertDialogDescription>
+						Nếu trước thời gian dự kiến 2 tiếng bạn sẽ phải chịu phí hủy đặt bàn tương đương với phí giữ chỗ đã
+						thanh toán. Cảm ơn bạn đã thông cảm!
+					</AlertDialogDescription>
+				</AlertDialogHeader>
+				<AlertDialogFooter>
+					<AlertDialogCancel variant='outline'>Bỏ qua</AlertDialogCancel>
+					<AlertDialogAction variant='destructive' disabled={isPending} onClick={async () => await mutateAsync()}>
+						{isPending && <Spinner />}
+						Xác nhận hủy
+					</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
 	)
 }
 
