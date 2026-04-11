@@ -1,11 +1,11 @@
 import { useGetMyReservationQuery } from '@/apis/reservation/hooks/use-reservation-request'
-import MyReservation from '@/components/@public-reservation/my-reservation'
-import ReservationForm from '@/components/@public-reservation/reservation-form'
+import MyReservation from '@/components/@reservation/my-reservation'
+import ReservationForm from '@/components/@reservation/reservation-form'
 import { Spinner } from '@/components/ui/spinner'
 import { Typography } from '@/components/ui/typography'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_public-layout/reservation')({
+export const Route = createFileRoute('/_public-layout/customer-reservation')({
 	component: RouteComponent
 })
 

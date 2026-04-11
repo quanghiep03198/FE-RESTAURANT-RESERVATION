@@ -81,10 +81,12 @@
 	--tracking-normal: -0.02em;
 	--spacing: 0.25rem;
 
-	--success: hsl(167, 96%, 46%);
+	--success: hsl(160.1 84.1% 39.4%);
 	--success-foreground: hsl(0 0% 100%);
-	--active: hsl(215.0877 100% 33.5294%);
+	--active: hsl(198.6 88.7% 48.4%);
 	--active-foreground: hsl(0 0% 100%);
+	--warning: hsl(24.6 95% 53.1%);
+	--warning-foreground: hsl(0 0% 100%);
 }
 
 .dark {

@@ -1,3 +1,4 @@
+import { useSeoHelper } from '@/hooks/use-seo-helper'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_private-layout/invoices')({
@@ -5,5 +6,12 @@ export const Route = createFileRoute('/_private-layout/invoices')({
 })
 
 function RouteComponent() {
-	return <div>Hello "/_layout/invoices"!</div>
+	const metadata = useSeoHelper('main')
+
+	return (
+		<>
+			<title>{metadata?.title}</title>
+			<meta name='description' content={metadata?.description} />
+		</>
+	)
 }

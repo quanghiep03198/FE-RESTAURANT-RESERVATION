@@ -10,6 +10,7 @@ import {
 	PageWrapper
 } from '@/components/layouts/@private/app-page'
 import { PageContextProvider } from '@/contexts/event-context'
+import { useSeoHelper } from '@/hooks/use-seo-helper'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_private-layout/categories')({
@@ -17,10 +18,12 @@ export const Route = createFileRoute('/_private-layout/categories')({
 })
 
 function RouteComponent() {
+	const metadata = useSeoHelper('main')
+
 	return (
 		<>
-			<title>Quản lý Danh mục</title>
-			<meta name='description' content='Quản lý danh mục món ăn trong nhà hàng' />
+			<title>{metadata?.title}</title>
+			<meta name='description' content={metadata?.description} />
 
 			<PageContextProvider>
 				<PageWrapper>

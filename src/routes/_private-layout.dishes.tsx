@@ -5,6 +5,7 @@ import DishListSearchBar from '@/components/@dish/dish-list-seach-bar'
 import { PageHeader, PageWrapper } from '@/components/layouts/@private/app-page'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { PageContextProvider } from '@/contexts/event-context'
+import { useSeoHelper } from '@/hooks/use-seo-helper'
 import { createFileRoute } from '@tanstack/react-router'
 import tw from 'tailwind-styled-components'
 
@@ -13,10 +14,12 @@ export const Route = createFileRoute('/_private-layout/dishes')({
 })
 
 function RouteComponent() {
+	const metadata = useSeoHelper('main')
+
 	return (
 		<>
-			<title>Món ăn</title>
-			<meta name='description' content='Danh mục các món ăn' />
+			<title>{metadata?.title}</title>
+			<meta name='description' content={metadata?.description} />
 
 			<PageContextProvider>
 				<SidebarProvider data-outlet-padding='none' className='w-full' cookieName='dish_filter_sidebar'>

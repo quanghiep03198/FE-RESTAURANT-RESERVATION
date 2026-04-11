@@ -6,7 +6,7 @@ import TableCard from './table-card'
 import TableFormDialogTrigger from './table-form-dialog-trigger'
 import TableIndicators from './table-indicators'
 
-const TableMap: React.FC = () => {
+const TablesMap: React.FC = () => {
 	const { data, isLoading } = useGetTableQuery()
 
 	return (
@@ -42,4 +42,4 @@ const TableMap: React.FC = () => {
 	)
 }
 
-export default TableMap
+export default TablesMap

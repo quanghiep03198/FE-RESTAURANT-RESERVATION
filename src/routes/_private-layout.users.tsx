@@ -10,18 +10,20 @@ import {
 	PageWrapper
 } from '@/components/layouts/@private/app-page'
 import { PageContextProvider } from '@/contexts/event-context'
+import { useSeoHelper } from '@/hooks/use-seo-helper'
+import { createFileRoute } from '@tanstack/react-router'
 
-import { createLazyFileRoute } from '@tanstack/react-router'
-
-export const Route = createLazyFileRoute('/_private-layout/users')({
+export const Route = createFileRoute('/_private-layout/users')({
 	component: RouteComponent
 })
 
 function RouteComponent() {
+	const metadata = useSeoHelper('administration')
+
 	return (
 		<>
-			<title>Quản lý người dùng</title>
-			<meta name='description' content='Quản lý danh nhân viên trong quán' />
+			<title>{metadata?.title}</title>
+			<meta name='description' content={metadata?.description} />
 
 			<PageContextProvider>
 				<PageWrapper>

@@ -1,4 +1,5 @@
 import { PageDescription, PageHeader, PageTitle } from '@/components/layouts/@private/app-page'
+import { useSeoHelper } from '@/hooks/use-seo-helper'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_private-layout/analytics')({
@@ -6,8 +7,13 @@ export const Route = createFileRoute('/_private-layout/analytics')({
 })
 
 function RouteComponent() {
+	const metadata = useSeoHelper('administration')
+
 	return (
 		<>
+			<title>{metadata?.title}</title>
+			<meta name='description' content={metadata?.description} />
+
 			<PageHeader>
 				<PageTitle>Thống kê</PageTitle>
 				<PageDescription>

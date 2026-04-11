@@ -4,6 +4,10 @@ import type { TUpdateReservationValues } from '../schemas/update-reservation.sch
 import type { IReservation } from '../types'
 
 export class ReservationService {
+	public static async getAll() {
+		return await axiosInstance.get<unknown, ResponseBody<IReservation[]>, void>('/reservations')
+	}
+
 	public static async insertOneByCustomer(payload: TCreateReservationValues) {
 		return await axiosInstance.post<unknown, ResponseBody<IReservation>, TCreateReservationValues>(
 			'/reservations/store-by-customer',

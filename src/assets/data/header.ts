@@ -24,6 +24,6 @@ export const navigationData: NavigationSection[] = [
 	{
 		title: 'Đặt bàn',
 		hash: '',
-		to: '/reservation'
+		to: '/customer-reservation'
 	}
 ]

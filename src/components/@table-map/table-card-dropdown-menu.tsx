@@ -1,3 +1,4 @@
+import { TableStatus } from '@/apis/table/constants'
 import { useDeleteTableMutation } from '@/apis/table/hooks/use-table-request'
 import type { ITable } from '@/apis/table/types'
 import { CommonActions } from '@/common/constants/enums'
@@ -5,7 +6,13 @@ import { usePageContext } from '@/contexts/event-context'
 import RoleBaseAccessControl from '@/guards/role-base-access-control'
 import { useState } from 'react'
 import { Button } from '../ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger
+} from '../ui/dropdown-menu'
 import { Icon } from '../ui/icon'
 import { Spinner } from '../ui/spinner'
 
@@ -26,7 +33,13 @@ const TableCardDropdownMenu: React.FC<{ data: ITable }> = ({ data }) => {
 						</Button>
 					}
 				/>
-				<DropdownMenuContent>
+				<DropdownMenuContent className='w-44'>
+					{(data.status === TableStatus.AVAILABLE || data.status === TableStatus.RESERVED) && (
+						<>
+							<DropdownMenuItem>Mở phiên phục vụ</DropdownMenuItem>
+							<DropdownMenuSeparator />
+						</>
+					)}
 					<DropdownMenuItem
 						onClick={(e) => {
 							e.stopPropagation()

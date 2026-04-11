@@ -1,8 +1,6 @@
-import { getCombosQueryOptions } from '@/apis/menu/hooks/use-combo-request'
-import ComboFormDialog from '@/components/@combo/combo-form-dialog'
-import ComboFormDialogTrigger from '@/components/@combo/combo-form-dialog-trigger'
-import ComboItemList from '@/components/@combo/combo-item-list'
-import ComboListToolbar from '@/components/@combo/combo-list-toolbar'
+import { getReservationsQueryOptions } from '@/apis/reservation/hooks/use-reservation-request'
+import ReservationFormDialogTrigger from '@/components/@reservation/reservation-form-dialog-trigger'
+import ReservationTable from '@/components/@reservation/reservation-table'
 import {
 	PageAction,
 	PageDescription,
@@ -16,11 +14,11 @@ import { useSeoHelper } from '@/hooks/use-seo-helper'
 import { QueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_private-layout/combos')({
+export const Route = createFileRoute('/_private-layout/reservations')({
 	component: RouteComponent,
-	loader: ({ context }) => {
+	beforeLoad: ({ context }) => {
 		if ('queryClient' in context && context.queryClient instanceof QueryClient)
-			context.queryClient.ensureQueryData(getCombosQueryOptions())
+			context.queryClient.ensureQueryData(getReservationsQueryOptions())
 	}
 })
 
@@ -35,16 +33,14 @@ function RouteComponent() {
 			<PageContextProvider>
 				<PageWrapper>
 					<PageHeader>
-						<PageTitle>Quản lý Combo & Ưu đãi</PageTitle>
-						<PageDescription>Quản lý & Tối ưu hóa doanh thu thông qua các gói dịch vụ đặc biệt</PageDescription>
+						<PageTitle>{metadata?.title}</PageTitle>
+						<PageDescription>{metadata?.description}</PageDescription>
 						<PageAction>
-							<ComboFormDialogTrigger />
+							<ReservationFormDialogTrigger />
 						</PageAction>
 					</PageHeader>
 					<PageSeparator />
-					<ComboListToolbar />
-					<ComboItemList />
-					<ComboFormDialog />
+					<ReservationTable />
 				</PageWrapper>
 			</PageContextProvider>
 		</>

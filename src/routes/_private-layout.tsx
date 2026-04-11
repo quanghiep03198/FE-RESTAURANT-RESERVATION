@@ -59,7 +59,7 @@ const LayoutWrapper: React.FC<React.ComponentProps<'div'>> = tw.div`
 	[&:has(*[data-outlet-padding=none])]:[--outlet-padding-x:0px]
 	[&:has(*[data-outlet-padding=none])]:[--outlet-padding-y:0px]
 	[--scrollbar-thickness:10px] 
-	[--outlet-padding-y:12px] 
+	[--outlet-padding-y:16px] 
 	[--header-height:56px] 
 	xxl:[--outlet-wrapper-width:calc(var(--screen-width,100dvw)*1px-var(--sidebar-width)-2*var(--outlet-padding-x)-var(--scrollbar-thickness))]
 	[--outlet-wrapper-width:calc(var(--screen-width,100dvw)*1px-2*var(--outlet-padding-x)-var(--scrollbar-thickness))]

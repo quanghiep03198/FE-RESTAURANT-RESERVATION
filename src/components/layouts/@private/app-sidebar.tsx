@@ -46,7 +46,7 @@ const AppSidebar: React.FC = () => {
 				<Typography as='h1' variant='h2' className='text-primary sour-gummy leading-none tracking-wide'>
 					Jolly Fast Food
 				</Typography>
-				<Typography variant='small' color='secondary' className='text-xs font-medium'>
+				<Typography variant='small' color='muted'>
 					Hệ thống quản lý Đặt bàn
 				</Typography>
 			</SidebarHeader>

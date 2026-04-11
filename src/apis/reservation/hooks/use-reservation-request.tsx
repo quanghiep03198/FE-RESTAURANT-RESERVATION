@@ -1,10 +1,23 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { addHours } from 'date-fns'
 import { toast } from 'sonner'
 import { ReservationService } from '../services'
 import { useStoredReservation } from './use-stored-reservation'
 
 export const GET_MY_RESERVATION_KEY = 'MY_RESERVATION'
+
+export const GET_RESERVATIONS_KEY = 'RESERVATIONS'
+
+export const getReservationsQueryOptions = () =>
+	queryOptions({
+		queryKey: [GET_RESERVATIONS_KEY],
+		queryFn: ReservationService.getAll,
+		select: (response) => (Array.isArray(response.metadata) ? response.metadata : [])
+	})
+
+export const useGetReservationsQuery = () => {
+	return useSuspenseQuery(getReservationsQueryOptions())
+}
 
 export const useCreateCustomerReservation = () => {
 	const { storedReservation, setStoredReservation } = useStoredReservation()
