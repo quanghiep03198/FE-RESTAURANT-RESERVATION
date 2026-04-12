@@ -115,7 +115,17 @@ const TableDetailDialog: React.FC = () => {
 	console.log(cartData)
 
 	useEffect(() => {
-		// if (Array.isArray(cartData?.items)) form.reset(cartData, { keepDefaultValues: true })
+		if (Array.isArray(cartData?.item_list))
+			form.reset(
+				{
+					items: cartData?.item_list.map((item) => ({
+						item_id: item.id,
+						item_type: item.type,
+						quantity: item.quantity
+					}))
+				},
+				{ keepDefaultValues: true }
+			)
 	}, [cartData])
 
 	const categoryOptions: TCartItemGroup[] = useMemo(

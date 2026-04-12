@@ -6,10 +6,12 @@ export interface ICart extends IBaseEntity {
 	order_no: string
 	created_by_employee: string
 	status: CartStatus
-	items: Array<{
+	item_list: Array<{
+		id: number
 		image: string | null
 		name: string
-		price: number
+		type: 'dish' | 'combo'
+		unit_price: number
 		quantity: number
 	}>
 }
