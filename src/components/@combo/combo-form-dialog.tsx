@@ -58,7 +58,7 @@ const ComboFormDialog: React.FC = () => {
 	const [open, setOpen] = useState<boolean>(!!action)
 	const formSchemaRef = useRef<TCreateComboSchema | TUpdateComboSchema | undefined>(undefined)
 	const mutation = useCreateOrUpdateComboMutation(action ?? CommonActions.CREATE)
-	const { data: categories, isLoading } = useGetCategoriesQuery()
+	const { data: categories } = useGetCategoriesQuery()
 	const dayOptions = Object.values(DayInWeek).map((day) => ({
 		label: formatDayInWeek(day),
 		value: day

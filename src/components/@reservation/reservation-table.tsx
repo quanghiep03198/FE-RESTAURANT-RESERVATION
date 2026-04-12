@@ -10,13 +10,12 @@ import { ROW_ACTIONS_COLUMN_ID } from '../shared/data-grid/constants'
 import { Icon } from '../ui/icon'
 import { Typography } from '../ui/typography'
 import ReservationActionsDropdownMenu from './actions-dropdown-menu'
+import ReservationTableToolbar from './reservation-table-toolbar'
 import StatusBadge from './status-badge'
 import UserTableCell from './user-table-cell'
 
 const ReservationTable: React.FC = () => {
 	const { data, isLoading } = useGetReservationsQuery()
-
-	console.log('data', data)
 
 	const columnHelper = createColumnHelper<IReservation>()
 
@@ -26,10 +25,13 @@ const ReservationTable: React.FC = () => {
 				header: 'Mã đặt bàn',
 				enableSorting: true,
 				enableGlobalFilter: true,
+				size: 150,
+				enablePinning: true,
 				enableHiding: false,
 				cell: ({ getValue }) => (
-					<Typography variant='small' className='font-medium'>
-						{getValue()}
+					<Typography variant='small' className='auto-col-max inline-grid grid-flow-col items-center gap-x-2'>
+						<Icon name='QrCode' />
+						<span className='line-clamp-1'>{getValue()}</span>
 					</Typography>
 				)
 			}),
@@ -46,9 +48,9 @@ const ReservationTable: React.FC = () => {
 				enableGlobalFilter: true,
 				enableHiding: false,
 				cell: ({ getValue }) => (
-					<Typography variant='small' className='inline-flex items-center gap-x-2'>
+					<Typography variant='small' className='auto-col-max inline-grid grid-flow-col items-center gap-x-2'>
 						<Icon name='Smartphone' stroke='var(--muted-foreground)' />
-						{formatPhoneNumber(getValue())}
+						<span className='line-clamp-1'>{formatPhoneNumber(getValue())}</span>
 					</Typography>
 				)
 			}),
@@ -58,9 +60,9 @@ const ReservationTable: React.FC = () => {
 				enableGlobalFilter: true,
 				enableHiding: false,
 				cell: ({ getValue }) => (
-					<Typography variant='small' className='inline-flex items-center gap-x-2'>
+					<Typography variant='small' className='auto-col-max inline-grid grid-flow-col items-center gap-x-2'>
 						<Icon name='Clock' stroke='var(--muted-foreground)' />
-						{format(getValue(), 'dd/MM/yyyy HH:mm')}{' '}
+						<span className='line-clamp-1'>{format(getValue(), 'dd/MM/yyyy HH:mm')} </span>
 					</Typography>
 				)
 			}),
@@ -70,9 +72,9 @@ const ReservationTable: React.FC = () => {
 				enableGlobalFilter: true,
 				enableHiding: false,
 				cell: ({ getValue }) => (
-					<Typography variant='small' className='line-clamp-1 inline-flex items-center gap-x-2'>
+					<Typography variant='small' className='auto-col-max inline-grid grid-flow-col items-center gap-x-2'>
 						<Icon name='Clock' stroke='var(--muted-foreground)' />
-						{format(getValue(), 'dd/MM/yyyy HH:mm')}{' '}
+						<span className='line-clamp-1'>{format(getValue(), 'dd/MM/yyyy HH:mm')} </span>
 					</Typography>
 				)
 			}),
@@ -85,9 +87,12 @@ const ReservationTable: React.FC = () => {
 					getValue() ? (
 						formatCurrency(getValue())
 					) : (
-						<Typography variant='small' color='muted' className='inline-flex items-center gap-x-2'>
-							<Icon name='HandCoins' stroke='var(--muted-foreground)' />
-							Chưa thanh toán
+						<Typography
+							variant='small'
+							color='muted'
+							className='auto-col-max inline-grid grid-flow-col items-center gap-x-2'>
+							<Icon name='CreditCard' stroke='var(--muted-foreground)' />
+							<span className='line-clamp-1'>Chưa thanh toán</span>
 						</Typography>
 					)
 			}),
@@ -103,11 +108,10 @@ const ReservationTable: React.FC = () => {
 				enableSorting: true,
 				enableGlobalFilter: true,
 				enableHiding: false,
-				cell: ({ getValue }) => <UserTableCell name={getValue()} />
+				cell: ({ getValue }) => <UserTableCell name={getValue()?.full_name} />
 			}),
 			columnHelper.display({
 				id: ROW_ACTIONS_COLUMN_ID,
-				header: 'Thao tác',
 				size: 60,
 				maxSize: 60,
 				cell: ReservationActionsDropdownMenu
@@ -118,11 +122,15 @@ const ReservationTable: React.FC = () => {
 
 	return (
 		<DataGrid
-			data={data}
+			data={data ?? []}
 			columns={columns}
 			loading={isLoading}
-			virtualizerOptions={{ estimateSize: 44 }}
-			containerProps={{ className: 'h-[calc(var(--outlet-wrapper-height)-6rem)]' }}
+			virtualizerOptions={{ estimateSize: 48 }}
+			containerProps={{ className: 'h-[calc(var(--outlet-wrapper-height)-8rem)]' }}
+			toolbarProps={{
+				override: true,
+				render: ReservationTableToolbar
+			}}
 		/>
 	)
 }

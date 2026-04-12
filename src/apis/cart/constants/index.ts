@@ -1,0 +1,11 @@
+export enum CartStatus {
+	OPEN = 'OPEN',
+	LOCKED_FOR_PAYMENT = 'LOCKED_FOR_PAYMENT',
+	CANCELLED = 'CANCELLED',
+	CONVERTED_TO_INVOICE = 'CONVERTED_TO_INVOICE'
+}
+
+export enum CartItemType {
+	DISH = 'DISH',
+	COMBO = 'COMBO'
+}

@@ -2,6 +2,7 @@ import { CommonActions } from '@/common/constants/enums'
 import {
 	queryOptions,
 	useMutation,
+	useQuery,
 	useQueryClient,
 	useSuspenseQuery,
 	type MutationFunction
@@ -13,18 +14,18 @@ import type { TUpdateTableValues } from '../schemas/update-table.schema.'
 import { TableService } from '../services'
 import type { ITable } from '../types'
 
-export const TABLE_QUERY_KEY = 'TABLES'
+export const GET_TABLE_QUERY_KEY = 'TABLES'
 
 export const getTableQueryOptions = () =>
 	queryOptions({
-		queryKey: [TABLE_QUERY_KEY],
+		queryKey: [GET_TABLE_QUERY_KEY],
 		queryFn: TableService.getAll,
 		refetchOnMount: true,
 		select: (response) => (Array.isArray(response.metadata) ? response.metadata.filter((item) => item.is_active) : [])
 	})
 
-export const useGetTableQuery = () => {
-	return useSuspenseQuery(getTableQueryOptions())
+export const useGetTablesQuery = (prefetchOnLoader: boolean = true) => {
+	return prefetchOnLoader ? useSuspenseQuery(getTableQueryOptions()) : useQuery(getTableQueryOptions())
 }
 
 export const useCreateOrUpdateTableMutation = (action: CommonActions.CREATE | CommonActions.UPDATE) => {
@@ -60,7 +61,7 @@ export const useCreateOrUpdateTableMutation = (action: CommonActions.CREATE | Co
 			toastRef.current = toast.loading('Đang xử lý ...')
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [TABLE_QUERY_KEY] })
+			queryClient.invalidateQueries({ queryKey: [GET_TABLE_QUERY_KEY] })
 			toast.success(currentConfig?.message, { id: toastRef.current })
 		},
 		onError: () => {
@@ -75,7 +76,7 @@ export const useDeleteTableMutation = () => {
 	return useMutation({
 		mutationFn: (slug: string) => TableService.deleteOneBySlug(slug),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [TABLE_QUERY_KEY] })
+			queryClient.invalidateQueries({ queryKey: [GET_TABLE_QUERY_KEY] })
 			toast.success('Đã xóa bàn ăn thành công', { id: 'delete-table' })
 		},
 		onError: () => {

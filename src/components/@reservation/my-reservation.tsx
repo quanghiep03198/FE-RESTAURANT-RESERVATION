@@ -1,5 +1,9 @@
 import { ReservationStatus } from '@/apis/reservation/constants'
-import { useDeleteReservationMutation } from '@/apis/reservation/hooks/use-reservation-request'
+import {
+	useCreateCustomerReservation,
+	useDeleteReservationMutation
+} from '@/apis/reservation/hooks/use-reservation-request'
+import { useStoredReservation } from '@/apis/reservation/hooks/use-stored-reservation'
 import type { IReservation } from '@/apis/reservation/types'
 import { formatCurrency } from '@/common/utils/format-currency'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -34,9 +38,10 @@ const RESERVATION_STATUS_TEXT = new Map<ReservationStatus, string>([
 ])
 
 const MyReservation: React.FC<{ data: IReservation }> = ({ data }) => {
-	if (!data) return null
-
 	const [isEditting, setIsEditting] = useState<boolean>(false)
+	const mutation = useCreateCustomerReservation()
+
+	if (!data) return null
 
 	return (
 		<div className='bg-card mx-auto my-10 grid w-full max-w-360 grid-cols-1 gap-6 rounded-lg p-4 shadow-lg lg:grid-cols-2'>
@@ -87,10 +92,10 @@ const MyReservation: React.FC<{ data: IReservation }> = ({ data }) => {
 							Thời gian
 						</Typography>
 						<Typography className='text-lg font-semibold'>
-							{format(new Date(data.reservation_time), 'HH:mm', { locale: vi })}
+							{format(new Date(data?.reservation_time), 'HH:mm', { locale: vi })}
 						</Typography>
 						<Typography className='capitalize'>
-							{format(new Date(data.reservation_time), 'cccc, dd MMMM, yyyy', { locale: vi })}
+							{format(new Date(data?.reservation_time), 'cccc, dd MMMM, yyyy', { locale: vi })}
 						</Typography>
 					</div>
 					<div className='col-span-1 space-y-1'>
@@ -151,7 +156,7 @@ const MyReservation: React.FC<{ data: IReservation }> = ({ data }) => {
 					onClick={() => setIsEditting(false)}>
 					<Icon name='X' />
 				</Button>
-				<ReservationForm defaultValues={data} />
+				<ReservationForm defaultValues={data} mutation={mutation} />
 			</div>
 		</div>
 	)
@@ -160,6 +165,7 @@ const MyReservation: React.FC<{ data: IReservation }> = ({ data }) => {
 const CancelReservationDialog: React.FC = () => {
 	const { mutateAsync, isPending } = useDeleteReservationMutation()
 	const [open, setOpen] = useState<boolean>(false)
+	const { storedReservation, setStoredReservation } = useStoredReservation()
 
 	return (
 		<AlertDialog open={open || isPending} onOpenChange={setOpen}>
@@ -177,7 +183,12 @@ const CancelReservationDialog: React.FC = () => {
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel variant='outline'>Bỏ qua</AlertDialogCancel>
-					<AlertDialogAction variant='destructive' disabled={isPending} onClick={async () => await mutateAsync()}>
+					<AlertDialogAction
+						variant='destructive'
+						disabled={isPending}
+						onClick={async () =>
+							await mutateAsync(storedReservation.code).then(() => setStoredReservation(null))
+						}>
 						{isPending && <Spinner />}
 						Xác nhận hủy
 					</AlertDialogAction>

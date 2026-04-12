@@ -9,7 +9,11 @@ import { Tooltip } from '../customs/tooltip'
 import GlobalFilterInput from '../shared/data-grid/components/global-filter-input'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
-import { DataTableFacetedFilter, type IDataTableFacetedFilterProps } from './user-facted-filter'
+
+import {
+	DataTableFacetedFilter,
+	type IDataTableFacetedFilterProps
+} from '../shared/data-grid/components/table-faceted-filter'
 import UserStatusFilter from './user-status-filter'
 import UserTableRefetchButton from './user-table-refetch-button'
 import { UserTableViewOptions } from './user-table-view-options'
@@ -33,17 +37,15 @@ const UserTableToolbar: React.FC<{
 	const isFiltered = table.getState().columnFilters.length > 0 || table.getState().globalFilter
 	const { data } = useGetRolesQuery()
 
-	const roles: IDataTableFacetedFilterProps['options'] = useMemo(
-		() =>
-			Array.isArray(data)
-				? data.map((role) => ({
-						label: role.name,
-						value: role.code,
-						icon: getRoleIcon(role.code)
-					}))
-				: [],
-		[data]
-	)
+	const roles: IDataTableFacetedFilterProps<IUser, TUserRoleCode>['options'] = useMemo(() => {
+		return Array.isArray(data)
+			? data.map((role) => ({
+					label: role.name,
+					value: role.code,
+					icon: getRoleIcon(role.code)
+				}))
+			: []
+	}, [data])
 
 	return (
 		<Toolbar>

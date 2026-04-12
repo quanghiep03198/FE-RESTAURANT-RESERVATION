@@ -43,11 +43,11 @@ const ReservationActionsDropdownMenu: React.FC<CellContext<IReservation, void>> 
 				/>
 				<DropdownMenuContent>
 					<DropdownMenuGroup>
-						<DropdownMenuItem>Cập nhật</DropdownMenuItem>
 						<DropdownMenuItem
 							onClick={() => event$.emit({ action: CommonActions.UPDATE, payload: row.original })}>
-							Hủy đặt bàn
+							Cập nhật
 						</DropdownMenuItem>
+						<DropdownMenuItem onClick={() => setOpen(true)}>Hủy đặt bàn</DropdownMenuItem>
 					</DropdownMenuGroup>
 				</DropdownMenuContent>
 			</DropdownMenu>
@@ -67,7 +67,7 @@ const ReservationActionsDropdownMenu: React.FC<CellContext<IReservation, void>> 
 						<AlertDialogAction
 							variant='destructive'
 							disabled={isPending}
-							onClick={async () => await mutateAsync()}>
+							onClick={async () => await mutateAsync(row.original.reservation_code).then(() => setOpen(false))}>
 							{isPending && <Spinner />}
 							Xác nhận hủy
 						</AlertDialogAction>

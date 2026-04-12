@@ -7,14 +7,17 @@ import { Typography } from '../ui/typography'
 const UserTableCell: React.FC<{ name: string | undefined }> = ({ name }) => {
 	if (!name)
 		return (
-			<Typography variant='small' color='muted' className='inline-flex items-center gap-x-2'>
+			<Typography
+				variant='small'
+				color='muted'
+				className='auto-col-max inline-grid grid-flow-col items-center gap-x-2'>
 				<Icon name='CircleUserRound' />
-				Chưa xác định
+				<span className='line-clamp-1'>Chưa xác định</span>
 			</Typography>
 		)
 
 	return (
-		<Item className='p-0'>
+		<Item className='gap-x-1 p-0'>
 			<ItemMedia variant='image'>
 				<Avatar>
 					<AvatarImage src={generateAvatar({ name: name, background: '#ea4646' })} alt={name} />
@@ -22,7 +25,7 @@ const UserTableCell: React.FC<{ name: string | undefined }> = ({ name }) => {
 				</Avatar>
 			</ItemMedia>
 			<ItemContent>
-				<ItemTitle className='font-normal'>{name}</ItemTitle>
+				<ItemTitle className='line-clamp-1 font-normal'>{name}</ItemTitle>
 			</ItemContent>
 		</Item>
 	)

@@ -1,10 +1,6 @@
-import type { IUser, TUserRoleCode } from '@/apis/user/types'
 import { cn } from '@/common/utils/cn'
-import { type Column } from '@tanstack/react-table'
-import { CheckIcon } from 'lucide-react'
-import { Fragment } from 'react'
-import { Badge } from '../ui/badge'
-import { Button } from '../ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
 	Command,
 	CommandEmpty,
@@ -13,18 +9,22 @@ import {
 	CommandItem,
 	CommandList,
 	CommandSeparator
-} from '../ui/command'
-import { Icon, type IconProps } from '../ui/icon'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { Separator } from '../ui/separator'
+} from '@/components/ui/command'
+import { Icon, type IconProps } from '@/components/ui/icon'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Separator } from '@/components/ui/separator'
+import { type Column } from '@tanstack/react-table'
+import { CheckIcon } from 'lucide-react'
+import { Fragment } from 'react'
 
-export interface IDataTableFacetedFilterProps {
-	column?: Column<IUser, TUserRoleCode>
+export interface IDataTableFacetedFilterProps<TData = any, TValue = any> {
+	column?: Column<TData, TValue>
 	title?: string
 	options: {
 		label: string
-		value: TUserRoleCode
+		value: TValue
 		icon?: IconProps['name']
+		color?: string
 	}[]
 }
 
@@ -67,7 +67,7 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 			/>
 
 			<PopoverContent className='w-72 p-0' align='start'>
-				<Command>
+				<Command autoFocus={false}>
 					<CommandInput placeholder={title} />
 					<CommandList>
 						<CommandEmpty>Không có kết quả nào phù hợp.</CommandEmpty>
@@ -93,7 +93,13 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 											)}>
 											<CheckIcon className='text-muted-foreground stroke-primary-foreground size-3 stroke-3' />
 										</div>
-										{option.icon && <Icon name={option.icon} className='text-muted-foreground size-4' />}
+										{option.icon && (
+											<Icon
+												name={option.icon}
+												className='text-muted-foreground size-4'
+												stroke={option.color ? option.color : 'var(--muted-foreground)'}
+											/>
+										)}
 										<span>{option.label}</span>
 										{facets?.get(option.value) && (
 											<span className='text-muted-foreground ml-auto size-4 font-mono text-xs'>

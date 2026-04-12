@@ -1,4 +1,7 @@
-import { useGetMyReservationQuery } from '@/apis/reservation/hooks/use-reservation-request'
+import {
+	useCreateCustomerReservation,
+	useGetMyReservationQuery
+} from '@/apis/reservation/hooks/use-reservation-request'
 import MyReservation from '@/components/@reservation/my-reservation'
 import ReservationForm from '@/components/@reservation/reservation-form'
 import { Spinner } from '@/components/ui/spinner'
@@ -11,6 +14,7 @@ export const Route = createFileRoute('/_public-layout/customer-reservation')({
 
 function RouteComponent() {
 	const { data: myReservation, isLoading } = useGetMyReservationQuery()
+	const mutation = useCreateCustomerReservation()
 
 	return (
 		<>
@@ -29,7 +33,7 @@ function RouteComponent() {
 					<MyReservation data={myReservation} />
 				) : (
 					<div className='mx-auto my-10 w-full max-w-3xl rounded-lg p-6 shadow-lg'>
-						<ReservationForm defaultValues={myReservation} />
+						<ReservationForm defaultValues={myReservation} mutation={mutation} />
 					</div>
 				)}
 			</section>

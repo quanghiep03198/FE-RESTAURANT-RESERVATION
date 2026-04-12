@@ -1,3 +1,4 @@
+import { useCreateTableSessionMutation } from '@/apis/table-session/hooks/use-table-session-request'
 import { TableStatus } from '@/apis/table/constants'
 import { useDeleteTableMutation } from '@/apis/table/hooks/use-table-request'
 import type { ITable } from '@/apis/table/types'
@@ -19,6 +20,8 @@ import { Spinner } from '../ui/spinner'
 const TableCardDropdownMenu: React.FC<{ data: ITable }> = ({ data }) => {
 	const [open, setOpen] = useState(false)
 	const { mutateAsync: deleteAsync, isPending: isDeleting } = useDeleteTableMutation()
+	const { mutateAsync: createSessionAsync } = useCreateTableSessionMutation()
+	// const { mutateAsync: updateSessionAsync, isPending: isUpdatingSession } = useUpdateTableSessionMutation()
 	const { event$ } = usePageContext()
 
 	return (
@@ -35,11 +38,18 @@ const TableCardDropdownMenu: React.FC<{ data: ITable }> = ({ data }) => {
 				/>
 				<DropdownMenuContent className='w-44'>
 					{(data.status === TableStatus.AVAILABLE || data.status === TableStatus.RESERVED) && (
-						<>
-							<DropdownMenuItem>Mở phiên phục vụ</DropdownMenuItem>
-							<DropdownMenuSeparator />
-						</>
+						<DropdownMenuItem
+							onClick={async () =>
+								await createSessionAsync({
+									table_id: data.id,
+									guest_count: data.capacity
+								})
+							}>
+							Mở phiên phục vụ
+						</DropdownMenuItem>
 					)}
+					{/* {data.status === TableStatus.OCCUPIED && <DropdownMenuItem onClick={}>Đóng phiên phục vụ</DropdownMenuItem>} */}
+					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						onClick={(e) => {
 							e.stopPropagation()

@@ -10,7 +10,7 @@ import { Dialog, DialogClose, DialogContent, DialogFooter } from '../ui/dialog'
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '../ui/field'
 import { Input } from '../ui/input'
 
-const TableFormDialog: React.FC = () => {
+const TableDetailFormDialog: React.FC = () => {
 	const [action, setAction] = useState<CommonActions.CREATE | CommonActions.UPDATE>(null)
 	const [open, setOpen] = useState(action === CommonActions.CREATE || action === CommonActions.UPDATE)
 	const mutation = useCreateOrUpdateTableMutation(action)
@@ -122,4 +122,4 @@ const TableFormDialog: React.FC = () => {
 	)
 }
 
-export default TableFormDialog
+export default TableDetailFormDialog

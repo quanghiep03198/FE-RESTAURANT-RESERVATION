@@ -87,6 +87,9 @@
 	--active-foreground: hsl(0 0% 100%);
 	--warning: hsl(24.6 95% 53.1%);
 	--warning-foreground: hsl(0 0% 100%);
+
+	--table-head: hsl(0 0% 100%);
+	--table-head-foreground: hsl(216 27.7778% 7.0588%);
 }
 
 .dark {
@@ -213,6 +216,8 @@ body,
 	--color-info-foreground: var(--info-foreground);
 	--color-info: var(--info);
 	--color-destructive-foreground: var(--destructive-foreground);
+	--color-table-head: var(--table-head);
+	--color-table-head-foreground: var(--table-head-foreground);
 }
 
 @layer base {

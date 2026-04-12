@@ -1,0 +1,7 @@
+export enum TableSessionStatus {
+	OPEN = 'OPEN',
+	CLOSED = 'CLOSED',
+	PAYMENT_PENDING = 'PAYMENT_PENDING',
+	PAID = 'PAID',
+	CANCELLED = 'CANCELLED'
+}

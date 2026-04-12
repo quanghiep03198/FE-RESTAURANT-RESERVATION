@@ -1,4 +1,5 @@
 import { getReservationsQueryOptions } from '@/apis/reservation/hooks/use-reservation-request'
+import ReservationFormDialog from '@/components/@reservation/reservation-form-dialog'
 import ReservationFormDialogTrigger from '@/components/@reservation/reservation-form-dialog-trigger'
 import ReservationTable from '@/components/@reservation/reservation-table'
 import {
@@ -41,6 +42,7 @@ function RouteComponent() {
 					</PageHeader>
 					<PageSeparator />
 					<ReservationTable />
+					<ReservationFormDialog />
 				</PageWrapper>
 			</PageContextProvider>
 		</>

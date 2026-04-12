@@ -1,4 +1,6 @@
-import { useGetTableQuery } from '@/apis/table/hooks/use-table-request'
+import { useGetTableSessionsQuery } from '@/apis/table-session/hooks/use-table-session-request'
+import { useGetTablesQuery } from '@/apis/table/hooks/use-table-request'
+import { useMemo } from 'react'
 import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '../ui/empty'
 import { Icon } from '../ui/icon'
 import { Skeleton } from '../ui/skeleton'
@@ -7,10 +9,21 @@ import TableFormDialogTrigger from './table-form-dialog-trigger'
 import TableIndicators from './table-indicators'
 
 const TablesMap: React.FC = () => {
-	const { data, isLoading } = useGetTableQuery()
+	const { data: tables, isLoading: isLoadingTables } = useGetTablesQuery()
+	const { data: tableSessions, isLoading: isLoadingTableSession } = useGetTableSessionsQuery()
+
+	const tableData = useMemo(() => {
+		if (!tables || !tableSessions) return []
+		return tables.map((table) => ({
+			...table,
+			cart_id: tableSessions.find((session) => session.table_id === table.id)?.cart_orders?.[0]?.id
+		}))
+	}, [tables, tableSessions])
+
+	const isLoading = isLoadingTables || isLoadingTableSession
 
 	return (
-		<section className='bg-card scrollbar-none! relative flex h-full flex-1 flex-col space-y-3 overflow-scroll rounded-lg shadow-md'>
+		<section className='bg-card scrollbar-none! ove rflow-scroll relative flex h-full flex-1 flex-col space-y-3 rounded-lg shadow-md'>
 			<div className='bg-card sticky top-0 z-20 flex items-center gap-x-6 border-b p-4 xl:px-6'>
 				<TableIndicators />
 				<TableFormDialogTrigger />
@@ -19,9 +32,12 @@ const TablesMap: React.FC = () => {
 			<div className='grid h-full auto-rows-max grid-cols-4 gap-4 p-4 sm:max-lg:[zoom:0.8] xl:p-6'>
 				{isLoading ? (
 					Array.from({ length: 12 }, (_, index) => <Skeleton key={index} className='size-20' />)
-				) : Array.isArray(data) && data.length > 0 ? (
-					data
-						.toSorted((a, b) => a.name.slice(1, -1).localeCompare(b.name.slice(1, -1)))
+				) : Array.isArray(tableData) && tableData.length > 0 ? (
+					tableData
+						.toSorted((a, b) => a.sort_order - b.sort_order)
+						.toSorted((a, b) =>
+							a.name.slice(1, -1).localeCompare(b.name.slice(1, -1), new Intl.Locale('vi-VN', { numeric: true }))
+						)
 						.map((table) => <TableCard key={table.slug} data={table} />)
 				) : (
 					<Empty>
