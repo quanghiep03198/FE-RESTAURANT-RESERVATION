@@ -44,7 +44,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Spinner } from '../ui/spinner'
 import { Typography } from '../ui/typography'
 
-const itemTypes = [
+const itemTypes: Array<{ label: string; value: 'dish' | 'combo' }> = [
 	{ label: 'Gọi món', value: 'dish' },
 	{ label: 'Combo', value: 'combo' }
 ]
@@ -151,7 +151,9 @@ const TableDetailDialog: React.FC = () => {
 		]
 	}, [combos])
 
-	const currentItemTypes = useStore(form.store, (state) => state.values.items.map((item) => item?.item_type))
+	const currentItemTypes: Array<'dish' | 'combo' | undefined> = useStore(form.store, (state) =>
+		state.values.items.map((item) => item?.item_type)
+	)
 
 	const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault()
@@ -195,7 +197,7 @@ const TableDetailDialog: React.FC = () => {
 																					<Select
 																						items={itemTypes}
 																						onValueChange={subField.handleChange}
-																						value={subField.state.value as any}>
+																						value={subField.state.value as 'dish' | 'combo'}>
 																						<SelectTrigger>
 																							<SelectValue placeholder='Phân loại' />
 																						</SelectTrigger>
@@ -220,17 +222,19 @@ const TableDetailDialog: React.FC = () => {
 																				subField.state.meta.isTouched &&
 																				!subField.state.meta.isValid
 
-																			console.log(subField.state['item_type'])
+																			const comboboxOptions =
+																				currentItemTypes[i] === 'dish'
+																					? categoryOptions
+																					: currentItemTypes[i] === 'combo'
+																						? comboOptions
+																						: []
 
 																			return (
 																				<Field>
 																					<Combobox
-																						items={
-																							currentItemTypes[i] === 'DISH'
-																								? categoryOptions
-																								: comboOptions
-																						}
+																						items={comboboxOptions}
 																						value={subField.state.value as any}
+																						disabled={!comboboxOptions.length}
 																						onValueChange={subField.handleChange}
 																						itemToStringLabel={(itemValue: IDish) => {
 																							return itemValue.name
@@ -242,6 +246,7 @@ const TableDetailDialog: React.FC = () => {
 																							return itemValue.id === value.id
 																						}}>
 																						<ComboboxInput
+																							disabled={!comboboxOptions.length}
 																							placeholder='Chọn một món ăn/combo'
 																							showClear
 																						/>
@@ -345,7 +350,13 @@ const TableDetailDialog: React.FC = () => {
 													<Button
 														type='button'
 														className='w-fit! self-center'
-														onClick={() => field.pushValue({ item_id: null, quantity: 1 })}>
+														onClick={() =>
+															field.pushValue({
+																item_type: itemTypes[0].value,
+																item_id: null,
+																quantity: 1
+															})
+														}>
 														<Icon name='Plus' /> Thêm món
 													</Button>
 												</FieldContent>
