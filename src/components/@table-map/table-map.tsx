@@ -23,7 +23,7 @@ const TablesMap: React.FC = () => {
 	const isLoading = isLoadingTables || isLoadingTableSession
 
 	return (
-		<section className='bg-card scrollbar-none! ove rflow-scroll relative flex h-full flex-1 flex-col space-y-3 rounded-lg shadow-md'>
+		<section className='bg-card scrollbar-none! relative flex h-full flex-1 flex-col space-y-3 overflow-scroll rounded-lg shadow-md'>
 			<div className='bg-card sticky top-0 z-20 flex items-center gap-x-6 border-b p-4 xl:px-6'>
 				<TableIndicators />
 				<TableFormDialogTrigger />
