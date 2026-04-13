@@ -38,18 +38,21 @@ const TableCardDropdownMenu: React.FC<{ data: ITable }> = ({ data }) => {
 				/>
 				<DropdownMenuContent className='w-44'>
 					{(data.status === TableStatus.AVAILABLE || data.status === TableStatus.RESERVED) && (
-						<DropdownMenuItem
-							onClick={async () =>
-								await createSessionAsync({
-									table_id: data.id,
-									guest_count: data.capacity
-								})
-							}>
-							Mở phiên phục vụ
-						</DropdownMenuItem>
+						<>
+							<DropdownMenuItem
+								onClick={async () =>
+									await createSessionAsync({
+										table_id: data.id,
+										guest_count: data.capacity
+									})
+								}>
+								Mở phiên phục vụ
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+						</>
 					)}
 					{/* {data.status === TableStatus.OCCUPIED && <DropdownMenuItem onClick={}>Đóng phiên phục vụ</DropdownMenuItem>} */}
-					<DropdownMenuSeparator />
+
 					<DropdownMenuItem
 						onClick={(e) => {
 							e.stopPropagation()

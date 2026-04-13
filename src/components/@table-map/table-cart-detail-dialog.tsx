@@ -6,7 +6,7 @@ import { formatCurrency } from '@/common/utils/format-currency'
 import { getStorageUrl } from '@/common/utils/get-storage-url'
 import { usePageContext } from '@/contexts/event-context'
 import { useForm, useStore } from '@tanstack/react-form'
-import { Fragment, useEffect, useMemo, useRef, useState, type SubmitEventHandler } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type SubmitEventHandler } from 'react'
 import Image from '../shared/image'
 import { Button } from '../ui/button'
 import {
@@ -21,7 +21,15 @@ import {
 	ComboboxList,
 	ComboboxSeparator
 } from '../ui/combobox'
-import { Dialog, DialogClose, DialogContent, DialogFooter } from '../ui/dialog'
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle
+} from '../ui/dialog'
 import {
 	Field,
 	FieldContent,
@@ -36,13 +44,17 @@ import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '../ui/
 
 import { useGetCartByTableQuery, useUpdateCartMutation } from '@/apis/cart/hooks/use-cart-request'
 import { useGetCombosQuery } from '@/apis/menu/hooks/use-combo-request'
+import { useGetReservationByCodeQuery } from '@/apis/reservation/hooks/use-reservation-request'
 import type { ITable } from '@/apis/table/types'
+import { format } from 'date-fns'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '../ui/empty'
 import { Icon } from '../ui/icon'
 import { Input } from '../ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { Separator } from '../ui/separator'
 import { Spinner } from '../ui/spinner'
 import { Typography } from '../ui/typography'
+import TableCheckout from './table-checkout'
 
 const itemTypes: Array<{ label: string; value: 'dish' | 'combo' }> = [
 	{ label: 'Gọi món', value: 'dish' },
@@ -59,15 +71,18 @@ type TCartItemGroup = {
 	}>
 }
 
-const TableDetailDialog: React.FC = () => {
+const TableCartDetailDialog: React.FC = () => {
 	const [open, setOpen] = useState<boolean>(false)
 	const [totalPrice, setTotalPrice] = useState<number>(0)
 	const { event$ } = usePageContext()
 	const currentTableIdRef = useRef<number>(null)
 	const currentCartIdRef = useRef<number>(null)
+	const currentReservationCodeRef = useRef<string | null>(null)
 	const { data: categories } = useGetCategoriesQuery()
-	const { data: cartData } = useGetCartByTableQuery(currentTableIdRef.current)
+	const { data: cartData, isLoading } = useGetCartByTableQuery(currentTableIdRef.current)
+	const { data: reservation } = useGetReservationByCodeQuery(currentReservationCodeRef.current)
 	const { data: combos } = useGetCombosQuery()
+	const [isSuspensePayment, setIsSuspensePayment] = useState<boolean>(false)
 
 	const { mutateAsync: updateCartAsync, isPending } = useUpdateCartMutation()
 
@@ -105,27 +120,30 @@ const TableDetailDialog: React.FC = () => {
 		validators: updateCartSchema as any
 	})
 
-	event$.useSubscription((e: { action: CommonActions; payload: ITable & { cart_id: number } }) => {
-		if (e.action !== CommonActions.READ) return
-		setOpen(true)
-		currentTableIdRef.current = e.payload.id
-		currentCartIdRef.current = e.payload.cart_id
-	})
-
-	console.log(cartData)
+	event$.useSubscription(
+		(e: { action: CommonActions; payload: ITable & { cart_id: number; reservation_code: string | null } }) => {
+			if (e.action !== CommonActions.READ) return
+			setOpen(true)
+			currentTableIdRef.current = e.payload.id
+			currentCartIdRef.current = e.payload.cart_id
+			currentReservationCodeRef.current = e.payload.reservation_code
+		}
+	)
 
 	useEffect(() => {
-		if (Array.isArray(cartData?.item_list))
+		if (Array.isArray(cartData?.item_list)) {
 			form.reset(
 				{
 					items: cartData?.item_list.map((item) => ({
-						item_id: item.id,
+						item_id: { id: item.id, name: item.name },
 						item_type: item.type,
 						quantity: item.quantity
 					}))
 				},
 				{ keepDefaultValues: true }
 			)
+			setTotalPrice(cartData.item_list.reduce((acc, curr) => acc + curr.unit_price, 0))
+		}
 	}, [cartData])
 
 	const categoryOptions: TCartItemGroup[] = useMemo(
@@ -165,6 +183,13 @@ const TableDetailDialog: React.FC = () => {
 		state.values.items.map((item) => item?.item_type)
 	)
 
+	const handleCancelPayment = useCallback(() => setIsSuspensePayment(false), [])
+	const handleAfterInvoiceCreated = useCallback(() => {
+		form.reset()
+		setIsSuspensePayment(false)
+		setOpen(false)
+	}, [])
+
 	const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault()
 		form.handleSubmit()
@@ -172,15 +197,30 @@ const TableDetailDialog: React.FC = () => {
 
 	return (
 		<Dialog open={open || isPending} onOpenChange={setOpen}>
-			<DialogContent className='max-w-4xl sm:max-lg:h-screen sm:max-lg:rounded-none'>
-				<form onSubmit={handleSubmit} className='space-y-3'>
+			<DialogContent className='h-screen max-w-screen overflow-y-auto rounded-none xl:h-auto xl:w-auto xl:rounded-lg'>
+				<DialogHeader>
+					<DialogTitle className='text-xl capitalize'>{isSuspensePayment ? 'Thanh toán' : 'Gọi món'}</DialogTitle>
+					<DialogDescription>Ngày lập phiếu: {format(new Date(), 'dd/MM/yyyy')}</DialogDescription>
+				</DialogHeader>
+				<Separator />
+				<form
+					onSubmit={handleSubmit}
+					aria-current={!isSuspensePayment}
+					className='animate-in fade-in fade-in-0 mx-auto hidden w-full max-w-4xl space-y-3 aria-current:block'>
 					<FieldSet>
 						<FieldLegend>Chi tiết gọi món</FieldLegend>
 						<FieldDescription>
 							Thông tin chi tiết về các món ăn đã gọi, số lượng, và trạng thái của đơn hàng sẽ được hiển thị ở
 							đây. Bạn có thể cập nhật trạng thái của đơn hàng hoặc thêm ghi chú nếu cần thiết.
 						</FieldDescription>
-						<FieldGroup className='xxl:h-[65vh] h-[60vh] overflow-y-auto [scrollbar-gutter:stable]'>
+						<div
+							aria-current={isLoading}
+							className='hidden h-[30vh] items-center justify-center aria-current:flex'>
+							<Spinner />
+						</div>
+						<FieldGroup
+							aria-current={!isLoading}
+							className='hidden h-[60vh] overflow-y-auto [scrollbar-gutter:stable] aria-current:flex'>
 							<form.Field name='items' mode='array'>
 								{(field) => {
 									const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
@@ -371,7 +411,7 @@ const TableDetailDialog: React.FC = () => {
 													</Button>
 												</FieldContent>
 											) : (
-												<Empty className='h-full flex-1 basis-full border border-dashed'>
+												<Empty className='h-full border border-dashed'>
 													<EmptyHeader>
 														<EmptyMedia variant='icon'>
 															<Icon name='UtensilsCrossed' />
@@ -398,7 +438,6 @@ const TableDetailDialog: React.FC = () => {
 							</form.Field>
 						</FieldGroup>
 					</FieldSet>
-
 					<div className='bg-secondary text-secondary-foreground col-span-full grid grid-cols-2 rounded-md p-4'>
 						<Typography as='span' variant='h3'>
 							Tạm tính
@@ -407,9 +446,13 @@ const TableDetailDialog: React.FC = () => {
 							{formatCurrency(totalPrice)}
 						</Typography>
 					</div>
-
 					<DialogFooter>
-						<Button type='button' size='lg' variant='destructive' className='mr-auto'>
+						<Button
+							type='button'
+							size='lg'
+							variant='destructive'
+							className='mr-auto'
+							onClick={() => setIsSuspensePayment(true)}>
 							<Icon name='CreditCard' />
 							Chốt thanh toán
 						</Button>
@@ -427,9 +470,25 @@ const TableDetailDialog: React.FC = () => {
 						/>
 					</DialogFooter>
 				</form>
+				<div
+					aria-current={!isLoading && isSuspensePayment}
+					className='mx-auto hidden w-full flex-col items-center gap-6 aria-current:flex xl:w-7xl'>
+					<TableCheckout
+						data={{
+							cart_order_id: cartData.cart_order_id,
+							item_list: cartData.item_list,
+							reservation_code: reservation?.reservation_code,
+							customer_name: reservation?.customer_name ?? '',
+							customer_phone: reservation?.customer_phone ?? '',
+							deposit_amount: reservation?.deposit_amount ?? 0
+						}}
+						onCancel={handleCancelPayment}
+						onFinish={handleAfterInvoiceCreated}
+					/>
+				</div>
 			</DialogContent>
 		</Dialog>
 	)
 }
 
-export default TableDetailDialog
+export default TableCartDetailDialog

@@ -17,7 +17,9 @@ const statusIcon: Record<TableStatus, IconProps['name']> = {
 	[TableStatus.DISABLED]: 'CircleSlash2'
 }
 
-const TableCard: React.FC<{ data: ITable & { cart_id: number | undefined } }> = ({ data }) => {
+type TTableCardProps = { data: ITable & { cart_id: number | undefined; reservation_code: string | undefined } }
+
+const TableCard: React.FC<TTableCardProps> = ({ data }) => {
 	const queryClient = useQueryClient()
 	const { event$ } = usePageContext()
 

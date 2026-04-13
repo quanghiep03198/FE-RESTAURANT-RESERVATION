@@ -1,7 +1,8 @@
 import {
 	useCreateCustomerReservation,
-	useGetMyReservationQuery
+	useGetReservationByCodeQuery
 } from '@/apis/reservation/hooks/use-reservation-request'
+import { useStoredReservation } from '@/apis/reservation/hooks/use-stored-reservation'
 import MyReservation from '@/components/@reservation/my-reservation'
 import ReservationForm from '@/components/@reservation/reservation-form'
 import { Spinner } from '@/components/ui/spinner'
@@ -13,7 +14,8 @@ export const Route = createFileRoute('/_public-layout/customer-reservation')({
 })
 
 function RouteComponent() {
-	const { data: myReservation, isLoading } = useGetMyReservationQuery()
+	const { storedReservation } = useStoredReservation()
+	const { data: myReservation, isLoading } = useGetReservationByCodeQuery(storedReservation?.code)
 	const mutation = useCreateCustomerReservation()
 
 	return (

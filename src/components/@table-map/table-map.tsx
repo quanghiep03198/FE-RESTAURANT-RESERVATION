@@ -14,10 +14,15 @@ const TablesMap: React.FC = () => {
 
 	const tableData = useMemo(() => {
 		if (!tables || !tableSessions) return []
-		return tables.map((table) => ({
-			...table,
-			cart_id: tableSessions.find((session) => session.table_id === table.id)?.cart_orders?.[0]?.id
-		}))
+		return tables.map((table) => {
+			const tableSession = tableSessions.find((session) => session.table_id === table.id)
+
+			return {
+				...table,
+				reservation_code: tableSession?.reservation_code,
+				cart_id: tableSession?.cart_orders?.[0]?.id
+			}
+		})
 	}, [tables, tableSessions])
 
 	const isLoading = isLoadingTables || isLoadingTableSession
@@ -31,14 +36,14 @@ const TablesMap: React.FC = () => {
 
 			<div className='grid h-full auto-rows-max grid-cols-4 gap-4 p-4 sm:max-lg:[zoom:0.8] xl:p-6'>
 				{isLoading ? (
-					Array.from({ length: 12 }, (_, index) => <Skeleton key={index} className='size-20' />)
+					Array.from({ length: 16 }, (_, index) => <Skeleton key={index} className='h-36' />)
 				) : Array.isArray(tableData) && tableData.length > 0 ? (
 					tableData
 						.toSorted((a, b) => a.sort_order - b.sort_order)
 						.toSorted((a, b) =>
 							a.name.slice(1, -1).localeCompare(b.name.slice(1, -1), new Intl.Locale('vi-VN', { numeric: true }))
 						)
-						.map((table) => <TableCard key={table.slug} data={table} />)
+						.map((table) => <TableCard key={table?.id} data={table} />)
 				) : (
 					<Empty>
 						<EmptyMedia variant='icon'>

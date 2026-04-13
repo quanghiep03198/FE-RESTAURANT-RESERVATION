@@ -2,11 +2,11 @@ import { GET_TABLE_QUERY_KEY } from '@/apis/table/hooks/use-table-request'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { TableSessionService } from '../services'
 
-const GET_TABLE_SESSIONS_KEY = 'TABLE_SESSIONS'
+export const GET_TABLE_SESSIONS_QUERY_KEY = 'TABLE_SESSIONS'
 
 export const useGetTableSessionsQuery = () => {
 	return useQuery({
-		queryKey: [GET_TABLE_SESSIONS_KEY],
+		queryKey: [GET_TABLE_SESSIONS_QUERY_KEY],
 		queryFn: TableSessionService.getAll,
 		refetchInterval: 5000,
 		select: (response) => (Array.isArray(response.metadata) ? response.metadata.filter((item) => item.is_active) : [])

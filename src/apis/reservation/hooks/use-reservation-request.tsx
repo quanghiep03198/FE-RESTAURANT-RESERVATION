@@ -16,13 +16,13 @@ import { ReservationService } from '../services'
 import type { IReservation } from '../types'
 import { useStoredReservation } from './use-stored-reservation'
 
-export const GET_MY_RESERVATION_KEY = 'MY_RESERVATION'
+export const GET_SPECIFIC_RESERVATION_QUERY_KEY = 'RESERVATION'
 
-export const GET_RESERVATIONS_KEY = 'RESERVATIONS'
+export const GET_RESERVATIONS_QUERY_KEY = 'RESERVATIONS'
 
 export const getReservationsQueryOptions = () =>
 	queryOptions({
-		queryKey: [GET_RESERVATIONS_KEY],
+		queryKey: [GET_RESERVATIONS_QUERY_KEY],
 		queryFn: ReservationService.getAll,
 		select: (response) => (Array.isArray(response.metadata) ? response.metadata : [])
 	})
@@ -48,7 +48,7 @@ export const useCreateCustomerReservation = () => {
 			})
 			queryClient.invalidateQueries({
 				predicate: (query) =>
-					query.queryKey.some((key) => key === GET_MY_RESERVATION_KEY || key === storedReservation)
+					query.queryKey.some((key) => key === GET_SPECIFIC_RESERVATION_QUERY_KEY || key === storedReservation)
 			})
 		},
 		onError() {
@@ -93,7 +93,7 @@ export const useCreateOrUpdateReservationMutation = (action: CommonActions.CREAT
 			toastRef.current = toast.loading('Đang xử lý ...')
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [GET_RESERVATIONS_KEY] })
+			queryClient.invalidateQueries({ queryKey: [GET_RESERVATIONS_QUERY_KEY] })
 			toast.success(currentConfig?.message, { id: toastRef.current })
 		},
 		onError: () => {
@@ -102,13 +102,11 @@ export const useCreateOrUpdateReservationMutation = (action: CommonActions.CREAT
 	})
 }
 
-export const useGetMyReservationQuery = () => {
-	const { storedReservation } = useStoredReservation()
-
+export const useGetReservationByCodeQuery = (code: string) => {
 	return useQuery({
-		queryKey: [GET_MY_RESERVATION_KEY, storedReservation?.code],
-		queryFn: () => ReservationService.getOneByCode(storedReservation?.code),
-		enabled: !!storedReservation?.code,
+		queryKey: [GET_SPECIFIC_RESERVATION_QUERY_KEY, code],
+		queryFn: () => ReservationService.getOneByCode(code),
+		enabled: !!code,
 		select: (response) => response?.metadata
 	})
 }
@@ -123,7 +121,9 @@ export const useDeleteReservationMutation = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				predicate: (query) =>
-					query.queryKey.some((key) => key === GET_MY_RESERVATION_KEY || key === GET_RESERVATIONS_KEY)
+					query.queryKey.some(
+						(key) => key === GET_SPECIFIC_RESERVATION_QUERY_KEY || key === GET_RESERVATIONS_QUERY_KEY
+					)
 			})
 			toast.success('Hủy đặt bàn thành công')
 			// setStoredReservation(null)

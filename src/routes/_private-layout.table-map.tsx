@@ -1,5 +1,6 @@
 import { getTableQueryOptions } from '@/apis/table/hooks/use-table-request'
-import TableDetailDialog from '@/components/@table-map/table-detail-dialog'
+import TableCartDetailDialog from '@/components/@table-map/table-cart-detail-dialog'
+import TableFormDialog from '@/components/@table-map/table-form-dialog'
 import TablesMap from '@/components/@table-map/table-map'
 import TablesMapOverview from '@/components/@table-map/table-map-overview'
 import UpcommingCustomer from '@/components/@table-map/upcoming-customer'
@@ -33,7 +34,8 @@ function RouteComponent() {
 						<UpcommingCustomer />
 					</div>
 				</div>
-				<TableDetailDialog />
+				<TableFormDialog />
+				<TableCartDetailDialog />
 			</PageContextProvider>
 		</>
 	)
