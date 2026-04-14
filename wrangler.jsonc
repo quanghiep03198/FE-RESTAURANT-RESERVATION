@@ -1,0 +1,13 @@
+{
+	// Cloudflare Pages configuration for SPA (TanStack Router + React + Vite)
+	// Deploy: npx wrangler pages deploy dist
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "restaurant-reservation",
+	"compatibility_date": "2025-01-01",
+	"pages_build_output_dir": "dist",
+	"assets": {
+		"directory": "dist",
+		// Serve index.html for all unmatched routes (client-side routing)
+		"not_found_handling": "single-page-application"
+	}
+}
