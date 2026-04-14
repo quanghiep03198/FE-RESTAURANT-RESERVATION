@@ -26,6 +26,7 @@ function RouteComponent() {
 			<SidebarProvider>
 				<AppSidebar />
 				<LayoutWrapper data-slot='layout-wrapper'>
+					<AppNavbar />
 					<OutletWrapper data-slot='outlet-wrapper'>
 						<ErrorBoundary
 							fallbackRender={({ error, resetErrorBoundary }) => {
@@ -40,10 +41,9 @@ function RouteComponent() {
 							}}>
 							<Outlet />
 						</ErrorBoundary>
-					</OutletWrapper>{' '}
-					<AppNavbar />
+					</OutletWrapper>
 				</LayoutWrapper>
-			</SidebarProvider>{' '}
+			</SidebarProvider>
 		</AuthGuard>
 	)
 }
@@ -51,9 +51,10 @@ function RouteComponent() {
 const LayoutWrapper: React.FC<React.ComponentProps<'div'>> = tw.div`
 	relative h-screen max-h-full flex-1 w-full overflow-y-scroll @container/layout-wrapper flex flex-col justify-between
 	[counter-reset:h_var(--screen-height)_w_var(--screen-width)]
-	xxl:[--header-height:80px]
-	sm:[--outlet-padding-x:4px] 
-	md:[--outlet-padding-x:4px] 
+	xxl:[--header-height:120px]
+	sm:[--outlet-padding-x:8px] 
+	md:[--outlet-padding-x:8px] 
+	lg:[--outlet-padding-x:8px] 
 	xl:[--outlet-padding-x:16px] 
 	xxl:[--outlet-padding-x:24px] 
 	[&:has(*[data-outlet-padding=none])]:[--outlet-padding-x:0px]

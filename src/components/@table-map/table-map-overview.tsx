@@ -24,7 +24,7 @@ const TablesMapOverview = () => {
 		)
 
 	return (
-		<ItemGroup className='[&>*[data-slot=item]]:bg-card grid gap-4 gap-x-4 sm:max-lg:grid-cols-2 xl:grid-cols-4 [&>*[data-slot=item]]:shadow'>
+		<ItemGroup className='[&>*[data-slot=item]]:bg-card grid gap-4 gap-x-4 sm:max-xl:grid-cols-2 xl:grid-cols-4 [&>*[data-slot=item]]:shadow'>
 			<Item>
 				<ItemMedia variant='image' className='bg-secondary size-12'>
 					<Icon name='CirclePlus' className='stroke-secondary-foreground size-4 lg:size-6' />

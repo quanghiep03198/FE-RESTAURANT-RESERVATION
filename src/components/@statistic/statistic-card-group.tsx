@@ -1,4 +1,5 @@
 import { useGetStatisticSummaryQuery } from '@/apis/statistic/hooks/use-statistic-request'
+import { useGetUsersQuery } from '@/apis/user/hooks/use-user-request'
 import { formatCurrency } from '@/common/utils/format-currency'
 import formatIntlNumber from '@/common/utils/format-intl-number'
 import { useMemo } from 'react'
@@ -12,6 +13,7 @@ import {
 	getAnalysisSentence,
 	getDetailDescription,
 	getIconColor,
+	getServiceTimeQuality,
 	getTrendingIcon
 } from './helper-text'
 
@@ -22,22 +24,15 @@ const PercentageBadge: React.FC<{ percentage: number | null }> = ({ percentage }
 	</Badge>
 )
 
-const StatisticCardGroup: React.FC = () => {
-	const [
-		prevMonthQueryResult,
-		currMonthQueryResult
-		// { data: prevMonthData, isLoading: prevMonthDataLoading },
-		// { data: currMonthData, isLoading: currMonthDataLoading }
-	] = useGetStatisticSummaryQuery()
+const MAX_STAFF = 20
 
-	if (prevMonthQueryResult?.isLoading || currMonthQueryResult?.isLoading)
-		return (
-			<div className='grid grid-cols-1 gap-4 md:max-lg:grid-cols-2 xl:grid-cols-4'>
-				{Array.from({ length: 4 }, (_, i) => (
-					<Skeleton key={i} className='h-48' />
-				))}
-			</div>
-		)
+const StatisticCardGroup: React.FC = () => {
+	const [prevMonthQueryResult, currMonthQueryResult] = useGetStatisticSummaryQuery()
+	const { data: users } = useGetUsersQuery()
+
+	const totalStaff = useMemo(() => {
+		return users?.filter((user) => user.role.code !== 'OWNER' && user.role.code !== 'MANAGER').length ?? 0
+	}, [users])
 
 	const prevMonthRevenue = prevMonthQueryResult?.data?.revenue?.month?.total_amount ?? 0
 	const currMonthRevenue = currMonthQueryResult?.data?.revenue?.month?.total_amount ?? 0
@@ -45,23 +40,29 @@ const StatisticCardGroup: React.FC = () => {
 	const prevMonthServiceTime = prevMonthQueryResult?.data?.average_service_time?.served_sessions ?? 0
 	const currMonthServiceTime = currMonthQueryResult?.data?.average_service_time?.served_sessions ?? 0
 
-	const prevMonthServiceInMinutes = prevMonthQueryResult?.data?.average_service_time?.average_minutes ?? 0
 	const currMonthServiceInMinutes = currMonthQueryResult?.data?.average_service_time?.average_minutes ?? 0
 
 	const revenuePercentageChange: number = useMemo(() => {
 		return ((currMonthRevenue - prevMonthRevenue) / (currMonthRevenue || 100)) * 100
-	}, [prevMonthQueryResult, currMonthQueryResult])
+	}, [prevMonthRevenue, currMonthRevenue])
 
 	const serviceTimePercentageChange: number = useMemo(() => {
 		return ((currMonthServiceTime - prevMonthServiceTime) / (currMonthServiceTime || 100)) * 100
-	}, [prevMonthQueryResult, currMonthQueryResult])
+	}, [prevMonthServiceTime, currMonthServiceTime])
 
-	const serviceInMinutesPercentageChange: number = useMemo(() => {
-		return ((currMonthServiceInMinutes - prevMonthServiceInMinutes) / (currMonthServiceInMinutes || 100)) * -100
-	}, [prevMonthQueryResult, currMonthQueryResult])
+	const serviceTimeQuality = getServiceTimeQuality(currMonthServiceInMinutes)
+
+	if (prevMonthQueryResult?.isLoading || currMonthQueryResult?.isLoading)
+		return (
+			<div className='lg:max-xxl:grid-cols-2 xxl:col-span-8 col-span-12 col-start-1 row-span-1 row-start-1 grid grid-cols-2 gap-4 sm:max-lg:grid-cols-1'>
+				{Array.from({ length: 4 }, (_, i) => (
+					<Skeleton key={i} className='h-48' />
+				))}
+			</div>
+		)
 
 	return (
-		<div className='grid grid-cols-4 gap-4 sm:max-md:grid-cols-1 md:max-xl:grid-cols-2 [&_*[data-slot=card-title]]:text-2xl'>
+		<section className='lg:max-xxl:grid-cols-2 xxl:col-span-8 col-span-12 col-start-1 row-span-1 row-start-1 grid grid-cols-2 gap-4 sm:max-lg:grid-cols-1 [&_*[data-slot=card-title]]:text-2xl'>
 			<Card>
 				<CardHeader>
 					<CardDescription>Tổng doanh thu</CardDescription>
@@ -82,7 +83,7 @@ const StatisticCardGroup: React.FC = () => {
 			</Card>
 			<Card>
 				<CardHeader>
-					<CardDescription>Lượt phục vụ trong tháng</CardDescription>
+					<CardDescription>Lượt phục vụ</CardDescription>
 					<CardTitle>
 						{formatIntlNumber(currMonthQueryResult?.data?.average_service_time?.served_sessions)}
 					</CardTitle>
@@ -106,33 +107,43 @@ const StatisticCardGroup: React.FC = () => {
 			</Card>
 			<Card>
 				<CardHeader>
-					<CardDescription>Thời gian phục vụ trung bình mỗi phiên</CardDescription>
-					<CardTitle>{currMonthQueryResult?.data?.average_service_time?.average_minutes} (phút)</CardTitle>
+					<CardDescription>T/G phục vụ trung bình</CardDescription>
+					<CardTitle>{currMonthServiceInMinutes} phút</CardTitle>
 					<CardAction>
-						<PercentageBadge percentage={serviceInMinutesPercentageChange} />
+						<Badge variant='outline'>{serviceTimeQuality.badge}</Badge>
 					</CardAction>
 				</CardHeader>
 				<CardFooter className='flex-col items-start gap-1.5 text-sm'>
 					<Typography variant='small' className='line-clamp-1 flex gap-2 font-medium'>
-						{getAnalysisSentence(serviceInMinutesPercentageChange)}
-						<Icon name={getTrendingIcon(serviceInMinutesPercentageChange)} />
+						{serviceTimeQuality.headline}
 					</Typography>
 					<Typography variant='small' className='text-muted-foreground lowercase first-letter:uppercase'>
-						{getDetailDescription(
-							serviceInMinutesPercentageChange,
-							(currMonthServiceInMinutes - prevMonthServiceInMinutes) * -1,
-							'phút'
-						)}
+						{serviceTimeQuality.description}
 					</Typography>
 				</CardFooter>
 			</Card>
 			<Card>
 				<CardHeader>
-					<CardDescription>Tỉ lệ đặt bàn thành công</CardDescription>
-					<CardTitle>{currMonthQueryResult?.data?.average_service_time?.average_minutes} (phút)</CardTitle>
+					<CardDescription>SL nhân viên phục vụ</CardDescription>
+					<CardTitle>{totalStaff}</CardTitle>
+					<CardAction>
+						<Badge variant='outline'>
+							<Icon name='Users' className='size-3! gap-x-3' /> {totalStaff}/{MAX_STAFF}
+						</Badge>
+					</CardAction>
 				</CardHeader>
+				<CardFooter className='flex-col items-start gap-1.5 text-sm'>
+					<Typography variant='small' className='line-clamp-1 flex gap-2 font-medium'>
+						{totalStaff >= MAX_STAFF ? 'Số lượng nhân viên đạt tối đa' : 'Số lượng nhân viên có thể tuyển thêm'}
+					</Typography>
+					<Typography variant='small' className='text-muted-foreground lowercase first-letter:uppercase'>
+						{totalStaff >= MAX_STAFF
+							? 'Số lượng nhân viên đạt tối đa, có thể xem xét tuyển thêm để đảm bảo chất lượng dịch vụ'
+							: `Có thể tuyển thêm ${MAX_STAFF - totalStaff} nhân viên để tối ưu trải nghiệm khách hàng`}
+					</Typography>
+				</CardFooter>
 			</Card>
-		</div>
+		</section>
 	)
 }
 

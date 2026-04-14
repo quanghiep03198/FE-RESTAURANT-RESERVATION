@@ -19,10 +19,11 @@ export interface IStatisticSummary {
 		average_minutes: number
 		average_hours: number
 	}
-	top_dishes: Array<{ name: string; quantity_sold: number; revenue_amount: number }>
+	top_dishes: Array<{ name: string; image: IImageMetadata | null; quantity_sold: number; revenue_amount: number }>
 	top_combos: Array<{
 		combo_id: number
 		name: string
+		image: IImageMetadata | null
 		quantity_sold: number
 		revenue_amount: number
 	}>

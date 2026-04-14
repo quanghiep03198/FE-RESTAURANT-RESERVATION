@@ -33,7 +33,7 @@ type NavLinkProps = Pick<TNavigationConfig, 'url' | 'title' | 'icon' | 'authoriz
 
 const AppSidebar: React.FC = () => {
 	const { user } = useAuth()
-	const isMobile = useMediaQuery('(min-width: 320px) and (max-width: 1023px)')
+	const isMobile = useMediaQuery('(min-width: 320px) and (max-width: 1200px)')
 	const { open, setOpen } = useSidebar()
 
 	useLayoutEffect(() => {

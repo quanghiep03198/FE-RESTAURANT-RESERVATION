@@ -53,7 +53,7 @@ export function getTrendingPercentageChange(percent): string {
  */
 export function getTrendDescription(percent: number | null): string {
 	if (percent === null || percent === undefined || Math.abs(percent) < 1) {
-		return 'remained_unchanged'
+		return 'Ổn định so với tháng trước'
 	}
 	return percent > 0 ? 'Cao hơn tháng trước' : 'Thấp hơn tháng trước'
 }
@@ -106,4 +106,30 @@ export function getAnalysisSentence(percentageChange: number | null): string {
  */
 export function getDetailDescription(percent: number | null, difference: number | null, unit: string): string {
 	return getDetailedChangeDescription(percent, difference, unit)
+}
+
+export function getServiceTimeQuality(minutes: number): { badge: string; headline: string; description: string } {
+	if (minutes < 20)
+		return {
+			badge: 'Tối ưu',
+			headline: 'Tốc độ phục vụ tối ưu',
+			description: 'Tốc độ phục vụ nhanh, có thể duy trì để tối ưu trải nghiệm khách hàng'
+		}
+	if (minutes <= 40)
+		return {
+			badge: 'Tốt',
+			headline: 'Tốc độ phục vụ tốt',
+			description: 'Tốc độ phục vụ tốt, duy trì để đảm bảo trải nghiệm khách hàng'
+		}
+	return {
+		badge: 'Cần cải thiện',
+		headline: 'Cần cải thiện tốc độ phục vụ',
+		description: 'Nếu quán đang đông mà khách vẫn ngồi lâu, cần xem xét các biện pháp điều tiết.'
+	}
+}
+
+export function getServiceTimeComparisonText(curr: number, prev: number): string {
+	const diff = Math.abs(curr - prev)
+	if (diff === 0) return 'Ổn định so với tháng trước'
+	return curr < prev ? `Cải thiện so với tháng trước (giảm ${diff} phút)` : `Chậm hơn tháng trước (tăng ${diff} phút)`
 }

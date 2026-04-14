@@ -64,7 +64,7 @@ const TableCardWrapper: React.FC<React.ComponentProps<'div'> & { status: TableSt
 		}
 	}}
 `
-const TableCardTitle = tw.span`font-medium uppercase border-2 p-2 rounded-md aspect-square text-center place-content-center`
+const TableCardTitle = tw.span`font-medium uppercase border-2 p-2 sm:p-1 sm:text-sm rounded-md aspect-square text-center place-content-center`
 const TableCardDescription = tw.small`text-inherit inline-flex items-center gap-x-1`
 
 export default TableCard

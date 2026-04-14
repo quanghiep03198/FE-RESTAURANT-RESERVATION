@@ -9,30 +9,31 @@ const GET_STATISTIC_SUMMARY_QUERY_KEY = 'STATISTIC_SUMMARY'
 export const useGetStatisticSummaryQuery = () => {
 	const { searchParams } = useQueryParams<{ year_month: string }>({ year_month: format(new Date(), 'yyyy-MM') })
 
+	const yearMonth = searchParams.year_month ?? format(new Date(), 'yyyy-MM')
+
 	return useQueries({
 		queries: [
 			{
-				queryKey: [
-					GET_STATISTIC_SUMMARY_QUERY_KEY,
-					format(subMonths(new Date(searchParams.year_month), 1), 'yyyy-MM')
-				],
+				queryKey: [GET_STATISTIC_SUMMARY_QUERY_KEY, format(subMonths(new Date(yearMonth), 1), 'yyyy-MM')],
 				queryFn: async () =>
 					await StatisticService.getStatisticSummary({
-						year: subMonths(new Date(searchParams.year_month), 1).getFullYear(),
-						month: subMonths(new Date(searchParams.year_month), 1).getMonth()
+						year: subMonths(new Date(yearMonth), 1).getFullYear(),
+						month: subMonths(new Date(yearMonth), 1).getMonth()
 					}),
+
 				refetchInterval: 5000,
-				select: (response: ResponseBody<IStatisticSummary>) => response.metadata
+				select: (response: ResponseBody<IStatisticSummary>) => response?.metadata
 			},
 			{
-				queryKey: [GET_STATISTIC_SUMMARY_QUERY_KEY, searchParams.year_month],
+				queryKey: [GET_STATISTIC_SUMMARY_QUERY_KEY, format(new Date(yearMonth), 'yyyy-MM')],
 				queryFn: async () =>
 					await StatisticService.getStatisticSummary({
-						year: new Date(searchParams.year_month).getFullYear(),
-						month: new Date(searchParams.year_month).getMonth() + 1
+						year: new Date(yearMonth).getFullYear(),
+						month: new Date(yearMonth).getMonth() + 1
 					}),
+
 				refetchInterval: 5000,
-				select: (response: ResponseBody<IStatisticSummary>) => response.metadata
+				select: (response: ResponseBody<IStatisticSummary>) => response?.metadata
 			}
 		]
 	})

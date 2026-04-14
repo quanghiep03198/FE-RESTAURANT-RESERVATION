@@ -38,7 +38,7 @@ const TablesMap: React.FC = () => {
 				<TableFormDialogTrigger />
 			</div>
 
-			<div className='grid h-full auto-rows-max grid-cols-4 gap-4 p-4 sm:max-lg:[zoom:0.8] xl:p-6'>
+			<div className='grid h-full auto-rows-max grid-cols-4 gap-4 p-4 sm:max-lg:[zoom:0.75] xl:p-6'>
 				{isLoading ? (
 					Array.from({ length: 16 }, (_, index) => <Skeleton key={index} className='h-36' />)
 				) : Array.isArray(tableData) && tableData.length > 0 ? (

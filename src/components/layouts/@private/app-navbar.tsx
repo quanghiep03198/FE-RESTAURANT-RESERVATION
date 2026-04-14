@@ -1,12 +1,33 @@
+import { Button } from '@/components/ui/button'
+import { Icon } from '@/components/ui/icon'
+import useMediaQuery from '@/hooks/use-media-query'
+
+import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '../../ui/sidebar'
+import NavUser from './nav-user'
 
 type Props = {}
 
 const AppNavbar = (props: Props) => {
+	const isMobile = useMediaQuery('(min-width: 320px) and (max-width: 1200px)')
+
+	if (!isMobile) return null
+
 	return (
-		<header className='mt-auto h-(--header-height) border-t px-(--outlet-padding-y) @4xl:hidden'>
-			<nav className='flex h-full items-center'>
-				<SidebarTrigger className='mr-auto' />
+		<header className='bg-card sticky top-0 z-20 h-(--header-height) border-b px-(--outlet-padding-y) shadow-lg'>
+			<nav className='flex h-full items-center justify-center gap-x-4'>
+				<NavUser />
+				<div className='py-3'>
+					<Separator orientation='vertical' className='h-6 min-w-0.5 self-center' />
+				</div>
+				<SidebarTrigger
+					className='mr-auto'
+					render={
+						<Button size='icon' variant='ghost'>
+							<Icon name='Menu' />
+						</Button>
+					}
+				/>
 			</nav>
 		</header>
 	)

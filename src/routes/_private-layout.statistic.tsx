@@ -1,3 +1,4 @@
+import BestSellers from '@/components/@statistic/best-sellers'
 import RevenueOverall from '@/components/@statistic/revenue-overall'
 import StatisticCardGroup from '@/components/@statistic/statistic-card-group'
 import { MonthPicker } from '@/components/customs/month-picker'
@@ -32,7 +33,7 @@ function RouteComponent() {
 			<PageWrapper>
 				<PageHeader>
 					<PageTitle>Thống kê</PageTitle>
-					<PageDescription>
+					<PageDescription className='hidden lg:block'>
 						Bạn có thể theo dõi doanh thu, số lượng đặt bàn, và các chỉ số quan trọng khác để quản lý hiệu quả
 						hơn.
 					</PageDescription>
@@ -44,9 +45,10 @@ function RouteComponent() {
 					</PageAction>
 				</PageHeader>
 				<PageSeparator />
-				<section className='space-y-6'>
+				<section className='xxl:grid-cols-12 xxl:auto-rows-[fit-content] grid grid-flow-col grid-cols-1 gap-6'>
 					<StatisticCardGroup />
 					<RevenueOverall />
+					<BestSellers />
 				</section>
 			</PageWrapper>
 		</>

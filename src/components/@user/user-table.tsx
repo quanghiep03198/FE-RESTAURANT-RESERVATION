@@ -1,4 +1,4 @@
-import { useGetUserListQuery } from '@/apis/user/hooks/use-user-request'
+import { useGetUsersQuery } from '@/apis/user/hooks/use-user-request'
 import type { IUser } from '@/apis/user/types'
 import { createColumnHelper } from '@tanstack/react-table'
 import { format } from 'date-fns'
@@ -15,7 +15,7 @@ import UserActionDropdown from './user-action-dropdown'
 import UserTableToolbar from './user-table-toolbar'
 
 const UserTable: React.FC = () => {
-	const { data, isLoading } = useGetUserListQuery()
+	const { data, isLoading } = useGetUsersQuery()
 
 	const columnHelper = createColumnHelper<IUser>()
 

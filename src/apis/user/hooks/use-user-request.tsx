@@ -8,11 +8,11 @@ import type { TUpdateUserValues } from '../schemas/update-user.schema'
 import { UserService } from '../services'
 import type { IUser } from '../types'
 
-export const GET_USER_LIST_QUERY_KEY = 'USERS'
+export const GET_USERS_QUERY_KEY = 'USERS'
 
-export const useGetUserListQuery = () => {
+export const useGetUsersQuery = () => {
 	return useQuery({
-		queryKey: [GET_USER_LIST_QUERY_KEY],
+		queryKey: [GET_USERS_QUERY_KEY],
 		queryFn: UserService.getAll,
 		select: (response) => {
 			const data = Array.isArray(response.metadata)
@@ -34,7 +34,7 @@ export const useUpdateUserStatusMutation = () => {
 		mutationFn: async ({ id, ...update }: TUpdateUserValues & Pick<IUser, 'id'>) =>
 			await UserService.updateOneById(id, update),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [GET_USER_LIST_QUERY_KEY] })
+			queryClient.invalidateQueries({ queryKey: [GET_USERS_QUERY_KEY] })
 		}
 	})
 }
@@ -72,7 +72,7 @@ export const useCreateOrUpdateUserMutataion = (action: CommonActions.CREATE | Co
 			toastRef.current = toast.loading('Đang xử lý ...')
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [GET_USER_LIST_QUERY_KEY] })
+			queryClient.invalidateQueries({ queryKey: [GET_USERS_QUERY_KEY] })
 			toast.success(currentConfig?.message, { id: toastRef.current })
 		},
 		onError: () => {
