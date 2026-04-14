@@ -55,9 +55,13 @@ const InvoiceTable: React.FC = () => {
 				header: 'Tổng tiền',
 				cell: ({ getValue }) => formatCurrency(getValue())
 			}),
-			columnHelper.accessor('paid_amount', {
-				header: 'Đã thanh toán',
+			columnHelper.accessor('deposit_amount', {
+				header: 'Trả trước',
 				cell: ({ getValue }) => formatCurrency(getValue())
+			}),
+			columnHelper.accessor('paid_amount', {
+				header: 'Đã thanh toán (+VAT)',
+				cell: ({ getValue, row }) => formatCurrency(getValue() + row.original.deposit_amount)
 			}),
 
 			columnHelper.accessor('payment_status', {

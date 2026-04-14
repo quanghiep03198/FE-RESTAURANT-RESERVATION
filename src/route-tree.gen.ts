@@ -16,12 +16,12 @@ import { Route as PublicLayoutIndexRouteImport } from './routes/_public-layout.i
 import { Route as PublicLayoutCustomerReservationRouteImport } from './routes/_public-layout.customer-reservation'
 import { Route as PrivateLayoutUsersRouteImport } from './routes/_private-layout.users'
 import { Route as PrivateLayoutTableMapRouteImport } from './routes/_private-layout.table-map'
+import { Route as PrivateLayoutStatisticRouteImport } from './routes/_private-layout.statistic'
 import { Route as PrivateLayoutReservationsRouteImport } from './routes/_private-layout.reservations'
 import { Route as PrivateLayoutInvoicesRouteImport } from './routes/_private-layout.invoices'
 import { Route as PrivateLayoutDishesRouteImport } from './routes/_private-layout.dishes'
 import { Route as PrivateLayoutCombosRouteImport } from './routes/_private-layout.combos'
 import { Route as PrivateLayoutCategoriesRouteImport } from './routes/_private-layout.categories'
-import { Route as PrivateLayoutAnalyticsRouteImport } from './routes/_private-layout.analytics'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -57,6 +57,11 @@ const PrivateLayoutTableMapRoute = PrivateLayoutTableMapRouteImport.update({
   path: '/table-map',
   getParentRoute: () => PrivateLayoutRoute,
 } as any)
+const PrivateLayoutStatisticRoute = PrivateLayoutStatisticRouteImport.update({
+  id: '/statistic',
+  path: '/statistic',
+  getParentRoute: () => PrivateLayoutRoute,
+} as any)
 const PrivateLayoutReservationsRoute =
   PrivateLayoutReservationsRouteImport.update({
     id: '/reservations',
@@ -83,21 +88,16 @@ const PrivateLayoutCategoriesRoute = PrivateLayoutCategoriesRouteImport.update({
   path: '/categories',
   getParentRoute: () => PrivateLayoutRoute,
 } as any)
-const PrivateLayoutAnalyticsRoute = PrivateLayoutAnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
-  getParentRoute: () => PrivateLayoutRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicLayoutIndexRoute
   '/login': typeof LoginRoute
-  '/analytics': typeof PrivateLayoutAnalyticsRoute
   '/categories': typeof PrivateLayoutCategoriesRoute
   '/combos': typeof PrivateLayoutCombosRoute
   '/dishes': typeof PrivateLayoutDishesRoute
   '/invoices': typeof PrivateLayoutInvoicesRoute
   '/reservations': typeof PrivateLayoutReservationsRoute
+  '/statistic': typeof PrivateLayoutStatisticRoute
   '/table-map': typeof PrivateLayoutTableMapRoute
   '/users': typeof PrivateLayoutUsersRoute
   '/customer-reservation': typeof PublicLayoutCustomerReservationRoute
@@ -105,12 +105,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof PublicLayoutIndexRoute
   '/login': typeof LoginRoute
-  '/analytics': typeof PrivateLayoutAnalyticsRoute
   '/categories': typeof PrivateLayoutCategoriesRoute
   '/combos': typeof PrivateLayoutCombosRoute
   '/dishes': typeof PrivateLayoutDishesRoute
   '/invoices': typeof PrivateLayoutInvoicesRoute
   '/reservations': typeof PrivateLayoutReservationsRoute
+  '/statistic': typeof PrivateLayoutStatisticRoute
   '/table-map': typeof PrivateLayoutTableMapRoute
   '/users': typeof PrivateLayoutUsersRoute
   '/customer-reservation': typeof PublicLayoutCustomerReservationRoute
@@ -120,12 +120,12 @@ export interface FileRoutesById {
   '/_private-layout': typeof PrivateLayoutRouteWithChildren
   '/_public-layout': typeof PublicLayoutRouteWithChildren
   '/login': typeof LoginRoute
-  '/_private-layout/analytics': typeof PrivateLayoutAnalyticsRoute
   '/_private-layout/categories': typeof PrivateLayoutCategoriesRoute
   '/_private-layout/combos': typeof PrivateLayoutCombosRoute
   '/_private-layout/dishes': typeof PrivateLayoutDishesRoute
   '/_private-layout/invoices': typeof PrivateLayoutInvoicesRoute
   '/_private-layout/reservations': typeof PrivateLayoutReservationsRoute
+  '/_private-layout/statistic': typeof PrivateLayoutStatisticRoute
   '/_private-layout/table-map': typeof PrivateLayoutTableMapRoute
   '/_private-layout/users': typeof PrivateLayoutUsersRoute
   '/_public-layout/customer-reservation': typeof PublicLayoutCustomerReservationRoute
@@ -136,12 +136,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
-    | '/analytics'
     | '/categories'
     | '/combos'
     | '/dishes'
     | '/invoices'
     | '/reservations'
+    | '/statistic'
     | '/table-map'
     | '/users'
     | '/customer-reservation'
@@ -149,12 +149,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
-    | '/analytics'
     | '/categories'
     | '/combos'
     | '/dishes'
     | '/invoices'
     | '/reservations'
+    | '/statistic'
     | '/table-map'
     | '/users'
     | '/customer-reservation'
@@ -163,12 +163,12 @@ export interface FileRouteTypes {
     | '/_private-layout'
     | '/_public-layout'
     | '/login'
-    | '/_private-layout/analytics'
     | '/_private-layout/categories'
     | '/_private-layout/combos'
     | '/_private-layout/dishes'
     | '/_private-layout/invoices'
     | '/_private-layout/reservations'
+    | '/_private-layout/statistic'
     | '/_private-layout/table-map'
     | '/_private-layout/users'
     | '/_public-layout/customer-reservation'
@@ -232,6 +232,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateLayoutTableMapRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
+    '/_private-layout/statistic': {
+      id: '/_private-layout/statistic'
+      path: '/statistic'
+      fullPath: '/statistic'
+      preLoaderRoute: typeof PrivateLayoutStatisticRouteImport
+      parentRoute: typeof PrivateLayoutRoute
+    }
     '/_private-layout/reservations': {
       id: '/_private-layout/reservations'
       path: '/reservations'
@@ -267,34 +274,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateLayoutCategoriesRouteImport
       parentRoute: typeof PrivateLayoutRoute
     }
-    '/_private-layout/analytics': {
-      id: '/_private-layout/analytics'
-      path: '/analytics'
-      fullPath: '/analytics'
-      preLoaderRoute: typeof PrivateLayoutAnalyticsRouteImport
-      parentRoute: typeof PrivateLayoutRoute
-    }
   }
 }
 
 interface PrivateLayoutRouteChildren {
-  PrivateLayoutAnalyticsRoute: typeof PrivateLayoutAnalyticsRoute
   PrivateLayoutCategoriesRoute: typeof PrivateLayoutCategoriesRoute
   PrivateLayoutCombosRoute: typeof PrivateLayoutCombosRoute
   PrivateLayoutDishesRoute: typeof PrivateLayoutDishesRoute
   PrivateLayoutInvoicesRoute: typeof PrivateLayoutInvoicesRoute
   PrivateLayoutReservationsRoute: typeof PrivateLayoutReservationsRoute
+  PrivateLayoutStatisticRoute: typeof PrivateLayoutStatisticRoute
   PrivateLayoutTableMapRoute: typeof PrivateLayoutTableMapRoute
   PrivateLayoutUsersRoute: typeof PrivateLayoutUsersRoute
 }
 
 const PrivateLayoutRouteChildren: PrivateLayoutRouteChildren = {
-  PrivateLayoutAnalyticsRoute: PrivateLayoutAnalyticsRoute,
   PrivateLayoutCategoriesRoute: PrivateLayoutCategoriesRoute,
   PrivateLayoutCombosRoute: PrivateLayoutCombosRoute,
   PrivateLayoutDishesRoute: PrivateLayoutDishesRoute,
   PrivateLayoutInvoicesRoute: PrivateLayoutInvoicesRoute,
   PrivateLayoutReservationsRoute: PrivateLayoutReservationsRoute,
+  PrivateLayoutStatisticRoute: PrivateLayoutStatisticRoute,
   PrivateLayoutTableMapRoute: PrivateLayoutTableMapRoute,
   PrivateLayoutUsersRoute: PrivateLayoutUsersRoute,
 }

@@ -1,7 +1,7 @@
 import { GET_RESERVATIONS_QUERY_KEY } from '@/apis/reservation/hooks/use-reservation-request'
 import { GET_TABLE_SESSIONS_QUERY_KEY } from '@/apis/table-session/hooks/use-table-session-request'
 import { GET_TABLE_QUERY_KEY } from '@/apis/table/hooks/use-table-request'
-import { queryOptions, useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { InvoiceService } from '../services'
 
@@ -11,12 +11,13 @@ export const getInvoicesQueryOptions = () => {
 	return queryOptions({
 		queryKey: [GET_INVOICE_QUERY_KEY],
 		queryFn: InvoiceService.getAll,
+		refetchOnMount: true,
 		select: (response) => (Array.isArray(response.metadata) ? response.metadata : [])
 	})
 }
 
 export const useGetInvoiceQuery = () => {
-	return useSuspenseQuery(getInvoicesQueryOptions())
+	return useQuery(getInvoicesQueryOptions())
 }
 
 export const useCreateInvoiceMutation = () => {

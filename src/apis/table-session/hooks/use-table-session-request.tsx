@@ -1,5 +1,6 @@
 import { GET_TABLE_QUERY_KEY } from '@/apis/table/hooks/use-table-request'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { TableSessionStatus } from '../constants'
 import { TableSessionService } from '../services'
 
 export const GET_TABLE_SESSIONS_QUERY_KEY = 'TABLE_SESSIONS'
@@ -8,8 +9,10 @@ export const useGetTableSessionsQuery = () => {
 	return useQuery({
 		queryKey: [GET_TABLE_SESSIONS_QUERY_KEY],
 		queryFn: TableSessionService.getAll,
-		refetchInterval: 5000,
-		select: (response) => (Array.isArray(response.metadata) ? response.metadata.filter((item) => item.is_active) : [])
+		select: (response) =>
+			Array.isArray(response.metadata)
+				? response.metadata.filter((item) => item.is_active && item.status === TableSessionStatus.OPEN)
+				: []
 	})
 }
 
@@ -28,18 +31,7 @@ export const useEndTableSessionMutation = () => {
 	const invalidateQueries = useInvalidateQueries()
 
 	return useMutation({
-		mutationFn: TableSessionService.updateOne,
-		onSuccess: () => {
-			invalidateQueries()
-		}
-	})
-}
-
-export const useUpdateTableSessionMutation = () => {
-	const invalidateQueries = useInvalidateQueries()
-
-	return useMutation({
-		mutationFn: TableSessionService.updateOne,
+		mutationFn: (id: number) => TableSessionService.updateOne(id, { status: TableSessionStatus.CANCELLED }),
 		onSuccess: () => {
 			invalidateQueries()
 		}
@@ -51,6 +43,7 @@ const useInvalidateQueries = () => {
 
 	return () =>
 		queryClient.invalidateQueries({
-			predicate: (query) => query.queryKey.some((key) => key === GET_TABLE_QUERY_KEY)
+			predicate: (query) =>
+				query.queryKey.some((key) => key === GET_TABLE_QUERY_KEY || key === GET_TABLE_SESSIONS_QUERY_KEY)
 		})
 }

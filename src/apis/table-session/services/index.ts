@@ -6,11 +6,15 @@ export class TableSessionService {
 		return await axiosInstance.get<unknown, ResponseBody<ITableSession[]>, void>(`/table/sessions`)
 	}
 
-	public static async insertOne(payload: { table_id: number; guest_count: number }) {
+	public static async insertOne(payload: {
+		table_id: number
+		guest_count: number
+		reservation_code: string | undefined
+	}) {
 		return await axiosInstance.post(`/table/sessions`, payload)
 	}
 
-	public static async updateOne({ id, ...payload }) {
-		return await axiosInstance.put(`/table/sessions/${id}`, payload)
+	public static async updateOne(id, payload) {
+		return await axiosInstance.patch(`/table/sessions/${id}`, payload)
 	}
 }

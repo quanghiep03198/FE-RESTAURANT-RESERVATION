@@ -8,7 +8,7 @@ import QRCodeImage from '@/assets/images/banking-qr.jpg'
 import { formatCurrency } from '@/common/utils/format-currency'
 import { getStorageUrl } from '@/common/utils/get-storage-url'
 import { useForm } from '@tanstack/react-form'
-import { memo, useEffect, useMemo, type SubmitEventHandler } from 'react'
+import { useEffect, useMemo, type SubmitEventHandler } from 'react'
 import Image from '../shared/image'
 import { Button } from '../ui/button'
 import {
@@ -264,7 +264,7 @@ const TableCheckout: React.FC<TTableCheckoutProps> = ({ data, onCancel, onFinish
 			</div>
 
 			<div className='bg-background flex flex-col items-stretch rounded-lg p-4'>
-				<Typography className='mb-10 text-base font-medium'>Tổng quan hóa đơn</Typography>.
+				<Typography className='mb-6 text-base font-medium'>Tổng quan hóa đơn</Typography>
 				<div className='max-h-full flex-1 basis-full overflow-auto'>
 					<Table className='[&_thead_th]:bg-muted [&_tfoot_td:first-child]:text-muted-foreground [&_tfoot_td]:bg-muted [&_thead_th]:text-muted-foreground w-full table-fixed [&_td]:border-x-0 [&_th]:border-x-0'>
 						<colgroup>
@@ -305,7 +305,7 @@ const TableCheckout: React.FC<TTableCheckoutProps> = ({ data, onCancel, onFinish
 								))
 							) : (
 								<TableRow>
-									<TableCell colSpan={3} className='h-60'>
+									<TableCell colSpan={3} align='center' className='text-muted-foreground h-60'>
 										Chưa có món nào
 									</TableCell>
 								</TableRow>
@@ -321,7 +321,7 @@ const TableCheckout: React.FC<TTableCheckoutProps> = ({ data, onCancel, onFinish
 								<TableCell colSpan={2}>{formatCurrency(depositAmount)}</TableCell>
 							</TableRow>
 							<TableRow>
-								<TableCell>VAT</TableCell>
+								<TableCell>VAT (+10%)</TableCell>
 								<TableCell colSpan={2}>{formatCurrency(taxAmount)}</TableCell>
 							</TableRow>
 							<TableRow>
@@ -336,4 +336,4 @@ const TableCheckout: React.FC<TTableCheckoutProps> = ({ data, onCancel, onFinish
 	)
 }
 
-export default memo(TableCheckout)
+export default TableCheckout

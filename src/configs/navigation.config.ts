@@ -69,7 +69,7 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 	administration: [
 		{
 			title: 'Thống kê',
-			url: '/analytics',
+			url: '/statistic',
 			icon: 'ChartColumnBig',
 			authorizedRoles: ['OWNER', 'MANAGER'],
 			description:

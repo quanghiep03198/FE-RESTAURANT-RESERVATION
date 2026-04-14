@@ -29,9 +29,9 @@ const TableStatusIndicator: React.FC<React.ComponentProps<'div'> & { status: Tab
 			case TableStatus.AVAILABLE:
 				return 'border-[1.5px] bg-muted text-muted-foreground border-dashed'
 			case TableStatus.OCCUPIED:
-				return 'bg-secondary text-secondary-foreground'
+				return 'bg-primary text-primary-foreground'
 			case TableStatus.RESERVED:
-				return 'bg-accent text-accent-foreground'
+				return 'bg-secondary text-secondary-foreground'
 			case TableStatus.DISABLED:
 				return 'bg-muted text-muted-foregound cursor-not-allowed'
 		}

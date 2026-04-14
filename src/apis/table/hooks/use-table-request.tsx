@@ -1,3 +1,4 @@
+import useAuth from '@/apis/auth/hooks/use-auth-request'
 import { CommonActions } from '@/common/constants/enums'
 import {
 	queryOptions,
@@ -16,16 +17,21 @@ import type { ITable } from '../types'
 
 export const GET_TABLE_QUERY_KEY = 'TABLES'
 
-export const getTableQueryOptions = () =>
+export const getTableQueryOptions = (enabled: boolean) =>
 	queryOptions({
 		queryKey: [GET_TABLE_QUERY_KEY],
 		queryFn: TableService.getAll,
 		refetchOnMount: true,
+		enabled,
+		refetchInterval: 5000,
 		select: (response) => (Array.isArray(response.metadata) ? response.metadata.filter((item) => item.is_active) : [])
 	})
 
 export const useGetTablesQuery = (prefetchOnLoader: boolean = true) => {
-	return prefetchOnLoader ? useSuspenseQuery(getTableQueryOptions()) : useQuery(getTableQueryOptions())
+	const { isAuthenticated } = useAuth()
+	return prefetchOnLoader
+		? useSuspenseQuery(getTableQueryOptions(isAuthenticated))
+		: useQuery(getTableQueryOptions(isAuthenticated))
 }
 
 export const useCreateOrUpdateTableMutation = (action: CommonActions.CREATE | CommonActions.UPDATE) => {

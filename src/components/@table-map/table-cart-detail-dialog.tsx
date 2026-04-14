@@ -84,7 +84,9 @@ const TableCartDetailDialog: React.FC = () => {
 	const { data: combos } = useGetCombosQuery()
 	const [isSuspensePayment, setIsSuspensePayment] = useState<boolean>(false)
 
-	const { mutateAsync: updateCartAsync, isPending } = useUpdateCartMutation()
+	const { mutateAsync: updateCartAsync, isPending } = useUpdateCartMutation(currentTableIdRef.current)
+
+	console.log('currentReservationCodeRef.current', currentReservationCodeRef.current)
 
 	const form = useForm({
 		defaultValues: {
@@ -184,7 +186,8 @@ const TableCartDetailDialog: React.FC = () => {
 	)
 
 	const handleCancelPayment = useCallback(() => setIsSuspensePayment(false), [])
-	const handleAfterInvoiceCreated = useCallback(() => {
+
+	const handleReset = useCallback(() => {
 		form.reset()
 		setIsSuspensePayment(false)
 		setOpen(false)
@@ -196,7 +199,12 @@ const TableCartDetailDialog: React.FC = () => {
 	}
 
 	return (
-		<Dialog open={open || isPending} onOpenChange={setOpen}>
+		<Dialog
+			open={open || isPending}
+			onOpenChange={setOpen}
+			onOpenChangeComplete={(open) => {
+				if (!open) handleReset()
+			}}>
 			<DialogContent className='h-screen max-w-screen overflow-y-auto rounded-none xl:h-auto xl:w-auto xl:rounded-lg'>
 				<DialogHeader>
 					<DialogTitle className='text-xl capitalize'>{isSuspensePayment ? 'Thanh toán' : 'Gọi món'}</DialogTitle>
@@ -206,7 +214,7 @@ const TableCartDetailDialog: React.FC = () => {
 				<form
 					onSubmit={handleSubmit}
 					aria-current={!isSuspensePayment}
-					className='animate-in fade-in fade-in-0 mx-auto hidden w-full max-w-4xl space-y-3 aria-current:block'>
+					className='animate-in fade-in fade-in-0 slide-in-from-left-5 mx-auto hidden w-full max-w-4xl space-y-3 duration-300 aria-current:block'>
 					<FieldSet>
 						<FieldLegend>Chi tiết gọi món</FieldLegend>
 						<FieldDescription>
@@ -220,7 +228,7 @@ const TableCartDetailDialog: React.FC = () => {
 						</div>
 						<FieldGroup
 							aria-current={!isLoading}
-							className='hidden h-[60vh] overflow-y-auto [scrollbar-gutter:stable] aria-current:flex'>
+							className='hidden h-[50vh] overflow-y-auto [scrollbar-gutter:stable] aria-current:flex'>
 							<form.Field name='items' mode='array'>
 								{(field) => {
 									const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
@@ -452,6 +460,7 @@ const TableCartDetailDialog: React.FC = () => {
 							size='lg'
 							variant='destructive'
 							className='mr-auto'
+							disabled={!cartData?.item_list?.length}
 							onClick={() => setIsSuspensePayment(true)}>
 							<Icon name='CreditCard' />
 							Chốt thanh toán
@@ -472,18 +481,18 @@ const TableCartDetailDialog: React.FC = () => {
 				</form>
 				<div
 					aria-current={!isLoading && isSuspensePayment}
-					className='mx-auto hidden w-full flex-col items-center gap-6 aria-current:flex xl:w-7xl'>
+					className='animate-in slide-in-from-right-5 fade-in-0 mx-auto hidden w-full flex-col items-center gap-6 duration-300 aria-current:flex xl:w-7xl'>
 					<TableCheckout
 						data={{
-							cart_order_id: cartData.cart_order_id,
-							item_list: cartData.item_list,
+							cart_order_id: cartData?.cart_order_id,
+							item_list: cartData?.item_list,
 							reservation_code: reservation?.reservation_code,
 							customer_name: reservation?.customer_name ?? '',
 							customer_phone: reservation?.customer_phone ?? '',
 							deposit_amount: reservation?.deposit_amount ?? 0
 						}}
 						onCancel={handleCancelPayment}
-						onFinish={handleAfterInvoiceCreated}
+						onFinish={handleReset}
 					/>
 				</div>
 			</DialogContent>

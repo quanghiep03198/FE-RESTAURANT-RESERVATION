@@ -50,7 +50,8 @@ const MenuNavigation = ({ navigationData, activeSection, className }: MenuNaviga
 						// Extract section ID from href
 						const sectionId = navItem?.hash?.replace('#', '')
 						const isActive =
-							activeSection === sectionId && activeSection !== '' && location.pathname === navItem.to
+							(activeSection === sectionId && activeSection !== '') ||
+							(location.pathname === navItem.to && navItem.to !== '/')
 
 						return (
 							<NavigationMenuItem key={navItem.title}>

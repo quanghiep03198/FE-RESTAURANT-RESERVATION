@@ -1,6 +1,6 @@
 import { getCartByTableQueryOptions } from '@/apis/cart/hooks/use-cart-request'
 import { TableStatus } from '@/apis/table/constants'
-import type { ITable } from '@/apis/table/types'
+import type { ITableCardData } from '@/apis/table/types'
 import { CommonActions } from '@/common/constants/enums'
 import { usePageContext } from '@/contexts/event-context'
 import { useQueryClient } from '@tanstack/react-query'
@@ -17,9 +17,9 @@ const statusIcon: Record<TableStatus, IconProps['name']> = {
 	[TableStatus.DISABLED]: 'CircleSlash2'
 }
 
-type TTableCardProps = { data: ITable & { cart_id: number | undefined; reservation_code: string | undefined } }
-
-const TableCard: React.FC<TTableCardProps> = ({ data }) => {
+const TableCard: React.FC<{
+	data: ITableCardData
+}> = ({ data }) => {
 	const queryClient = useQueryClient()
 	const { event$ } = usePageContext()
 

@@ -1,5 +1,6 @@
 import { useGetTableSessionsQuery } from '@/apis/table-session/hooks/use-table-session-request'
 import { useGetTablesQuery } from '@/apis/table/hooks/use-table-request'
+import type { ITableCardData } from '@/apis/table/types'
 import { useMemo } from 'react'
 import { Empty, EmptyContent, EmptyDescription, EmptyMedia, EmptyTitle } from '../ui/empty'
 import { Icon } from '../ui/icon'
@@ -13,19 +14,22 @@ const TablesMap: React.FC = () => {
 	const { data: tableSessions, isLoading: isLoadingTableSession } = useGetTableSessionsQuery()
 
 	const tableData = useMemo(() => {
-		if (!tables || !tableSessions) return []
+		if (!tables) return []
 		return tables.map((table) => {
-			const tableSession = tableSessions.find((session) => session.table_id === table.id)
+			const tableSession = tableSessions?.find((session) => session?.table_id === table?.id)
 
 			return {
 				...table,
-				reservation_code: tableSession?.reservation_code,
+				sesssion_id: tableSession?.id,
+				reservation_code: table?.reservation?.reservation_code,
 				cart_id: tableSession?.cart_orders?.[0]?.id
-			}
+			} as unknown as ITableCardData
 		})
 	}, [tables, tableSessions])
 
 	const isLoading = isLoadingTables || isLoadingTableSession
+
+	console.table(tableData)
 
 	return (
 		<section className='bg-card scrollbar-none! relative flex h-full flex-1 flex-col space-y-3 overflow-scroll rounded-lg shadow-md'>

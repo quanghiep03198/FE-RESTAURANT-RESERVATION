@@ -24,6 +24,7 @@ export const getReservationsQueryOptions = () =>
 	queryOptions({
 		queryKey: [GET_RESERVATIONS_QUERY_KEY],
 		queryFn: ReservationService.getAll,
+		refetchInterval: 5000,
 		select: (response) => (Array.isArray(response.metadata) ? response.metadata : [])
 	})
 

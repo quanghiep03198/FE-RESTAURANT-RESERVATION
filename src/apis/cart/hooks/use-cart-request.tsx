@@ -1,8 +1,8 @@
-import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { TUpdateCartValues } from '../schemas/update-cart.schema'
 import { CartService } from '../services'
 
-const GET_CART_BY_TABLE_KEY = 'CART_BY_TABLE'
+export const GET_CART_BY_TABLE_KEY = 'CART_BY_TABLE'
 
 export const getCartByTableQueryOptions = (tableId: number) => {
 	return queryOptions({
@@ -17,11 +17,18 @@ export const useGetCartByTableQuery = (tableId?: number) => {
 	return useQuery(getCartByTableQueryOptions(tableId))
 }
 
-export const useUpdateCartMutation = () => {
+export const useUpdateCartMutation = (tableId: number) => {
+	const queryClient = useQueryClient()
+
 	return useMutation({
 		mutationFn: ({ cart_id, ...payload }: TUpdateCartValues & { cart_id: number }) =>
-			CartService.updateCartByTableId(cart_id, payload)
+			CartService.updateCartByTableId(cart_id, payload),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				predicate: (query) => {
+					return query.queryKey.some((key) => key === GET_CART_BY_TABLE_KEY || key === tableId)
+				}
+			})
+		}
 	})
 }
-
-export const useInvalidateQuery = () => {}

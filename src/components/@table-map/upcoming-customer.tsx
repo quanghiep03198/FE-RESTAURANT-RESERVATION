@@ -1,3 +1,4 @@
+import { ReservationStatus } from '@/apis/reservation/constants'
 import { useGetReservationsQuery } from '@/apis/reservation/hooks/use-reservation-request'
 import { Link } from '@tanstack/react-router'
 import { addHours, format, isWithinInterval } from 'date-fns'
@@ -17,11 +18,14 @@ const UpcommingCustomer: React.FC = () => {
 	const upcommingReservation = useMemo(() => {
 		const now = new Date()
 		return Array.isArray(data)
-			? data.filter((reservation) =>
-					isWithinInterval(new Date(reservation.reservation_time), {
-						start: now,
-						end: addHours(now, 2)
-					})
+			? data.filter(
+					(reservation) =>
+						isWithinInterval(new Date(reservation.reservation_time), {
+							start: now,
+							end: addHours(now, 2)
+						}) &&
+						reservation.is_active &&
+						reservation.status === ReservationStatus.CONFIRMED
 				)
 			: []
 	}, [data])

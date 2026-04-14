@@ -40,7 +40,7 @@ const RESERVATION_STATUS_TEXT = new Map<ReservationStatus, string>([
 const MyReservation: React.FC<{ data: IReservation }> = ({ data }) => {
 	const [isEditting, setIsEditting] = useState<boolean>(false)
 	const mutation = useCreateCustomerReservation()
-
+	const { setStoredReservation } = useStoredReservation()
 	if (!data) return null
 
 	return (
@@ -59,10 +59,13 @@ const MyReservation: React.FC<{ data: IReservation }> = ({ data }) => {
 					</Typography>
 				</div>
 				<div className='space-x-2'>
-					<CancelReservationDialog />
-					<Button variant='outline' className='capitalize' onClick={() => setIsEditting(!isEditting)}>
-						{isEditting ? 'Hủy thay đổi' : 'Chỉnh sửa thông tin'}
-					</Button>
+					{data.status === ReservationStatus.CANCELED || data.status === ReservationStatus.COMPLETED ? (
+						<Button onClick={() => setStoredReservation(null)}>
+							<Icon name='Plus' /> Tạo đặt bàn mới
+						</Button>
+					) : (
+						<CancelReservationDialog />
+					)}
 				</div>
 			</div>
 
@@ -169,7 +172,13 @@ const CancelReservationDialog: React.FC = () => {
 
 	return (
 		<AlertDialog open={open || isPending} onOpenChange={setOpen}>
-			<AlertDialogTrigger render={<Button className='destructive'>Hủy đặt bàn</Button>} />
+			<AlertDialogTrigger
+				render={
+					<Button variant='destructive'>
+						<Icon name='CalendarX2' /> Hủy đặt bàn
+					</Button>
+				}
+			/>
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogMedia className='bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive'>
