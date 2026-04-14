@@ -1,15 +1,15 @@
-import {
+import type {
 	ColumnDef,
-	type ColumnFiltersState,
-	type ExpandedState,
-	type GlobalFilterTableState,
-	type Row,
-	type SortingState,
-	type Table,
-	type TableOptions,
-	type TableState
+	ColumnFiltersState,
+	ExpandedState,
+	GlobalFilterTableState,
+	Row,
+	SortingState,
+	Table,
+	TableOptions,
+	TableState
 } from '@tanstack/react-table'
-import { VirtualizerOptions } from '@tanstack/react-virtual'
+import type { VirtualizerOptions } from '@tanstack/react-virtual'
 import { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import React from 'react'
 
