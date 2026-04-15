@@ -48,6 +48,7 @@ export function DataTableFacetedFilter({ column, title, options }: IDataTableFac
 											{`${selectedValues.size} đã chọn`}
 										</Badge>
 									) : (
+										Array.isArray(options) &&
 										options
 											.filter((option) => selectedValues.has(option.value))
 											.map((option) => (
