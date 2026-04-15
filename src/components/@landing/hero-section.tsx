@@ -111,7 +111,7 @@ const HeroSection = () => {
 						<div className='flex items-center gap-3.5'>
 							<Button
 								render={
-									<Link href='#'>
+									<Link to='/customer-reservation'>
 										Đặt bàn ngay
 										<ArrowRightIcon className='transition-transform duration-200 group-hover:translate-x-0.5' />
 									</Link>

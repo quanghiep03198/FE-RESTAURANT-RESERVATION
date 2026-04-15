@@ -1,5 +1,4 @@
 import { cn } from '@/common/utils/cn'
-import { scrollToSection } from '@/common/utils/scroll-to-section'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
 	DropdownMenu,
@@ -49,21 +48,20 @@ const MenuDropdown = ({ trigger, navigationData, activeSection, align = 'start' 
 			<DropdownMenuTrigger render={trigger} />
 			<DropdownMenuContent className='mt-1 w-[min(93vw,800px)]' align={align}>
 				{navigationData.map((navItem) => {
-					if (navItem.hash) {
+					if (navItem.to) {
 						// Extract section ID from href
-						const sectionId = navItem.hash.replace('#', '')
-						const isActive = activeSection === sectionId && activeSection !== ''
+						const sectionId = navItem?.hash?.replace('#', '')
+						const isActive =
+							(activeSection === sectionId && activeSection !== '') ||
+							(location.pathname === navItem.to && navItem.to !== '/')
 
 						return (
 							<DropdownMenuItem
 								key={navItem.title}
 								render={
 									<Link
-										to={navItem.hash}
-										onClick={(e) => {
-											e.preventDefault()
-											scrollToSection(sectionId)
-										}}
+										hash={sectionId}
+										to={navItem.to}
 										className={cn(
 											'cursor-pointer transition-colors duration-200',
 											'hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary',

@@ -104,8 +104,12 @@ const Header = ({ navigationData, className }: HeaderProps) => {
 			<div className='mx-auto flex h-full max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8'>
 				{/* Logo */}
 				<Link
+					to='/'
 					className={cn(
-						typographyVariants({ variant: 'h2', className: 'sour-gummy text-primary leading-none tracking-wide' })
+						typographyVariants({
+							variant: 'h2',
+							className: 'sour-gummy text-primary leading-none tracking-wide sm:text-xl'
+						})
 					)}>
 					Jolly Fast Food
 				</Link>
