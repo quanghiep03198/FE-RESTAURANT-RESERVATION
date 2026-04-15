@@ -27,7 +27,7 @@ export const getTableQueryOptions = (enabled: boolean) =>
 		select: (response) => (Array.isArray(response.metadata) ? response.metadata.filter((item) => item.is_active) : [])
 	})
 
-export const useGetTablesQuery = (prefetchOnLoader: boolean = true) => {
+export const useGetTablesQuery = (prefetchOnLoader: boolean = false) => {
 	const { isAuthenticated } = useAuth()
 	return prefetchOnLoader
 		? useSuspenseQuery(getTableQueryOptions(isAuthenticated))
