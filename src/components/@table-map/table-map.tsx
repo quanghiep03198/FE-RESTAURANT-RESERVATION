@@ -10,7 +10,7 @@ import TableFormDialogTrigger from './table-form-dialog-trigger'
 import TableIndicators from './table-indicators'
 
 const TablesMap: React.FC = () => {
-	const { data: tables, isLoading: isLoadingTables } = useGetTablesQuery()
+	const { data: tables, isLoading: isLoadingTables } = useGetTablesQuery(false)
 	const { data: tableSessions, isLoading: isLoadingTableSession } = useGetTableSessionsQuery()
 
 	const tableData = useMemo(() => {
