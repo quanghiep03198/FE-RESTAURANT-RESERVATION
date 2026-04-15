@@ -28,3 +28,7 @@ export interface IStatisticSummary {
 		revenue_amount: number
 	}>
 }
+
+export interface IRevenueOverallResponse {
+	data: Array<{ total_amount: number; date: string }>
+}

@@ -1,26 +1,10 @@
+import { useGetRevenueOverallQuery } from '@/apis/statistic/hooks/use-statistic-request'
 import React from 'react'
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '../ui/chart'
 import { Icon } from '../ui/icon'
 import { Skeleton } from '../ui/skeleton'
-
-const data: Array<{ total_amount: number; date: string }> = [
-	{ total_amount: 3_120_000, date: '2026-04-01' },
-	{ total_amount: 4_580_000, date: '2026-04-02' },
-	{ total_amount: 2_950_000, date: '2026-04-03' },
-	{ total_amount: 5_200_000, date: '2026-04-04' },
-	{ total_amount: 6_300_000, date: '2026-04-05' },
-	{ total_amount: 4_750_000, date: '2026-04-06' },
-	{ total_amount: 7_100_000, date: '2026-04-07' },
-	{ total_amount: 8_430_000, date: '2026-04-08' },
-	{ total_amount: 5_900_000, date: '2026-04-09' },
-	{ total_amount: 6_720_000, date: '2026-04-10' },
-	{ total_amount: 9_050_000, date: '2026-04-11' },
-	{ total_amount: 10_200_000, date: '2026-04-12' },
-	{ total_amount: 7_880_000, date: '2026-04-13' },
-	{ total_amount: 11_340_000, date: '2026-04-14' }
-]
 
 const chartConfig = {
 	revenue: {
@@ -30,6 +14,10 @@ const chartConfig = {
 }
 
 const RevenueOverall: React.FC = () => {
+	const { data, isLoading } = useGetRevenueOverallQuery()
+
+	console.log(data)
+
 	return (
 		<section className='xxl:col-span-8 col-span-12 col-start-1 row-start-2'>
 			<Card className='h-full'>
@@ -38,7 +26,9 @@ const RevenueOverall: React.FC = () => {
 					<CardDescription>Tổng quan doanh thu theo ngày trong tháng hiện tại</CardDescription>
 				</CardHeader>
 				<CardContent className='px-2 sm:p-6'>
-					{false ? (
+					{isLoading ? (
+						<Skeleton className='min-h-64' />
+					) : !data.length ? (
 						<Skeleton className='h-62.5 w-full' />
 					) : !Array.isArray(data) || data.length === 0 ? (
 						<div className='bg-muted text-muted-foreground mx-3 flex h-64 items-center justify-center gap-x-2 rounded-lg'>
@@ -79,7 +69,7 @@ const RevenueOverall: React.FC = () => {
 									content={
 										<ChartTooltipContent
 											className='w-37.5'
-											nameKey='views'
+											nameKey='date'
 											labelFormatter={(value) => {
 												return new Date(value).toLocaleDateString('vi-VN', {
 													month: 'short',

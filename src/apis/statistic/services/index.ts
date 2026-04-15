@@ -1,11 +1,19 @@
 import { axiosInstance } from '@/configs/axios.config'
-import type { IStatisticSummary } from '../types'
+import type { IRevenueOverallResponse, IStatisticSummary } from '../types'
 
 export class StatisticService {
 	public static async getStatisticSummary(params: { year: number; month: number }) {
 		return await axiosInstance.get<unknown, ResponseBody<IStatisticSummary>, void>('/statistics/summary', {
 			params: { ...params, top_limit: 5 }
 		})
+	}
+	public static async getRevenueOverall(params: { year: number; month: number }) {
+		return await axiosInstance.get<unknown, ResponseBody<IRevenueOverallResponse>, void>(
+			'/statistics/revenue-chart',
+			{
+				params
+			}
+		)
 	}
 
 	/**
