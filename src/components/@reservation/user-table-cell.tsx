@@ -17,7 +17,7 @@ const UserTableCell: React.FC<{ name: string | undefined }> = ({ name }) => {
 		)
 
 	return (
-		<Item className='gap-x-1 p-0'>
+		<Item className='p-0' size='sm'>
 			<ItemMedia variant='image'>
 				<Avatar>
 					<AvatarImage src={generateAvatar({ name: name, background: '#ea4646' })} alt={name} />

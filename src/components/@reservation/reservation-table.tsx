@@ -100,6 +100,7 @@ const ReservationTable: React.FC = () => {
 				header: 'Trạng thái ',
 				enableSorting: true,
 				enableGlobalFilter: true,
+				filterFn: 'arrIncludesSome',
 				enableHiding: false,
 				cell: StatusBadge
 			}),

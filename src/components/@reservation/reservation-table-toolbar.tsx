@@ -25,7 +25,7 @@ const ReservationTableToolbar: React.FC<{ table: Table<IReservation>; event$: Ev
 		<div className='flex items-center gap-x-2'>
 			<GlobalFilterInput table={table} />
 			<DataTableFacetedFilter
-				column={table.getColumn('role') as Column<IReservation, ReservationStatus>}
+				column={table.getColumn('status') as Column<IReservation, ReservationStatus>}
 				title='Trạng thái'
 				options={statusFilterOptions}
 			/>
