@@ -40,7 +40,7 @@ const UserStatusFilter: React.FC<{ table: Table<IUser> }> = ({ table }) => {
 				}
 			].map((item: DropdownOption) => ({
 				...item,
-				count: data.filter((user) => user.is_active === item.value).length
+				count: data?.filter((user) => user.is_active === item.value)?.length ?? 0
 			})),
 		[data]
 	)

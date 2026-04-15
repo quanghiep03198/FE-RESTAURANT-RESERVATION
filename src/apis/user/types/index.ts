@@ -1,5 +1,5 @@
 // * Các role thực tế sẽ được sử dụng (Chủ nhà hàng, Thu ngân, Phục vụ)
-export type TUserRoleCode = 'OWNER' | 'MANAGER' | 'CASHIER' | 'WAITER' | 'KITCHEN'
+export type TUserRoleCode = 'OWNER' | 'MANAGER' | 'CASHIER' | 'WAITER'
 
 export interface IUserRole extends IBaseEntity {
 	name: string
