@@ -37,7 +37,7 @@ const ContactUs = ({ contactInfo }: { contactInfo: ContactInfo }) => {
 						</p>
 
 						{/* Contact Info Grid */}
-						<div className='grid gap-6 sm:grid-cols-2'>
+						<div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
 							{contactInfo.map((info, index) => (
 								<Card className='bg-background hover:border-primary transition-colors duration-300' key={index}>
 									<CardContent className='flex flex-col items-center gap-4 text-center'>
@@ -50,7 +50,9 @@ const ContactUs = ({ contactInfo }: { contactInfo: ContactInfo }) => {
 											<h4 className='text-lg font-semibold'>{info.title}</h4>
 											<div className='text-muted-foreground text-base font-medium'>
 												{info.description.split('\n').map((line, idx) => (
-													<p key={idx}>{line}</p>
+													<p key={idx} className='text-pretty sm:max-md:text-sm'>
+														{line}
+													</p>
 												))}
 											</div>
 										</div>

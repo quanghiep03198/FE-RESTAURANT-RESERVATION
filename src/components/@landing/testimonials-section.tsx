@@ -21,13 +21,13 @@ const TestimonialsComponent = ({ testimonials }: TestimonialsComponentProps) => 
 			id='testimonials'
 			className='before:border-primary/20 relative py-14 before:absolute before:inset-0 before:-z-10 before:-skew-y-3 before:border-b sm:py-28 lg:py-36'>
 			<Carousel
-				className='mx-auto flex max-w-7xl gap-12 px-4 max-sm:flex-col sm:items-center sm:gap-16 sm:px-6 lg:gap-24 lg:px-8'
+				className='mx-auto flex max-w-7xl flex-col gap-12 px-4 sm:items-center sm:gap-6 sm:px-6 lg:flex-row lg:gap-24 lg:px-8'
 				opts={{
 					align: 'start',
 					slidesToScroll: 1
 				}}>
 				{/* Left Content */}
-				<div className='space-y-4 sm:w-1/2 lg:w-1/3'>
+				<div className='w-full space-y-4 lg:w-1/3'>
 					<Badge variant='outline' className='text-sm font-normal'>
 						Khách hàng nói gì
 					</Badge>
@@ -54,7 +54,7 @@ const TestimonialsComponent = ({ testimonials }: TestimonialsComponentProps) => 
 				</div>
 
 				{/* Right Testimonial Carousel */}
-				<div className='relative max-w-196 sm:w-1/2 lg:w-2/3'>
+				<div className='relative w-full max-w-196 lg:w-2/3'>
 					<CarouselContent className='sm:-ml-6'>
 						{testimonials.map((testimonial, index) => (
 							<CarouselItem key={index} className='sm:pl-6 lg:basis-1/2'>

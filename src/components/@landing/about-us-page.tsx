@@ -34,19 +34,19 @@ const AboutUs = ({ stats }: { stats: Stat[] }) => {
 					<Image
 						src='/jollibee-history.webp'
 						alt='Hình minh họa về cửa hàng món nhanh'
-						className='h-full w-full rounded-lg object-contain brightness-80'
+						className='h-full w-full rounded-lg object-contain brightness-80 sm:max-md:mb-6'
 						loading='lazy'
 					/>
 
 					{/* Stats card overlapping the video section */}
-					<div className='bg-background grid gap-10 rounded-lg border p-8 sm:max-lg:grid-cols-2 lg:absolute lg:-bottom-25 lg:left-1/2 lg:w-4/5 lg:-translate-x-1/2 lg:grid-cols-4 lg:px-10'>
+					<div className='bg-background grid gap-10 rounded-lg border sm:p-6 sm:max-lg:grid-cols-2 md:p-8 lg:absolute lg:-bottom-25 lg:left-1/2 lg:w-4/5 lg:-translate-x-1/2 lg:grid-cols-4 lg:px-10'>
 						{stats.map((stat, index) => (
 							<div key={index} className='flex flex-col items-center justify-center gap-2.5 text-center'>
 								<div className='flex size-7 items-center justify-center [&>svg]:size-7'>
 									<Icon name={stat.icon} />
 								</div>
-								<span className='text-2xl font-semibold'>{stat.value}</span>
-								<p className='text-muted-foreground text-lg'>
+								<span className='text-primary text-2xl font-semibold'>{stat.value}</span>
+								<p className='text-muted-foreground mt-auto text-sm text-pretty md:text-lg'>
 									{stat.description[0]} <br /> {stat.description[1]}
 								</p>
 							</div>
