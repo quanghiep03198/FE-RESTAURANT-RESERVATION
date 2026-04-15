@@ -23,8 +23,6 @@ export const DataTableBody: React.FC<TableBodyProps> = ({
 	estimatedRowHeight,
 	renderSubComponent
 }) => {
-	'use no memo'
-
 	const { table } = useTableContext('table')
 	const { rows } = table.getRowModel()
 	const overscan = useMemo(() => (table.getIsSomeRowsExpanded() ? 20 : 10), [table.getState().expanded])
@@ -32,6 +30,8 @@ export const DataTableBody: React.FC<TableBodyProps> = ({
 	const estimateSize = useCallback(() => estimatedRowHeight, [estimatedRowHeight])
 	const getScrollElement = () => containerRef.current
 	const getItemKey = useCallback((index) => table.getRowModel().rows[index]?.id, [table.options.data])
+
+	console.log(table.options.data)
 
 	const virtualizer = useVirtualizer<HTMLDivElement, HTMLTableRowElement>({
 		count: rows.length,

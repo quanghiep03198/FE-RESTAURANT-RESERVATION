@@ -49,8 +49,8 @@ const DataTable: React.FC<TableProps> = (props) => {
 	const tableStyles = useMemo(
 		() =>
 			({
-				'--header-row-height': '36px',
-				'--row-height': `${virtualizerOptions.estimateSize ?? 36}px`
+				'--header-row-height': '40px',
+				'--row-height': `${virtualizerOptions.estimateSize ?? 40}px`
 			}) as React.CSSProperties,
 		[virtualizerOptions.estimateSize]
 	)

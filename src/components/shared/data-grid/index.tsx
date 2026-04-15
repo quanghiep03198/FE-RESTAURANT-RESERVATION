@@ -233,7 +233,7 @@ export const DataGrid: React.FC<DataTableProps> = ({
 	 * @see {@link https://github.com/TanStack/table/issues/4566 | Github issue}
 	 */
 	useDeepCompareEffect(() => {
-		if (!isEqual(data, _data) && Array.isArray(data)) setData(data)
+		if (!isEqual(data, _data)) setData(data)
 	}, [data])
 
 	/**

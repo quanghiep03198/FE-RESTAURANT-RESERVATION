@@ -11,8 +11,6 @@ import TableCellHead from './table-cell-head'
 import { TableColumnFilter } from './table-column-filter'
 
 const DataTableHeader: React.FC = () => {
-	'use no memo'
-
 	const rerender = useUpdate()
 
 	const { table, event$ } = useTableContext('table', 'event$')
@@ -40,7 +38,7 @@ const DataTableHeader: React.FC = () => {
 DataTableHeader.displayName = 'DataTableHeader'
 
 const TableHeaderRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({ headerGroup }) => {
-	// 'use no memo'
+	//
 
 	const { table } = useTableContext('table')
 	const computeStickyOffsetPosition = useMemoizedFn(getStickyOffsetPosition)
@@ -79,7 +77,7 @@ const TableHeaderRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({ heade
 TableHeaderRow.displayName = 'TableHeaderRow'
 
 const TableHeaderFilterRow: React.FC<{ headerGroup: HeaderGroup<RowData> }> = ({ headerGroup }) => {
-	// 'use no memo'
+	//
 
 	const { filterOpen } = useTableContext('filterOpen')
 	const computeStickyOffsetPosition = useMemoizedFn(getStickyOffsetPosition)

@@ -15,8 +15,6 @@ type VirtualTableRowProps = Pick<TableBodyProps, 'renderSubComponent'> & {
 }
 
 const VirtualTableRow: React.FC<VirtualTableRowProps> = ({ row, isScrolling, index, renderSubComponent }) => {
-	'use no memo'
-
 	const { table } = useTableContext('table')
 	const computeStickyOffsetPosition = useMemoizedFn(getStickyOffsetPosition)
 
