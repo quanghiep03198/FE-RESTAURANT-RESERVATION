@@ -2,19 +2,19 @@ import { useGetInvoiceQuery } from '@/apis/invoice/hooks/use-invoice-request'
 import type { IInvoice } from '@/apis/invoice/types'
 import generateAvatar from '@/common/libs/generate-avatar'
 import { formatCurrency } from '@/common/utils/format-currency'
+import { formatPhoneNumber } from '@/common/utils/format-phone-number'
 import { createColumnHelper } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import React, { useMemo } from 'react'
 import { DataGrid } from '../shared/data-grid'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '../ui/item'
+import { Item, ItemContent, ItemMedia, ItemTitle } from '../ui/item'
 import InvoiceTableToolbar from './invoice-table-toolbar'
 import PaymentStatusBadge from './payment-status-badge'
 
 const InvoiceTable: React.FC = () => {
 	const { data, isLoading } = useGetInvoiceQuery()
-	console.log(data)
 	const columnHelper = createColumnHelper<IInvoice>()
 
 	const columns = useMemo(
@@ -22,7 +22,7 @@ const InvoiceTable: React.FC = () => {
 			columnHelper.accessor('customer_name', {
 				header: 'Khách hàng',
 				cell: ({ row }) => (
-					<Item className='gap-x-1 p-0'>
+					<Item className='p-0' size='sm'>
 						<ItemMedia variant='image'>
 							<Avatar>
 								<AvatarImage
@@ -33,11 +33,14 @@ const InvoiceTable: React.FC = () => {
 							</Avatar>
 						</ItemMedia>
 						<ItemContent>
-							<ItemTitle>{row.original.customer_name}</ItemTitle>
-							<ItemDescription>{row.original.customer_phone}</ItemDescription>
+							<ItemTitle className='line-clamp-1'>{row.original.customer_name}</ItemTitle>
 						</ItemContent>
 					</Item>
 				)
+			}),
+			columnHelper.accessor('customer_phone', {
+				header: 'Số điện thoại',
+				cell: ({ getValue }) => formatPhoneNumber(getValue())
 			}),
 			columnHelper.accessor('no', {
 				header: 'Mã hóa đơn',
@@ -66,7 +69,9 @@ const InvoiceTable: React.FC = () => {
 
 			columnHelper.accessor('payment_status', {
 				header: 'Đã thanh toán',
-				cell: PaymentStatusBadge
+				cell: PaymentStatusBadge,
+				enableColumnFilter: true,
+				filterFn: 'arrIncludesSome'
 			})
 		],
 		[]
@@ -78,8 +83,9 @@ const InvoiceTable: React.FC = () => {
 			data={data}
 			loading={isLoading}
 			containerProps={{
-				className: 'h-[calc(var(--outlet-wrapper-height)-9rem)]'
+				className: 'h-[calc(var(--outlet-wrapper-height)-8rem)]'
 			}}
+			virtualizerOptions={{ enabled: true, estimateSize: 64 }}
 			toolbarProps={{
 				override: true,
 				render: InvoiceTableToolbar
