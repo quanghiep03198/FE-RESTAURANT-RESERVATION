@@ -1,5 +1,3 @@
-'use no memo'
-
 import type { IUser } from '@/apis/user/types'
 import { RecordStatus } from '@/common/constants/enums'
 

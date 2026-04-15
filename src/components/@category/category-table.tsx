@@ -71,7 +71,8 @@ const CategoryTable: React.FC = () => {
 				enableSorting: true,
 				enableColumnFilter: true,
 				enableGlobalFilter: true,
-				enableResizing: true
+				enableResizing: true,
+				filterFn: 'equals'
 			}),
 			columnHelper.display({
 				id: ROW_ACTIONS_COLUMN_ID,
