@@ -2,7 +2,7 @@
 	// Cloudflare Pages configuration for SPA (TanStack Router + React + Vite)
 	// Deploy: npx wrangler pages deploy dist
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "restaurant-reservation",
+	"name": "jolly-fast-food",
 	"compatibility_date": "2025-01-01",
 	"pages_build_output_dir": "dist",
 	"assets": {
