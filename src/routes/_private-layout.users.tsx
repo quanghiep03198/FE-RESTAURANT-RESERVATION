@@ -10,6 +10,7 @@ import {
 	PageWrapper
 } from '@/components/layouts/@private/app-page'
 import { PageContextProvider } from '@/contexts/event-context'
+import { RoleGuard } from '@/guards/role-guard'
 import { useSeoHelper } from '@/hooks/use-seo-helper'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -25,22 +26,24 @@ function RouteComponent() {
 			<title>{metadata?.title}</title>
 			<meta name='description' content={metadata?.description} />
 
-			<PageContextProvider>
-				<PageWrapper>
-					<PageHeader>
-						<PageTitle>Quản lý Người dùng & Phân quyền</PageTitle>
-						<PageDescription>
-							Quản lý thông tin tài khoản và thiết lập vai trò để kiểm soát quyền truy cập hệ thống.
-						</PageDescription>
-						<PageAction>
-							<CreateUserFormDialogTrigger />
-						</PageAction>
-					</PageHeader>
-					<PageSeparator />
-					<UserTable />
-					<UserFormDialog />
-				</PageWrapper>
-			</PageContextProvider>
+			<RoleGuard authorizedRoles={['OWNER', 'MANAGER']}>
+				<PageContextProvider>
+					<PageWrapper>
+						<PageHeader>
+							<PageTitle>Quản lý Người dùng & Phân quyền</PageTitle>
+							<PageDescription>
+								Quản lý thông tin tài khoản và thiết lập vai trò để kiểm soát quyền truy cập hệ thống.
+							</PageDescription>
+							<PageAction>
+								<CreateUserFormDialogTrigger />
+							</PageAction>
+						</PageHeader>
+						<PageSeparator />
+						<UserTable />
+						<UserFormDialog />
+					</PageWrapper>
+				</PageContextProvider>
+			</RoleGuard>
 		</>
 	)
 }

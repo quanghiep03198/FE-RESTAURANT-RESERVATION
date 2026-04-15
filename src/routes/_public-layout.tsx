@@ -14,7 +14,7 @@ function RouteComponent() {
 			<Header navigationData={navigationData as any} />
 
 			{/* Main Content */}
-			<main className='flex flex-col pt-17.5 *:scroll-mt-16'>
+			<main className='flex w-full flex-col pt-17.5 *:scroll-mt-16'>
 				<Outlet />
 			</main>
 

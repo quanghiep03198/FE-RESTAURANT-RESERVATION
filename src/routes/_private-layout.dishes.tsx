@@ -5,6 +5,7 @@ import DishListSearchBar from '@/components/@dish/dish-list-seach-bar'
 import { PageHeader, PageWrapper } from '@/components/layouts/@private/app-page'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { PageContextProvider } from '@/contexts/event-context'
+import { RoleGuard } from '@/guards/role-guard'
 import { useSeoHelper } from '@/hooks/use-seo-helper'
 import { createFileRoute } from '@tanstack/react-router'
 import tw from 'tailwind-styled-components'
@@ -21,20 +22,22 @@ function RouteComponent() {
 			<title>{metadata?.title}</title>
 			<meta name='description' content={metadata?.description} />
 
-			<PageContextProvider>
-				<SidebarProvider data-outlet-padding='none' className='w-full' cookieName='dish_filter_sidebar'>
-					<PageWrapper className='basis-full'>
-						<PageHeader className='sticky top-0 z-20! px-6 py-3 backdrop-blur'>
-							<DishListSearchBar />
-						</PageHeader>
-						<PageContent>
-							<DishList />
-						</PageContent>
-					</PageWrapper>
-					<DishFilterSidebar />
-				</SidebarProvider>
-				<DishFormDialog />
-			</PageContextProvider>
+			<RoleGuard authorizedRoles={['OWNER', 'MANAGER']}>
+				<PageContextProvider>
+					<SidebarProvider data-outlet-padding='none' className='w-full' cookieName='dish_filter_sidebar'>
+						<PageWrapper className='basis-full'>
+							<PageHeader className='sticky top-0 z-20! px-6 py-3 backdrop-blur'>
+								<DishListSearchBar />
+							</PageHeader>
+							<PageContent>
+								<DishList />
+							</PageContent>
+						</PageWrapper>
+						<DishFilterSidebar />
+					</SidebarProvider>
+					<DishFormDialog />
+				</PageContextProvider>
+			</RoleGuard>
 		</>
 	)
 }

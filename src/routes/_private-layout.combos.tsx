@@ -12,6 +12,7 @@ import {
 	PageWrapper
 } from '@/components/layouts/@private/app-page'
 import { PageContextProvider } from '@/contexts/event-context'
+import { RoleGuard } from '@/guards/role-guard'
 import { useSeoHelper } from '@/hooks/use-seo-helper'
 import { QueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -32,21 +33,25 @@ function RouteComponent() {
 			<title>{metadata?.title}</title>
 			<meta name='description' content={metadata?.description} />
 
-			<PageContextProvider>
-				<PageWrapper>
-					<PageHeader>
-						<PageTitle>Quản lý Combo & Ưu đãi</PageTitle>
-						<PageDescription>Quản lý & Tối ưu hóa doanh thu thông qua các gói dịch vụ đặc biệt</PageDescription>
-						<PageAction>
-							<ComboFormDialogTrigger />
-						</PageAction>
-					</PageHeader>
-					<PageSeparator />
-					<ComboListToolbar />
-					<ComboItemList />
-					<ComboFormDialog />
-				</PageWrapper>
-			</PageContextProvider>
+			<RoleGuard authorizedRoles={['OWNER', 'MANAGER']}>
+				<PageContextProvider>
+					<PageWrapper>
+						<PageHeader>
+							<PageTitle>Quản lý Combo & Ưu đãi</PageTitle>
+							<PageDescription>
+								Quản lý & Tối ưu hóa doanh thu thông qua các gói dịch vụ đặc biệt
+							</PageDescription>
+							<PageAction>
+								<ComboFormDialogTrigger />
+							</PageAction>
+						</PageHeader>
+						<PageSeparator />
+						<ComboListToolbar />
+						<ComboItemList />
+						<ComboFormDialog />
+					</PageWrapper>
+				</PageContextProvider>
+			</RoleGuard>
 		</>
 	)
 }

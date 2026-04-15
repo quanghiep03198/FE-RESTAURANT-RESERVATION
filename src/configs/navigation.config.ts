@@ -61,7 +61,7 @@ const navigationConfig: Record<'main' | 'administration', TNavigationConfig[]> =
 			title: 'Hóa đơn',
 			url: '/invoices',
 			icon: 'Receipt',
-			authorizedRoles: ['OWNER', 'MANAGER', 'CASHIER'],
+			authorizedRoles: ['OWNER', 'MANAGER', 'CASHIER', 'WAITER'],
 			description:
 				'Quản lý hóa đơn và thanh toán: tạo hóa đơn, theo dõi trạng thái thanh toán, in biên lai và đối soát doanh thu nhanh chóng.'
 		}
