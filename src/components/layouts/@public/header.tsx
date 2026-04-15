@@ -108,7 +108,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
 					className={cn(
 						typographyVariants({
 							variant: 'h2',
-							className: 'sour-gummy text-primary leading-none tracking-wide sm:text-xl'
+							className: 'sour-gummy text-primary leading-none tracking-wide whitespace-nowrap sm:text-lg'
 						})
 					)}>
 					Jolly Fast Food

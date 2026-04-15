@@ -46,7 +46,9 @@ const OfferSection = () => {
 					{Array.isArray(combos) &&
 						combos.map((data) => (
 							<Item variant='outline' role='listitem' className='bg-card text-card-foreground relative'>
-								<ItemMedia variant='image' className='relative size-32 h-auto w-auto text-xs xl:size-40'>
+								<ItemMedia
+									variant='image'
+									className='relative h-auto w-full text-xs md:max-xl:size-32 xl:size-40'>
 									<Image src={data.combo_image?.url} className='h-full w-full rounded-md' />
 									<Badge className='absolute bottom-2 left-2 text-xs! shadow-lg'>{data.tag}</Badge>
 								</ItemMedia>
